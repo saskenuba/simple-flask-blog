@@ -2,14 +2,8 @@ from datetime import datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-# connection to local database
-db_conn = 'postgresql+psycopg2://martin@localhost/martinblog'
-
-# creates db
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = db_conn
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+# import db from init
+from martinblog import app, db
 
 
 # entry model on sqlalchemy
