@@ -1,3 +1,3 @@
 # simple-flask-blog
 
-Functional blog tool featuring SQLAlchemy ORM
+CS50 Final Project. Functional blog tool featuring SQLAlchemy ORM
