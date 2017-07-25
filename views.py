@@ -1,11 +1,17 @@
-from flask import Flask, render_template
+from flask import render_template, json, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from martinblog import app
+from martinblog import app, db
+from martinblog.database import Entry
 
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    dbEntries = Entry.query.all()
+    dbEntriesSerialized = [i.serialize for i in dbEntries]
+
+    # validates json, then loads into object
+    jsonQuery = json.loads(json.dumps(dbEntriesSerialized))
+    return render_template("index.html", blogEntries=jsonQuery)
 
 
 @app.route('/login')

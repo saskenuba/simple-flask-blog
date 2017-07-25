@@ -1,9 +1,7 @@
-{% extends "layout.html" %}
-{% block title %}
-indequis
-{% endblock %}
-{% block content %}
+{% extends "layout.html" %} {% block title %} indequis {% endblock %} {% block content %}
+{% for entry in blogEntries %}
 <p>
-    iai galeraaaaaaaa
+    {{entry.id}}
 </p>
+{% endfor %}
 {% endblock %}
