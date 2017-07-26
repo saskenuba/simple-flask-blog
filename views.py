@@ -10,6 +10,7 @@ import re
 # TODO: criar a dashboard
 # TODO: criar login
 
+
 # main page has all blog entries
 @app.route('/')
 def index():
@@ -31,7 +32,7 @@ def login():
 
 # returns post content based on number
 @app.route('/post/<number>')
-def number(number):
+def getJsonPost(number):
 
     # converts request to str
     parameter = str(number)
@@ -54,7 +55,7 @@ def number(number):
         return "not understanderino"
 
 
-# json answer for post
+# page just to see post
 @app.route('/post/<number>/viewpost')
 def viewPost(number):
     return "datebayo"
@@ -62,9 +63,9 @@ def viewPost(number):
 
 # dashboard for logged in user
 # must be logged
-@app.route('/<username>')
+@app.route('/dashboard/<username>')
 def dashboard(username):
-    return render_template("dashboard.html")
+    return render_template("dashboard.html", username=username)
 
 
 # dashboard for logged in user

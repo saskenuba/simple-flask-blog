@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block title %} Martin Mariano - Dashboard {% endblock %}
+{% block content %}
+    <main id="dashboardmain">
+        <header class="ui text container">
+            <h2 class="ui header text-center">Bem vindo {{username}}</h2>
+        </header>
+
+        <div id="dashboardmenu" class="ui top attached tabular menu">
+            <a class="item">Adicionar Post</a>
+            <a class="item">Editar Post</a>
+            <a class="item">Deletar Post</a>
+        </div>
+        <div class="ui bottom attached segment">
+
+            <!-- Add post -->
+            <div class="off on" id="dashadd">
+                <form class="ui form" action="">
+                    <div class="required field">
+                        <label>Title</label>
+                        <input name="post-title" type="text" placeholder="Post Title"/>
+                    </div>
+                    <div class="required field">
+                        <label>Content</label>
+                        <textarea name="post-content" type="text"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Edit post -->
+            <div class="off" id="dashedit">oi</div>
+
+            <!-- Delete post -->
+            <div class="off" id="dashdel">oi</div>
+
+        </div>
+    </main>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='dashboard-dist.js') }}"></script>
+{% endblock %}

@@ -1,35 +1,33 @@
-"use strict";
-
-var sidebarSize = document.getElementById("sidebar").offsetWidth;
-var mainElement = document.getElementById("main");
+let sidebarSize = document.getElementById("sidebar").offsetWidth;
+let mainElement = document.getElementById("main");
 
 // At page load complete load
-window.addEventListener('load', function (event) {
+window.addEventListener('load', function(event) {
 
     // if mobile screen size
     if (isMobile(window.innerWidth)) {
 
         // remove sidebar
-        var sidebar = document.getElementById('sidebar');
+        let sidebar = document.getElementById('sidebar');
         sidebar.parentElement.removeChild(sidebar);
     }
     // resize content to match window size
     else {
 
-            resizeMain();
+        resizeMain();
 
-            // Resize content
-            window.addEventListener('resize', function (event) {
-                resizeMain();
-            });
-        }
+        // Resize content
+        window.addEventListener('resize', function(event) {
+            resizeMain();
+        });
+    }
 });
 ///////////////////////////////////////////////////////////////////////////////
 //                             Testing Ajax calls                            //
 ///////////////////////////////////////////////////////////////////////////////
 
 // using jsglue to request flask
-var parameters = {
+let parameters = {
     number: 'all'
 };
 
@@ -54,5 +52,5 @@ function isMobile(windowInnerWidth) {
 
 // formula so main matches window size minus sidebar
 function resizeMain() {
-    mainElement.style.width = window.innerWidth - sidebarSize + 'px';
+    mainElement.style.width = (window.innerWidth - sidebarSize) + 'px';
 }

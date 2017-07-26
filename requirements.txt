@@ -3,3 +3,4 @@ Flask
 psycopg2
 SQLAlchemy
 Jinja2
+Flask-JSGlue

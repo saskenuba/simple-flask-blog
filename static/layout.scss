@@ -1,3 +1,5 @@
+@import 'sidebar';
+
 html {
     box-sizing: border-box;
 }
@@ -8,23 +10,14 @@ html {
     box-sizing: inherit;
 }
 
-// Sidebar stuff
-.sidebar-first {
-    margin-top: 15vh;
-    margin-bottom: 10vh;
-    font-size: 2em;
-    p {
-        font-size: 16px;
-        text-align: right;
-    }
-    &:before {
-        content: none !important;
-    }
+//main page
+
+
+//dashboard page
+.off {
+    display: none;
 }
 
-.search-bar {
-    &:before {
-        content: none !important;
-    }
-    margin-bottom: 5vh;
+.on {
+    display: block !important;
 }

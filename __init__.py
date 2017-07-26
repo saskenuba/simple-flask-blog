@@ -1,9 +1,10 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_jsglue import JSGlue
 
 # first initialize flask
 app = Flask(__name__)
-
+jsglue = JSGlue(app)
 
 # path to db
 db_conn = 'postgresql+psycopg2://martin@localhost/martinblog'

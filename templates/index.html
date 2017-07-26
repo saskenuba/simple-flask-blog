@@ -2,18 +2,18 @@
     {% for entry in blogEntries %}
         <!-- Separate each as an article -->
         <article>
-            <h2 class="ui header">{{entry.title}} <div class="sub header">{{entry.timestamp[0]}}</div></h2>
+            <h2 class="ui header">{{entry.title}} <div class="sub header">{{entry.timestamp[2]}} - {{entry.timestamp[0]}}</div></h2>
             <p>
                 {{entry.content | safe}}
             </p>
 
             <!-- Keep reading button-->
-            <div class="ui animated button" tabindex="0">
+            <a href="/post/{{entry.id}}/viewpost"><div class="ui animated button" tabindex="0">
                 <div class="visible content">Continuar Lendo</div>
                 <div class="hidden content">
                     <i class="right arrow icon"></i>
                 </div>
-            </div>
+            </div></a>
             <!-- End of button-->
 
             <div class="ui divider"></div>
