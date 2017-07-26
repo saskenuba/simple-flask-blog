@@ -2,7 +2,13 @@ from flask import render_template, json, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from martinblog import app, db
 from martinblog.database import Entry
+import urllib.request
+import re
 
+# TODO: fazer os posts do index serem organizados por ajax atraves de uma query ao /post/number
+# TODO: criar a pagina about me
+# TODO: criar a dashboard
+# TODO: criar login
 
 # main page has all blog entries
 @app.route('/')
@@ -26,17 +32,32 @@ def login():
 # returns post content based on number
 @app.route('/post/<number>')
 def number(number):
-    dbEntry = Entry.query.get(number).serialize
 
-    return jsonify(dbEntry)
+    # converts request to str
+    parameter = str(number)
+
+    # checks for correct request
+    pattern = re.compile('[0-9]+')
+    match = pattern.match(parameter)
+
+    # if ask for all, send everypost
+    if number == 'all':
+        dbEntries = Entry.query.all()
+        dbEntriesSerialized = [i.serialize for i in dbEntries]
+        return jsonify(dbEntriesSerialized)
+    # else, just the one asked
+    elif match:
+        dbEntry = Entry.query.get(number).serialize
+        return jsonify(dbEntry)
+    # anything else, ignore
+    else:
+        return "not understanderino"
 
 
-# returns post content based on number
+# json answer for post
 @app.route('/post/<number>/viewpost')
 def viewPost(number):
-    dbEntry = Entry.query.get(number).serialize
-
-    return jsonify(dbEntry)
+    return "datebayo"
 
 
 # dashboard for logged in user
