@@ -7,6 +7,7 @@ from martinblog import app, db
 
 
 # entry model on sqlalchemy
+# insert tags later
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))

@@ -20,34 +20,45 @@
 
     </head>
 
-    <body>
-        <!-- Begin of Navigation -->
-        <nav class="ui bottom attached segment pushable">
-            <div class="ui visible left vertical sidebar menu">
-                <a class="item sidebar-first"> Martin Mariano <p>dev blog</p></a>
-                <a class="item"><i class="home icon"></i> Home </a>
-                <a class="item"><i class="block layout icon"></i> Sobre </a>
-                <a class="item"><i class="smile icon"></i> Blog Posts </a>
-                <a class="item"><i class=""></i> Contato </a>
-            </div>
+    <body class="pushable">
+        <!-- Begin of Navigation Bar -->
+        <nav id="sidebar" class="ui visible left vertical sidebar menu">
+            <a class="item sidebar-first"> Martin Mariano <p>dev blog</p></a>
 
-            <!-- Main content goes here -->
-            <div class="pusher">
-                <div class="ui basic segment">
-                    {% block content %}
-
-                    {% endblock %}
+            <!-- Search Bar -->
+            <div class="item search-bar">
+                <div class="ui search">
+                    <div class="ui icon input">
+                        <input class="prompt" placeholder="Pesquisar dentro do blog" type="text">
+                        <i class="search icon"></i>
+                    </div>
+                    <div class="results"></div>
                 </div>
-            <!-- End of main content -->
             </div>
-            <!-- End of Navigation -->
+            <!-- End of Search Bar -->
+            <a class="item"><i class="home icon"></i> Home </a>
+            <a class="item"><i class="block layout icon"></i> Sobre </a>
+            <a class="item"><i class="smile icon"></i> Blog Posts </a>
+            <a class="item"><i class=""></i> Contato </a>
         </nav>
+        <!-- End of Navigation Bar -->
+
+        <!-- Main content goes here -->
+        <div id="main" class="pusher">
+            <div class="ui basic segment">
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+        <!-- End of main content -->
 
 
 
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
         <script src="../static/semantic.min.js"></script>
+
+        <script src="{{ url_for('static', filename='script-dist.js') }}"></script>
+            </div>
     </body>
 
 </html>

@@ -1,10 +1,30 @@
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
 // Sidebar stuff
 .sidebar-first {
-    margin-top: 20vh;
-    margin-bottom: 20vh;
+    margin-top: 15vh;
+    margin-bottom: 10vh;
     font-size: 2em;
     p {
         font-size: 16px;
         text-align: right;
     }
+    &:before {
+        content: none !important;
+    }
+}
+
+.search-bar {
+    &:before {
+        content: none !important;
+    }
+    margin-bottom: 5vh;
 }

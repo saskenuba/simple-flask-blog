@@ -1,0 +1,19 @@
+{
+    "libs": [
+        "browser",
+        "jquery",
+        "lodash",
+        "discord",
+        "helper"
+    ],
+    "loadEagerly": [
+        "./lib/*.js"
+    ],
+    "plugins": {
+        "requirejs": {
+            "baseURL": "./",
+            "paths": {}
+        },
+        "node": {}
+    }
+}

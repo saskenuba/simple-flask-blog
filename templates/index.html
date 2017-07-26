@@ -1,7 +1,22 @@
-{% extends "layout.html" %} {% block title %} indequis {% endblock %} {% block content %}
-{% for entry in blogEntries %}
-<p>
-    {{entry.id}}
-</p>
-{% endfor %}
+{% extends "layout.html" %} {% block title %} Martin Mariano - Web Developer Blog {% endblock %} {% block content %}
+    {% for entry in blogEntries %}
+        <!-- Separate each as an article -->
+        <article>
+            <h2 class="ui header">{{entry.title}} <div class="sub header">{{entry.timestamp[0]}}</div></h2>
+            <p>
+                {{entry.content | safe}}
+            </p>
+
+            <!-- Keep reading button-->
+            <div class="ui animated button" tabindex="0">
+                <div class="visible content">Continuar Lendo</div>
+                <div class="hidden content">
+                    <i class="right arrow icon"></i>
+                </div>
+            </div>
+            <!-- End of button-->
+
+            <div class="ui divider"></div>
+        </article>
+    {% endfor %}
 {% endblock %}
