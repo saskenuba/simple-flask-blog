@@ -30,8 +30,13 @@ def login():
     return render_template("login.html")
 
 
-# returns post content based on number
-@app.route('/post/<number>')
+###############################################################################
+#                                     API                                     #
+###############################################################################
+
+
+# returns json of post content
+@app.route('/post/json/<number>')
 def getJsonPost(number):
 
     # converts request to str
@@ -56,7 +61,7 @@ def getJsonPost(number):
 
 
 # page just to see post
-@app.route('/post/<number>/viewpost')
+@app.route('/post/view/<number>')
 def viewPost(number):
     return "datebayo"
 
@@ -80,7 +85,7 @@ def inserttest():
 
     insert = Entry(
         'javascript and node',
-        'Nullam eu ante vel est convallis dignissim.  Fusce suscipit, wisi nec facilisis facilisis, est dui fermentum leo, quis <i>tempor ligula erat quis</i> odio.  Nunc porta vulputate tellus.  Nunc rutrum turpis sed pede.  Sed bibendum.  <mark>Aliquam posuere.  Nunc aliquet, augue nec adipiscing interdum</mark>, lacus tellus malesuada massa, quis varius mi purus non odio.  Pellentesque condimentum, magna ut suscipit hendrerit, ipsum augue ornare nulla, non luctus diam neque sit amet urna.  Curabitur vulputate vestibulum lorem.  Fusce sagittis, libero non molestie mollis, magna orci ultrices dolor, at vulputate neque nulla lacinia eros.  Sed id ligula quis est convallis tempor.  <b>Curabitur</b> lacinia pulvinar nibh.  Nam a sapien.'
+        '<p>Nullam eu ante vel est convallis dignissim.  Fusce suscipit, wisi nec facilisis facilisis, est dui fermentum leo, quis <i>tempor ligula erat quis</i> odio.</p><p>Nunc porta vulputate tellus.  Nunc rutrum turpis sed pede.  Sed bibendum.  <mark>Aliquam posuere.  Nunc aliquet, augue nec adipiscing interdum</mark>, lacus tellus malesuada massa, quis varius mi purus non odio.  <code>Pellentesque condimentum, magna ut suscipit hendrerit, ipsum augue ornare nulla, non luctus diam neque sit amet urna.  Curabitur vulputate vestibulum lorem.</code></br>Fusce sagittis, libero non molestie mollis, magna orci ultrices dolor, at vulputate neque nulla lacinia eros.  Sed id ligula quis est convallis tempor.  <b>Curabitur</b> lacinia pulvinar nibh.  Nam a sapien.</p>'
     )
     db.session.add(insert)
     db.session.commit()

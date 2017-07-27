@@ -1,34 +1,53 @@
-{% extends "layout.html" %}
-{% block title %} Martin Mariano - Dashboard {% endblock %}
-{% block content %}
+{% extends "layout.html" %} {% block title %} Martin Mariano - Dashboard {% endblock %} {% block content %}
     <main id="dashboardmain">
         <header class="ui text container">
             <h2 class="ui header text-center">Bem vindo {{username}}</h2>
         </header>
 
         <div id="dashboardmenu" class="ui top attached tabular menu">
-            <a class="item">Adicionar Post</a>
-            <a class="item">Editar Post</a>
-            <a class="item">Deletar Post</a>
+            <a id="add" class="item">Adicionar Post</a>
+            <a id="edit" class="item">Editar Post</a>
+            <a id="del" class="item">Deletar Post</a>
         </div>
-        <div class="ui bottom attached segment">
+        <div id="dashboarditems" class="ui bottom attached segment">
 
             <!-- Add post -->
-            <div class="off on" id="dashadd">
-                <form class="ui form" action="">
-                    <div class="required field">
-                        <label>Title</label>
-                        <input name="post-title" type="text" placeholder="Post Title"/>
+            <div class="off" id="dashadd">
+                <form id="form-add" class="ui form" action="">
+                    <div class="ui divider"></div>
+                    <div class="required inline field">
+                        <label>Título</label>
+                        <input placeholder="Título" name="post-title" type="text">
+                        <div class="ui left pointing label"> No máximo 110 caracteres. </div>
+                        <button type="submit" form="form-add" class="ui primary button right-align">Enviar Post</button>
                     </div>
+                    <div class="ui divider"></div>
                     <div class="required field">
-                        <label>Content</label>
-                        <textarea name="post-content" type="text"></textarea>
+                        <label>Conteúdo</label>
+                        <textarea id="post-content" name="post-content" type="text"></textarea>
                     </div>
                 </form>
             </div>
 
             <!-- Edit post -->
-            <div class="off" id="dashedit">oi</div>
+            <div class="off" id="dashedit">
+                <form id="form-edit" class="ui form" action="">
+                    <div class="ui divider"></div>
+                    <div class="required inline field">
+                        <label>Título</label>
+                        <input placeholder="Título" name="post-title" type="text">
+                        <div class="ui left pointing label"> No máximo 110 caracteres. </div>
+                        <button type="submit" form="form-edit" class="ui primary button right-align">Enviar Post</button>
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="required field">
+                        <label>Conteúdo</label>
+                        <textarea id="post-content" name="post-content" type="text"></textarea>
+                    </div>
+                </form>
+
+
+            </div>
 
             <!-- Delete post -->
             <div class="off" id="dashdel">oi</div>
@@ -37,7 +56,10 @@
     </main>
 
 {% endblock %}
-
 {% block scripts %}
     <script src="{{ url_for('static', filename='dashboard-dist.js') }}"></script>
+    <script src="//cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
+    <script>
+     CKEDITOR.replace('post-content');
+    </script>
 {% endblock %}
