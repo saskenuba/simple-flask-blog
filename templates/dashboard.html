@@ -24,28 +24,45 @@
                     <div class="ui divider"></div>
                     <div class="required field">
                         <label>Conteúdo</label>
-                        <textarea id="post-content" name="post-content" type="text"></textarea>
+                        <textarea id="post-content-add" name="post-content-add" type="text"></textarea>
                     </div>
                 </form>
             </div>
 
             <!-- Edit post -->
             <div class="off" id="dashedit">
+                <!-- Form -->
                 <form id="form-edit" class="ui form" action="">
                     <div class="ui divider"></div>
                     <div class="required inline field">
+                        <label>Post ID</label>
+                        <input placeholder="ID do post" id="post-id-edit" name="post-id" type="text">
+                        <div class="ui left pointing label"> Insira a ID do post a ser editado. Ocorrerá preenchimento automático dos campos. </div>
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="required inline field">
                         <label>Título</label>
-                        <input placeholder="Título" name="post-title" type="text">
+                        <input placeholder="Título" id="post-title-edit" name="post-title" type="text">
                         <div class="ui left pointing label"> No máximo 110 caracteres. </div>
-                        <button type="submit" form="form-edit" class="ui primary button right-align">Enviar Post</button>
                     </div>
                     <div class="ui divider"></div>
                     <div class="required field">
                         <label>Conteúdo</label>
-                        <textarea id="post-content" name="post-content" type="text"></textarea>
+                        <textarea id="post-content-edit" name="post-content-edit" type="text"></textarea>
                     </div>
+                    <button id="post-submitbutton-edit" type="submit" form="form-edit" class="ui primary button">Enviar Post</button>
                 </form>
+                <!-- End of Form -->
 
+                <popup id="edit-success" class="">
+                    <div class="ui positive message">
+                        <i class="close icon"></i>
+                        <div class="header">
+                            Parabéns seu filho da puta
+                        </div>
+                        Meu <b>pau</b> no seu <b>cu</b>.
+                    </div>
+                </popup>
 
             </div>
 
@@ -60,6 +77,7 @@
     <script src="{{ url_for('static', filename='dashboard-dist.js') }}"></script>
     <script src="//cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
     <script>
-     CKEDITOR.replace('post-content');
+     var editor_add = CKEDITOR.replace('post-content-add');
+     var editor_edit = CKEDITOR.replace('post-content-edit');
     </script>
 {% endblock %}

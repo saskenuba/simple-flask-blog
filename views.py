@@ -2,12 +2,10 @@ from flask import render_template, json, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from martinblog import app, db
 from martinblog.database import Entry
-import urllib.request
 import re
 
-# TODO: fazer os posts do index serem organizados por ajax atraves de uma query ao /post/number
+# TODO: fazer os posts do index serem organizados por ajax atraves de uma query ao /post/postid
 # TODO: criar a pagina about me
-# TODO: criar a dashboard
 # TODO: criar login
 
 
@@ -36,25 +34,30 @@ def login():
 
 
 # returns json of post content
-@app.route('/post/json/<number>')
-def getJsonPost(number):
+@app.route('/post/json/<postid>')
+def getJsonPost(postid):
 
     # converts request to str
-    parameter = str(number)
+    parameter = str(postid)
 
     # checks for correct request
     pattern = re.compile('[0-9]+')
     match = pattern.match(parameter)
 
     # if ask for all, send everypost
-    if number == 'all':
+    if postid == 'all':
         dbEntries = Entry.query.all()
         dbEntriesSerialized = [i.serialize for i in dbEntries]
         return jsonify(dbEntriesSerialized)
     # else, just the one asked
     elif match:
-        dbEntry = Entry.query.get(number).serialize
-        return jsonify(dbEntry)
+        dbEntry = Entry.query.get(postid)
+
+        # if post doesnt exists in db
+        if dbEntry is None:
+            return 'null'
+
+        return jsonify(dbEntry.serialize)
     # anything else, ignore
     else:
         return "not understanderino"
@@ -63,6 +66,26 @@ def getJsonPost(number):
 # page just to see post
 @app.route('/post/view/<number>')
 def viewPost(number):
+    # TODO
+    return "datebayo"
+
+
+# page just to see post
+@app.route('/post/add')
+def addPost(number):
+    # TODO
+    return "datebayo"
+
+
+# page to edit post
+@app.route('/post/edit')
+def editPost():
+    return "datebayo"
+
+
+# page to edit post
+@app.route('/post/delete')
+def deletePost():
     return "datebayo"
 
 

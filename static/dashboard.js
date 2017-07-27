@@ -1,3 +1,22 @@
+class Form {
+    constructor(id, title, content, apiheader) {
+        self.id = id;
+        self.title = title;
+        self.content = content;
+        self.apiheader = apiheader;
+    }
+
+    get json() {
+        return JSON.stringify({
+            header: self.apiheader,
+            id: self.id,
+            title: self.title,
+            content: self.content
+        });
+    }
+}
+
+
 window.addEventListener('load', function() {
 
     // All these selectors refer to the divs, not the tabs
@@ -29,12 +48,58 @@ window.addEventListener('load', function() {
 
         if (event.target.id == 'add') {
             document.getElementById('dashadd').classList.add('on');
-        }
-        else if (event.target.id == 'edit') {
+        } else if (event.target.id == 'edit') {
             document.getElementById('dashedit').classList.add('on');
-        }
-        else if (event.target.id == 'del') {
+        } else if (event.target.id == 'del') {
             document.getElementById('dashdel').classList.add('on');
         }
     });
+
+
 });
+
+///////////////////////////////////////////////////////////////////////////////
+//                                 Edit Form                                 //
+///////////////////////////////////////////////////////////////////////////////
+
+let idEditPost = document.getElementById('post-id-edit');
+let titleEditPost = document.getElementById('post-title-edit');
+let contentEditPost = document.getElementById('post-content-edit');
+let editForm = document.getElementById('form-edit');
+
+
+// listen for changes on inputs
+idEditPost.addEventListener('input', function(event) {
+
+    let postJson = postGetJson(event.target.value);
+    postJson.then(function(response) {
+        console.log(response);
+        titleEditPost.value = response.title;
+
+        // variable is set at dashboard script tag
+        // this sets content of editor based on the response content
+        editor_edit.setData(response.content);
+    });
+});
+
+editForm.addEventListener('submit', function(event) {
+
+    // prevent submit
+    event.preventDefault();
+
+    let formReady = new Form(idEditPost.value, titleEditPost.value, editor_edit.getData(), 'edit');
+
+    $('#edit-success')
+        .transition({
+            animation  : 'scale',
+            duration   : '2s'
+        })
+    ;
+
+    ;
+
+}, false);
+
+///////////////////////////////////////////////////////////////////////////////
+//                                  Add Form                                 //
+///////////////////////////////////////////////////////////////////////////////

@@ -24,22 +24,6 @@ window.addEventListener('load', function (event) {
             });
         }
 });
-///////////////////////////////////////////////////////////////////////////////
-//                             Testing Ajax calls                            //
-///////////////////////////////////////////////////////////////////////////////
-
-// using jsglue to request flask
-var parameters = {
-    number: 'all'
-};
-
-//fetch(Flask.url_for('getJsonPost', parameters)).then(function(response) {
-//    return response.json();
-//})
-//    .then(function(jsonObject) {
-//        console.log(jsonObject);
-//    });
-
 
 ///////////////////////////////////////////////////////////////////////////////
 //                              Helper Functions                             //
@@ -56,3 +40,22 @@ function isMobile(windowInnerWidth) {
 function resizeMain() {
     mainElement.style.width = window.innerWidth - sidebarSize + 'px';
 }
+
+// fetch post from "/post/json/<id>"
+// and returns promise
+function postGetJson(postId) {
+
+    var parameters = {
+        postid: postId
+    };
+
+    return fetch(Flask.url_for('getJsonPost', parameters)).then(function (response) {
+        return response.json();
+    }, function (err) {
+        throw new Error('Server response was not ok');
+    });
+}
+
+// send through POST method json
+// and returns success or fail
+function postSendJson(arg) {}
