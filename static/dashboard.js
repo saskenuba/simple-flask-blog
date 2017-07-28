@@ -54,8 +54,6 @@ window.addEventListener('load', function() {
             document.getElementById('dashdel').classList.add('on');
         }
     });
-
-
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -89,17 +87,52 @@ editForm.addEventListener('submit', function(event) {
 
     let formReady = new Form(idEditPost.value, titleEditPost.value, editor_edit.getData(), 'edit');
 
-    $('#edit-success')
-        .transition({
-            animation  : 'scale',
-            duration   : '2s'
-        })
-    ;
-
-    ;
-
 }, false);
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                  Add Form                                 //
 ///////////////////////////////////////////////////////////////////////////////
+
+let titleAddPost = document.getElementById('post-title-add');
+let contentAddPost = document.getElementById('post-content-add');
+let addForm = document.getElementById('form-add');
+
+addForm.addEventListener('submit', function(event) {
+
+    // prevent submit
+    event.preventDefault();
+
+    // gathering form data to be submited
+    const formReady = new Form(null, titleAddPost.value, editor_add.getData(), 'add').json;
+
+    const settings = {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: formReady
+    };
+
+    // message link
+    let successLink = document.getElementById('form-edit-message-success');
+
+    let serverResponse = postSendJson('addPost', settings);
+    serverResponse.then(function(response) {
+
+        // insert links to message
+        successLink.href = response['link'];
+        successLink.textContent = 'Link para o post: ' + response['link'];
+
+        // disable button
+        let submitButton = document.getElementById('post-submitbutton-add');
+        submitButton.classList.add('disabled');
+
+        let popup = document.getElementById('add-success');
+        popup.classList.toggle('off');
+        popup.classList.toggle('on');
+        popup.classList.toggle('animated');
+        popup.classList.toggle('fadeIn');
+    });
+
+}, false);

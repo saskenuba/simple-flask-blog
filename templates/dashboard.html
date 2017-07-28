@@ -13,54 +13,65 @@
 
             <!-- Add post -->
             <div class="off" id="dashadd">
+                <!-- Form -->
                 <form id="form-add" class="ui form" action="">
                     <div class="ui divider"></div>
                     <div class="required inline field">
                         <label>Título</label>
-                        <input placeholder="Título" name="post-title" type="text">
+                        <input placeholder="Título" id="post-title-add" name="post-title-add" type="text">
                         <div class="ui left pointing label"> No máximo 110 caracteres. </div>
-                        <button type="submit" form="form-add" class="ui primary button right-align">Enviar Post</button>
                     </div>
                     <div class="ui divider"></div>
                     <div class="required field">
                         <label>Conteúdo</label>
                         <textarea id="post-content-add" name="post-content-add" type="text"></textarea>
                     </div>
+                    <button id="post-submitbutton-add" type="submit" form="form-add" class="ui primary button">Enviar Post</button>
                 </form>
+                <!-- End of Form -->
+
+                <popup id="add-success" class="off">
+                    <div class="ui positive message">
+                        <i class="close icon"></i>
+                        <div class="header">Tudo certo.</div>
+                        O post criado com sucesso.
+                        <a id="form-edit-message-success" href=""></a>
+                    </div>
+                </popup>
             </div>
 
             <!-- Edit post -->
             <div class="off" id="dashedit">
                 <!-- Form -->
                 <form id="form-edit" class="ui form" action="">
-                    <div class="ui divider"></div>
-                    <div class="required inline field">
-                        <label>Post ID</label>
-                        <input placeholder="ID do post" id="post-id-edit" name="post-id" type="text">
-                        <div class="ui left pointing label"> Insira a ID do post a ser editado. Ocorrerá preenchimento automático dos campos. </div>
+                <div class="ui divider"></div>
+                <div class="required inline field">
+                <label>Post ID</label>
+                <input placeholder="ID do post" id="post-id-edit" name="post-id" type="text">
+                <div class="ui left pointing label"> Insira a ID do post a ser editado. Ocorrerá preenchimento automático dos campos. </div>
                     </div>
-                    <div class="ui divider"></div>
-                    <div class="required inline field">
-                        <label>Título</label>
-                        <input placeholder="Título" id="post-title-edit" name="post-title" type="text">
-                        <div class="ui left pointing label"> No máximo 110 caracteres. </div>
+                <div class="ui divider"></div>
+                <div class="required inline field">
+                <label>Título</label>
+                <input placeholder="Título" id="post-title-edit" name="post-title" type="text">
+                <div class="ui left pointing label"> No máximo 110 caracteres. </div>
                     </div>
-                    <div class="ui divider"></div>
-                    <div class="required field">
-                        <label>Conteúdo</label>
-                        <textarea id="post-content-edit" name="post-content-edit" type="text"></textarea>
+                <div class="ui divider"></div>
+                <div class="required field">
+                <label>Conteúdo</label>
+                <textarea id="post-content-edit" name="post-content-edit" type="text"></textarea>
                     </div>
-                    <button id="post-submitbutton-edit" type="submit" form="form-edit" class="ui primary button">Enviar Post</button>
+                <button id="post-submitbutton-edit" type="submit" form="form-edit" class="ui primary button">Enviar Post</button>
                 </form>
                 <!-- End of Form -->
 
-                <popup id="edit-success" class="">
-                    <div class="ui positive message">
-                        <i class="close icon"></i>
-                        <div class="header">
-                            Parabéns seu filho da puta
+                <popup id="edit-success" class="boo">
+                <div class="ui positive message">
+                <i class="close icon"></i>
+                <div class="header">
+                Parabéns seu filho da puta
                         </div>
-                        Meu <b>pau</b> no seu <b>cu</b>.
+                Post editado com sucesso.
                     </div>
                 </popup>
 

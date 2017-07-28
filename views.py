@@ -1,4 +1,4 @@
-from flask import render_template, json, jsonify
+from flask import render_template, json, jsonify, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 from martinblog import app, db
 from martinblog.database import Entry
@@ -13,7 +13,7 @@ import re
 @app.route('/')
 def index():
     # query for all db entries
-    dbEntries = Entry.query.all()
+    dbEntries = Entry.query.order_by(Entry.timestamp.desc()).all()
     # then serialize
     dbEntriesSerialized = [i.serialize for i in dbEntries]
 
@@ -26,6 +26,14 @@ def index():
 @app.route('/login')
 def login():
     return render_template("login.html")
+
+
+# custom 404 page
+@app.errorhandler(404)
+def not_found(error):
+    resp = make_response(render_template('error.html'), 404)
+    resp.headers['X-Something'] = 'A value'
+    return resp
 
 
 ###############################################################################
@@ -71,10 +79,29 @@ def viewPost(number):
 
 
 # page just to see post
-@app.route('/post/add')
-def addPost(number):
-    # TODO
-    return "datebayo"
+@app.route('/post/add', methods=['GET', 'POST'])
+def addPost():
+    if request.method == 'POST':
+        addRequest = request.get_json()
+
+        # if contains no header or wrong one
+        if addRequest is None or addRequest['header'] != 'add':
+            return jsonify({
+                "response": "something went wrong with your request"
+            })
+
+        postEntry = Entry(addRequest['title'], addRequest['content'])
+
+        # db actions
+        db.session.add(postEntry)
+        db.session.commit()
+
+        return jsonify({
+            "response": "post added",
+            "link": '{}post/view/{}'.format(request.url_root, postEntry.id)
+        })
+
+    return 'you have nothing to see here, human!'
 
 
 # page to edit post

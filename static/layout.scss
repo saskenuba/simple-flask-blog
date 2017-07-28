@@ -22,7 +22,8 @@ html {
     display: block !important;
 }
 
-.right-align {
-    position: absolute;
-    right: 10vw;
+// animating messages
+#add-success {
+    margin-top: 2rem;
+    animation-duration: 3s;
 }

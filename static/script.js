@@ -56,7 +56,13 @@ function postGetJson(postId) {
 }
 
 // send through POST method json
-// and returns success or fail
-function postSendJson(arg) {
+// and returns answer as a promise and logs
+function postSendJson(flasklocation, settingsObj) {
 
+    return fetch(Flask.url_for(flasklocation), settingsObj)
+        .then(response => response.json())
+        .catch(err => {
+            // trata se alguma das promises falhar
+            console.error('Failed retrieving information', err);
+        });
 }
