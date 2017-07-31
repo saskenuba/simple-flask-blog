@@ -71,7 +71,6 @@ idEditPost.addEventListener('input', function(event) {
 
     let postJson = postGetJson(event.target.value);
     postJson.then(function(response) {
-        console.log(response);
         titleEditPost.value = response.title;
 
         // variable is set at dashboard script tag
@@ -85,7 +84,41 @@ editForm.addEventListener('submit', function(event) {
     // prevent submit
     event.preventDefault();
 
-    let formReady = new Form(idEditPost.value, titleEditPost.value, editor_edit.getData(), 'edit');
+    let formReady = new Form(idEditPost.value, titleEditPost.value, editor_edit.getData(), 'edit').json;
+
+    const settings = {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: formReady
+    };
+
+    // message link
+    let successLink = document.getElementById('form-edit-message-success');
+
+    let serverResponse = postSendJson('editPost', settings);
+    serverResponse.then(function(response) {
+        if (response.status == 202) {
+            return response.json();
+        }
+        else
+            return console.log('perdeu playba');
+    })
+
+        .then(function(response) {
+
+        // insert links to message
+        successLink.href = response['link'];
+        successLink.textContent = 'Link para o post: ' + response['link'];
+
+        // disable button
+        let submitButton = document.getElementById('post-submitbutton-edit');
+        submitButton.classList.add('disabled');
+
+        let popup = document.getElementById('edit-success');
+        toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
+    });
 
 }, false);
 
@@ -115,10 +148,19 @@ addForm.addEventListener('submit', function(event) {
     };
 
     // message link
-    let successLink = document.getElementById('form-edit-message-success');
+    let successLink = document.getElementById('form-add-message-success');
 
     let serverResponse = postSendJson('addPost', settings);
     serverResponse.then(function(response) {
+        if (response.status == 201) {
+            return response.json();
+        }
+        else
+            return 'perdeu playba';
+    })
+
+        .then(function(response) {
+            console.log(response);
 
         // insert links to message
         successLink.href = response['link'];
@@ -129,10 +171,68 @@ addForm.addEventListener('submit', function(event) {
         submitButton.classList.add('disabled');
 
         let popup = document.getElementById('add-success');
-        popup.classList.toggle('off');
-        popup.classList.toggle('on');
-        popup.classList.toggle('animated');
-        popup.classList.toggle('fadeIn');
+        toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
+    });
+
+}, false);
+
+///////////////////////////////////////////////////////////////////////////////
+//                                Delete Form                                //
+///////////////////////////////////////////////////////////////////////////////
+
+const idDelPost = document.getElementById('post-id-del');
+const titleDelPost = document.getElementById('post-title-del');
+
+// listen for changes on inputs
+idDelPost.addEventListener('input', function(event) {
+    console.log(event.target.value);
+
+    let postJson = postGetJson(event.target.value);
+    postJson.then(function(response) {
+        titleDelPost.value = response.title;
+    });
+});
+
+let delForm = document.getElementById('form-del');
+
+delForm.addEventListener('submit', function(event) {
+
+    // prevent submit
+    event.preventDefault();
+
+    // gathering form data to be submited
+    const formReady = new Form(idDelPost.value, null, null, 'del').json;
+
+    const settings = {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: formReady
+    };
+
+    // message link
+    let successLink = document.getElementById('form-del-message-success');
+
+    let serverResponse = postSendJson('deletePost', settings);
+    serverResponse.then(function(response) {
+        if (response.status == 200) {
+            return response.json();
+        }
+        else
+            return 'perdeu playba';
+    })
+
+        .then(function(response) {
+            console.log(response);
+
+        // disable button
+        let submitButton = document.getElementById('post-submitbutton-del');
+        submitButton.classList.add('disabled');
+
+        let popup = document.getElementById('del-success');
+        toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
     });
 
 }, false);

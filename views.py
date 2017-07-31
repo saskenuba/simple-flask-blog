@@ -4,9 +4,9 @@ from martinblog import app, db
 from martinblog.database import Entry
 import re
 
-# TODO: fazer os posts do index serem organizados por ajax atraves de uma query ao /post/postid
 # TODO: criar a pagina about me
 # TODO: criar login
+# TODO: arrumar o index
 
 
 # main page has all blog entries
@@ -29,12 +29,11 @@ def login():
 
 
 # custom 404 page
-@app.errorhandler(404)
-def not_found(error):
-    resp = make_response(render_template('error.html'), 404)
-    resp.headers['X-Something'] = 'A value'
-    return resp
-
+#@app.errorhandler(404)
+#def not_found(error):
+#    resp = make_response(render_template('error.html'), 404)
+#    resp.headers['X-Something'] = 'A value'
+#    return resp
 
 ###############################################################################
 #                                     API                                     #
@@ -45,7 +44,7 @@ def not_found(error):
 @app.route('/post/json/<postid>')
 def getJsonPost(postid):
 
-    # converts request to str
+    # convertrump bing bongts request to str
     parameter = str(postid)
 
     # checks for correct request
@@ -63,7 +62,8 @@ def getJsonPost(postid):
 
         # if post doesnt exists in db
         if dbEntry is None:
-            return 'null'
+            return jsonify(
+                dict(title='post not found', content='post not found')), 404
 
         return jsonify(dbEntry.serialize)
     # anything else, ignore
@@ -88,7 +88,7 @@ def addPost():
         if addRequest is None or addRequest['header'] != 'add':
             return jsonify({
                 "response": "something went wrong with your request"
-            })
+            }), 404
 
         postEntry = Entry(addRequest['title'], addRequest['content'])
 
@@ -97,23 +97,79 @@ def addPost():
         db.session.commit()
 
         return jsonify({
-            "response": "post added",
-            "link": '{}post/view/{}'.format(request.url_root, postEntry.id)
-        })
+            "response":
+            "post added",
+            "link":
+            '{}post/view/{}'.format(request.url_root, postEntry.id)
+        }), 201
 
     return 'you have nothing to see here, human!'
 
 
 # page to edit post
-@app.route('/post/edit')
+@app.route('/post/edit', methods=['GET', 'POST'])
 def editPost():
-    return "datebayo"
+    if request.method == 'POST':
+        editRequest = request.get_json()
+
+        # if contains no header or wrong one
+        if editRequest is None or editRequest['header'] != 'edit':
+            return jsonify({
+                "response": "something went wrong with your request"
+            }), 404
+
+        # request post and update post
+        postToBeEdited = Entry.query.filter(
+            Entry.id == editRequest['id']
+        ).update(
+            dict(title=editRequest['title'], content=editRequest['content']))
+
+        # returns error if id not found
+        if not postToBeEdited:
+            return jsonify("post not found"), 404
+
+        db.session.commit()
+
+        # returns link and http code 202
+        return jsonify({
+            "response":
+            "post edited",
+            "link":
+            '{}post/view/{}'.format(request.url_root, editRequest['id'])
+        }), 202
+
+    return 'you have nothing to see here, human!'
 
 
-# page to edit post
-@app.route('/post/delete')
+# page to delete a post
+@app.route('/post/delete', methods=['POST'])
 def deletePost():
-    return "datebayo"
+    if request.method == 'POST':
+        delRequest = request.get_json()
+
+        # if contains no header or wrong one
+        if delRequest is None or delRequest['header'] != 'del':
+            return jsonify({
+                "response": "something went wrong with your request"
+            }), 404
+
+        # request post and update post
+        postToBeDeleted = Entry.query.filter(
+            Entry.id == delRequest['id']).delete()
+
+        # returns error if id not found
+        if not postToBeDeleted:
+            return jsonify("post not found"), 404
+
+        db.session.commit()
+
+        # returns link and http code 200
+        return jsonify({
+            "response":
+            "post with id: {} deleted".format(delRequest['id'])
+        }), 200
+
+    return 'you have nothing to see here, human!'
 
 
 # dashboard for logged in user
@@ -121,22 +177,3 @@ def deletePost():
 @app.route('/dashboard/<username>')
 def dashboard(username):
     return render_template("dashboard.html", username=username)
-
-
-# dashboard for logged in user
-@app.route('/newpost')
-def newpost():
-    return render_template("newpost.html")
-
-
-# dashboard for logged in user
-@app.route('/inserttest')
-def inserttest():
-
-    insert = Entry(
-        'javascript and node',
-        '<p>Nullam eu ante vel est convallis dignissim.  Fusce suscipit, wisi nec facilisis facilisis, est dui fermentum leo, quis <i>tempor ligula erat quis</i> odio.</p><p>Nunc porta vulputate tellus.  Nunc rutrum turpis sed pede.  Sed bibendum.  <mark>Aliquam posuere.  Nunc aliquet, augue nec adipiscing interdum</mark>, lacus tellus malesuada massa, quis varius mi purus non odio.  <code>Pellentesque condimentum, magna ut suscipit hendrerit, ipsum augue ornare nulla, non luctus diam neque sit amet urna.  Curabitur vulputate vestibulum lorem.</code></br>Fusce sagittis, libero non molestie mollis, magna orci ultrices dolor, at vulputate neque nulla lacinia eros.  Sed id ligula quis est convallis tempor.  <b>Curabitur</b> lacinia pulvinar nibh.  Nam a sapien.</p>'
-    )
-    db.session.add(insert)
-    db.session.commit()
-    return "success"

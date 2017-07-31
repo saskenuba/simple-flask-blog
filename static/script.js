@@ -60,9 +60,17 @@ function postGetJson(postId) {
 function postSendJson(flasklocation, settingsObj) {
 
     return fetch(Flask.url_for(flasklocation), settingsObj)
-        .then(response => response.json())
+        .then(response => response)
         .catch(err => {
             // trata se alguma das promises falhar
             console.error('Failed retrieving information', err);
         });
+}
+
+// toggle any amount of classes on the element
+function toggleClasses(element, classes) {
+    // i = 0 is the element
+    for(let i = 1; i < arguments.length; i++) {
+        element.classList.toggle(arguments[i]);
+    }
 }
