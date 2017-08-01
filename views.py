@@ -1,4 +1,4 @@
-from flask import render_template, json, jsonify, request, make_response
+from flask import render_template, json, jsonify, request, make_response, current_app
 from flask_sqlalchemy import SQLAlchemy
 from martinblog import app, db
 from martinblog.database import Entry
@@ -44,7 +44,7 @@ def login():
 @app.route('/post/json/<postid>')
 def getJsonPost(postid):
 
-    # convertrump bing bongts request to str
+    # convert request to str
     parameter = str(postid)
 
     # checks for correct request
@@ -65,17 +65,25 @@ def getJsonPost(postid):
             return jsonify(
                 dict(title='post not found', content='post not found')), 404
 
-        return jsonify(dbEntry.serialize)
+        response = make_response(jsonify(dbEntry.serialize))
+        return response
+
     # anything else, ignore
     else:
         return "not understanderino"
 
 
 # page just to see post
-@app.route('/post/view/<number>')
+@app.route('/post/view/<int:number>')
 def viewPost(number):
-    # TODO
-    return "datebayo"
+
+    # creating test client to fetch json
+    client = current_app.test_client()
+    postRequested = client.get(
+        '{}post/json/{}'.format(request.url_root, number))
+    postRequestedJson = json.loads(postRequested.data)
+
+    return render_template('viewpost.html', blogEntry=postRequestedJson)
 
 
 # page just to see post
@@ -90,7 +98,8 @@ def addPost():
                 "response": "something went wrong with your request"
             }), 404
 
-        postEntry = Entry(addRequest['title'], addRequest['content'])
+        postEntry = Entry(addRequest['title'], addRequest['content'],
+                          addRequest['imagelink'], addRequest['tags'])
 
         # db actions
         db.session.add(postEntry)
@@ -112,6 +121,8 @@ def editPost():
     if request.method == 'POST':
         editRequest = request.get_json()
 
+        print(editRequest)
+
         # if contains no header or wrong one
         if editRequest is None or editRequest['header'] != 'edit':
             return jsonify({
@@ -120,9 +131,12 @@ def editPost():
 
         # request post and update post
         postToBeEdited = Entry.query.filter(
-            Entry.id == editRequest['id']
-        ).update(
-            dict(title=editRequest['title'], content=editRequest['content']))
+            Entry.id == editRequest['id']).update(
+                dict(
+                    title=editRequest['title'],
+                    content=editRequest['content'],
+                    imagelink=editRequest['imagelink'],
+                    tags=editRequest['tags']))
 
         # returns error if id not found
         if not postToBeEdited:

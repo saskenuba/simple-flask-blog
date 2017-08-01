@@ -1,8 +1,10 @@
 class Form {
-    constructor(id, title, content, apiheader) {
+    constructor(id, title, imagelink, content, tags, apiheader) {
         self.id = id;
         self.title = title;
+        self.imagelink = imagelink;
         self.content = content;
+        self.tags = tags;
         self.apiheader = apiheader;
     }
 
@@ -11,7 +13,9 @@ class Form {
             header: self.apiheader,
             id: self.id,
             title: self.title,
-            content: self.content
+            imagelink: self.imagelink,
+            content: self.content,
+            tags: self.tags
         });
     }
 }
@@ -33,7 +37,7 @@ window.addEventListener('load', function() {
     // on click
     dashboardMenu.addEventListener('click', function(event) {
 
-        // remove active class for every children
+        // remove active class for every chashboard/martinildren
         Array.from(dashboardMenu.children).forEach(function(el) {
             el.classList.remove('active');
         });
@@ -63,6 +67,8 @@ window.addEventListener('load', function() {
 let idEditPost = document.getElementById('post-id-edit');
 let titleEditPost = document.getElementById('post-title-edit');
 let contentEditPost = document.getElementById('post-content-edit');
+let imageEditPost = document.getElementById('post-image-edit');
+let tagsEditPost = document.getElementById('post-tags-edit');
 let editForm = document.getElementById('form-edit');
 
 
@@ -72,6 +78,8 @@ idEditPost.addEventListener('input', function(event) {
     let postJson = postGetJson(event.target.value);
     postJson.then(function(response) {
         titleEditPost.value = response.title;
+        imageEditPost.value = response.imagelink;
+        tagsEditPost.value = response.tags;
 
         // variable is set at dashboard script tag
         // this sets content of editor based on the response content
@@ -84,7 +92,7 @@ editForm.addEventListener('submit', function(event) {
     // prevent submit
     event.preventDefault();
 
-    let formReady = new Form(idEditPost.value, titleEditPost.value, editor_edit.getData(), 'edit').json;
+    let formReady = new Form(idEditPost.value, titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value,'edit').json;
 
     const settings = {
         method: "POST",
@@ -128,6 +136,8 @@ editForm.addEventListener('submit', function(event) {
 
 let titleAddPost = document.getElementById('post-title-add');
 let contentAddPost = document.getElementById('post-content-add');
+let imageAddPost = document.getElementById('post-image-add');
+let tagsAddPost = document.getElementById('post-tags-add');
 let addForm = document.getElementById('form-add');
 
 addForm.addEventListener('submit', function(event) {
@@ -136,7 +146,7 @@ addForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
     // gathering form data to be submited
-    const formReady = new Form(null, titleAddPost.value, editor_add.getData(), 'add').json;
+    const formReady = new Form(null, titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value, 'add').json;
 
     const settings = {
         method: "POST",
@@ -155,12 +165,12 @@ addForm.addEventListener('submit', function(event) {
         if (response.status == 201) {
             return response.json();
         }
-        else
+        else {
             return 'perdeu playba';
+        }
     })
 
         .then(function(response) {
-            console.log(response);
 
         // insert links to message
         successLink.href = response['link'];
@@ -185,7 +195,6 @@ const titleDelPost = document.getElementById('post-title-del');
 
 // listen for changes on inputs
 idDelPost.addEventListener('input', function(event) {
-    console.log(event.target.value);
 
     let postJson = postGetJson(event.target.value);
     postJson.then(function(response) {
@@ -201,7 +210,7 @@ delForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
     // gathering form data to be submited
-    const formReady = new Form(idDelPost.value, null, null, 'del').json;
+    const formReady = JSON.stringify({"id": idDelPost.value, "header": "del"});
 
     const settings = {
         method: "POST",
@@ -225,7 +234,6 @@ delForm.addEventListener('submit', function(event) {
     })
 
         .then(function(response) {
-            console.log(response);
 
         // disable button
         let submitButton = document.getElementById('post-submitbutton-del');

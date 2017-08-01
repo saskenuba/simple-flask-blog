@@ -11,16 +11,34 @@ from martinblog import app, db
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
+    imagelink = db.Column(db.String(100))
     content = db.Column(db.Text)
     timestamp = db.Column(db.DateTime)
     dayofweek = db.Column(db.String(20))
+    tags = db.Column(db.String(100))
 
-    def __init__(self, title, content, dayofweek=None, timestamp=None):
+    def __init__(self,
+                 title,
+                 content,
+                 imagelink=None,
+                 tags=None,
+                 dayofweek=None,
+                 timestamp=None):
         self.title = title
         self.content = content
+
+        if imagelink is None:
+            self.imagelink = 'Sem imagens'
+        self.imagelink = imagelink
+
+        if tags is None:
+            self.tags = 'Sem tags'
+        self.tags = tags
+
         if timestamp is None:
             timestamp = datetime.utcnow()
         self.timestamp = timestamp
+
         if dayofweek is None:
             dayofweek = datetime.today().weekday()
         self.dayofweek = dayofweek
@@ -36,7 +54,9 @@ class Entry(db.Model):
             'id': self.id,
             'title': self.title,
             'content': self.content,
-            'timestamp': dump_datetime(self.timestamp, self.dayofweek)
+            'imagelink': self.imagelink,
+            'timestamp': dump_datetime(self.timestamp, self.dayofweek),
+            'tags': self.tags
         }
 
 
@@ -65,7 +85,7 @@ def dump_weekday(weekday):
     currentDay = int(weekday)
 
     days = [
-        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
-        "Sunday"
+        "Segunda-feira", "Terça-feira", "Quarta-Feira", "Quinta-feira",
+        "Sexta-feira", "Sábado", "Domingo"
     ]
     return days[currentDay]

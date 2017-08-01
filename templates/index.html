@@ -1,22 +1,26 @@
-{% extends "layout.html" %} {% block title %} Martin Mariano - Web Developer Blog {% endblock %} {% block content %}
+{% extends "layout.html" %} {% block title %} Martin Mariano - Web Developer Blog {% endblock %}
+{% block content %}
+<section>
     {% for entry in blogEntries %}
-        <!-- Separate each as an article -->
-        <article>
-            <h2 class="ui header">{{entry.title}} <div class="sub header">{{entry.timestamp[2]}} - {{entry.timestamp[0]}}</div></h2>
-            <p>
-                {{entry.content | safe}}
-            </p>
+    <!-- Separate each as an article -->
+    <article class="blog-post">
+        <h2 class="ui header">{{entry.title}} <div class="sub header">{{entry.timestamp[2]}} - {{entry.timestamp[0]}}</div></h2>
+        <img class="ui fluid image" src="{{entry.imagelink}}"/>
+        <p>{{entry.content | safe | truncate(800) }}</p>
 
-            <!-- Keep reading button-->
-            <a href="/post/{{entry.id}}/viewpost"><div class="ui animated button" tabindex="0">
+        <!-- Keep reading button-->
+        <a href="/post/view/{{entry.id}}">
+            <div class="ui animated button" tabindex="0">
                 <div class="visible content">Continuar Lendo</div>
                 <div class="hidden content">
                     <i class="right arrow icon"></i>
                 </div>
-            </div></a>
-            <!-- End of button-->
+            </div>
+        </a>
+        <!-- End of button-->
 
-            <div class="ui divider"></div>
-        </article>
+        <div class="ui divider"></div>
+    </article>
     {% endfor %}
+</section>
 {% endblock %}

@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %} Martin Mariano - Web Developer Blog {% endblock %}
+
+{% block content %}
+<article class="main-post container">
+
+    <div class="ui grid">
+        <div class="three wide column"></div>
+        <div class="ten wide column">
+        <header>
+            <h2 class="ui header">{{blogEntry.title}}</h2>
+        </header>
+            {{ blogEntry.content | safe}}
+        </div>
+    </div>
+</article>
+{% endblock %}

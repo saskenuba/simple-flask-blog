@@ -4,6 +4,10 @@ html {
     box-sizing: border-box;
 }
 
+body {
+    text-rendering: optimizeLegibility;
+}
+
 *,
 *:before,
 *:after {
@@ -26,4 +30,44 @@ html {
 #add-success {
     margin-top: 2rem;
     animation-duration: 3s;
+}
+
+// blogposts style
+
+.blog-post {
+    img {
+        margin-top: -10px;
+        border: 1px solid #ccc;
+        max-width: 720px;
+    }
+    // the first sibling only
+    img + p {
+        margin-top: 1rem;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
+    p {
+        line-height: 1.35em;
+    }
+}
+
+.main-post {
+    overflow: hidden;
+    h1 {
+        font-size: 1.65em;
+    }
+    h2 {
+        font-size: 1.5em;
+        margin-bottom: 1.5em;
+    }
+    h2 + p {
+        text-indent: 2em;
+    }
+    p {
+        font-size: 16px;
+        line-height: 1.35em;
+        text-overflow: ellipsis;
+        margin-bottom: 1.5em;
+    }
 }
