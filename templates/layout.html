@@ -12,7 +12,7 @@
         <link href="{{ url_for('static', filename='semantic.min.css') }}" rel="stylesheet" />
 
         <!-- FontAwesome content -->
-        <link href="{{ url_for('static', filename='font-awesome.min.css') }}" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet" />
 
         <!-- Boostrap content -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -49,10 +49,11 @@
                 </div>
             </div>
             <!-- End of Search Bar -->
-            <a class="item"><i class="home icon"></i> Home </a>
-            <a class="item"><i class="block layout icon"></i> Sobre </a>
-            <a class="item"><i class="smile icon"></i> Blog Posts </a>
-            <a class="item"><i class=""></i> Contato </a>
+            <a class="item" href="{{url_for('index')}}"><i class="home icon"></i> Home </a>
+            <a class="item" href="{{url_for('about')}}"><i class="info icon"></i> Sobre </a>
+            <a class="item"><i class="edit icon"></i> Blog Posts </a>
+            <a class="item"><i class="desktop icon"></i> Dashboard </a>
+            <a class="item"><i class="mail outline icon"></i> Contato </a>
         </nav>
         <!-- End of Navigation Bar -->
 
@@ -70,7 +71,7 @@
 
         <!-- Placed at the end of the document so the pages load faster -->
         <!--  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
-          <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
         <script src="{{ url_for('static', filename='semantic.min.js') }}"></script>
         <script src="{{ url_for('static', filename='script-dist.js') }}"></script>
     </body>

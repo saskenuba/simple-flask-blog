@@ -10,6 +10,18 @@ window.addEventListener('load', function(event) {
         // remove sidebar
         let sidebar = document.getElementById('sidebar');
         sidebar.parentElement.removeChild(sidebar);
+
+        // fix me
+        const bottombar = document.createElement('div');
+        const mysnippet = "<div class='ui bottom inverted fluid visible menu sidebar'>" +
+            "<a class='item' href='/'>" +
+            "index" +
+            "</a>" +
+            "</div>";
+
+        mainElement.insertAdjacentHTML('beforebegin', mysnippet);
+
+
     }
     // resize content to match window size
     else {
@@ -70,7 +82,7 @@ function postSendJson(flasklocation, settingsObj) {
 // toggle any amount of classes on the element
 function toggleClasses(element, classes) {
     // i = 0 is the element
-    for(let i = 1; i < arguments.length; i++) {
+    for (let i = 1; i < arguments.length; i++) {
         element.classList.toggle(arguments[i]);
     }
 }

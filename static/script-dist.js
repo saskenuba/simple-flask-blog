@@ -12,6 +12,12 @@ window.addEventListener('load', function (event) {
         // remove sidebar
         var sidebar = document.getElementById('sidebar');
         sidebar.parentElement.removeChild(sidebar);
+
+        // fix me
+        var bottombar = document.createElement('div');
+        var mysnippet = "<div class='ui bottom inverted fluid visible menu sidebar'>" + "<a class='item' href='/'>" + "index" + "</a>" + "</div>";
+
+        mainElement.insertAdjacentHTML('beforebegin', mysnippet);
     }
     // resize content to match window size
     else {

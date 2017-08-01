@@ -28,6 +28,11 @@ def login():
     return render_template("login.html")
 
 
+@app.route('/about')
+def about():
+    return render_template("about.html")
+
+
 # custom 404 page
 #@app.errorhandler(404)
 #def not_found(error):

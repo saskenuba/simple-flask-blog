@@ -7,10 +7,13 @@
     <div class="ui grid">
         <div class="three wide column"></div>
         <div class="ten wide column">
-        <header>
-            <h2 class="ui header">{{blogEntry.title}}</h2>
-        </header>
-            {{ blogEntry.content | safe}}
+            <header>
+                <h1 class="ui header">{{blogEntry.title}}</h1>
+                <small>postado originalmente {{blogEntry.timestamp[3]}}, {{blogEntry.timestamp[0]}} de {{blogEntry.timestamp[1]}}, {{blogEntry.timestamp[2]}}</small>
+            </header>
+            <content>
+                {{ blogEntry.content | safe}}
+            </content>
         </div>
     </div>
 </article>

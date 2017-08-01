@@ -72,8 +72,9 @@ def dump_datetime(value, currentday):
     if value is None:
         return None
     return [
-        value.strftime("%d-%m-%Y"),
-        value.strftime("%H:%M:%S"),
+        value.strftime("%d"),
+        dump_month(value.strftime("%m")),
+        value.strftime("%Y"),
         dump_weekday(currentday)
     ]
 
@@ -89,3 +90,13 @@ def dump_weekday(weekday):
         "Sexta-feira", "Sábado", "Domingo"
     ]
     return days[currentDay]
+
+
+def dump_month(month):
+    currentMonth = int(month)
+
+    months = [
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
+        "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ]
+    return months[currentMonth - 1]
