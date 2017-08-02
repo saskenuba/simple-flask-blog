@@ -5,3 +5,4 @@ SQLAlchemy
 Jinja2
 Flask-JSGlue
 flask-login
+flask-WTF

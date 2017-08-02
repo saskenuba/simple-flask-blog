@@ -1,4 +1,4 @@
-from flask import render_template, json, jsonify, request, make_response, current_app
+from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from martinblog import app, db, login_manager
 from martinblog.database import Entry, Users
@@ -8,8 +8,9 @@ import re
 # TODO: criar login
 # TODO: depois do login arrumar secret key
 
-# TODO: criar a pagina about me
 # TODO: criar pagina 404
+
+# TODO: arrumar os metodos put, delete etc nos requests
 
 
 # main page has all blog entries
@@ -34,7 +35,7 @@ def about():
 
 ###############################################################################
 #                                     API                                     #
-###############################################################################
+########difiicl#######################################################################
 
 
 # returns json of post content
@@ -185,11 +186,11 @@ def deletePost():
 
 # dashboard for logged in user
 # must be logged
-@app.route('/dashboard/<username>')
+@app.route('/dashboard')
 @login_required
-def dashboard(username):
+def dashboard():
 
-    return render_template("dashboard.html", username=username)
+    return render_template("dashboard.html", username=current_user.username)
 
 
 ###############################################################################
@@ -205,4 +206,36 @@ def load_user(user_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
-    return render_template("login.html")
+    # if user is authenticated, just redirect to dashboard
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard', username=current_user.username))
+
+    # if user is not logged in yet
+    if request.method == "POST":
+
+        # gather form content
+        formUsername = request.form['username']
+        formPassword = request.form['password']
+
+        # get user
+        userQuery = Users.query.filter_by(username=formUsername).first()
+
+        # validate
+        if userQuery and userQuery.password == formPassword:
+            login_user(userQuery)
+            print(current_user)
+            return "parabens"
+
+        else:
+            logout_user()
+            return "aff"
+
+    elif request.method == "GET":
+        print(current_user)
+        return render_template("login.html")
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))

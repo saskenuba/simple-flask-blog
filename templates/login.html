@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %} Martin Mariano - Web Developer Blog {% endblock %}
+
+{% block content %}
+    <section class="login">
+        <div class="ui centered middle aligned grid">
+            <div class="column">
+                <h2 class="ui center aligned teal header">
+                    <img src="https://semantic-ui.com/examples/assets/images/logo.png" class="image">
+                    <div class="content">
+                        Dashboard Login
+                    </div>
+                </h2>
+                <form method="POST" action="{{url_for('login')}}" class="ui large form">
+                    <div class="ui segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" tabindex="1" autocomplete="off" name="username" placeholder="Usuário">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" tabindex="2" name="password" placeholder="Senha">
+                            </div>
+                        </div>
+                        <button  value="submit" class="ui fluid large teal submit button">Login</button>
+                    </div>
+
+                    <div class="ui error message"></div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

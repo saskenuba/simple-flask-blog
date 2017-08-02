@@ -95,3 +95,20 @@ body {
         margin-bottom: 1.5rem;
     }
 }
+
+// login page
+.login {
+    height: 100vh;
+
+    .image {
+        margin-top: -100px;
+    }
+
+    .column {
+        width: 35% !important;
+    }
+}
+
+.middle {
+    height: 100%;
+}

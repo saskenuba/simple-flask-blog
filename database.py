@@ -64,7 +64,7 @@ class Entry(db.Model):
 # hash password later
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20))
+    username = db.Column(db.String(20), unique=True)
     password = db.Column(db.String(16))
 
     def __init__(self, username, password):
