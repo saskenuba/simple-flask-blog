@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
 # import db from init
 from martinblog import app, db
@@ -58,6 +59,21 @@ class Entry(db.Model):
             'timestamp': dump_datetime(self.timestamp, self.dayofweek),
             'tags': self.tags
         }
+
+
+# hash password later
+class Users(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20))
+    password = db.Column(db.String(16))
+
+    def __init__(self, username, password):
+        "username information"
+        self.username = username
+        self.password = password
+
+    def __repr__(self):
+        return '<DB User Object, username: {}>'.format(self.username)
 
 
 def init_db():

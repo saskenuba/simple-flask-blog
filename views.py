@@ -1,17 +1,21 @@
 from flask import render_template, json, jsonify, request, make_response, current_app
 from flask_sqlalchemy import SQLAlchemy
-from martinblog import app, db
-from martinblog.database import Entry
+from martinblog import app, db, login_manager
+from martinblog.database import Entry, Users
+from flask_login import login_required, current_user, login_user, logout_user
 import re
 
-# TODO: criar a pagina about me
 # TODO: criar login
-# TODO: arrumar o index
+# TODO: depois do login arrumar secret key
+
+# TODO: criar a pagina about me
+# TODO: criar pagina 404
 
 
 # main page has all blog entries
 @app.route('/')
 def index():
+
     # query for all db entries
     dbEntries = Entry.query.order_by(Entry.timestamp.desc()).all()
     # then serialize
@@ -23,22 +27,10 @@ def index():
     return render_template("index.html", blogEntries=jsonQuery)
 
 
-@app.route('/login')
-def login():
-    return render_template("login.html")
-
-
 @app.route('/about')
 def about():
     return render_template("about.html")
 
-
-# custom 404 page
-#@app.errorhandler(404)
-#def not_found(error):
-#    resp = make_response(render_template('error.html'), 404)
-#    resp.headers['X-Something'] = 'A value'
-#    return resp
 
 ###############################################################################
 #                                     API                                     #
@@ -194,5 +186,23 @@ def deletePost():
 # dashboard for logged in user
 # must be logged
 @app.route('/dashboard/<username>')
+@login_required
 def dashboard(username):
+
     return render_template("dashboard.html", username=username)
+
+
+###############################################################################
+#                                Login Manager                                #
+###############################################################################
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(user_id)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+
+    return render_template("login.html")

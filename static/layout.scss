@@ -15,11 +15,16 @@ body {
     box-sizing: inherit;
 }
 
+// helper
+.top-spacer {
+    padding-top: 5vh;
+}
+
 //main page
 #main {
     background-color: rgb(245, 245, 245);
-    padding-top: 5vh;
 }
+
 
 //dashboard page
 .off {
@@ -56,7 +61,7 @@ body {
 }
 
 // each blog page
-.main-post {
+.format-post {
     overflow: hidden;
 
     header + content  p:first-child {
