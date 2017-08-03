@@ -15,14 +15,15 @@ body {
     box-sizing: inherit;
 }
 
-// helper
-.top-spacer {
-    padding-top: 5vh;
-}
-
 //main page
 #main {
     background-color: rgb(245, 245, 245);
+    padding: 2em 2em 0 2em;
+    @media (max-width: 768px) {
+        & {
+            margin-top: 36px;
+        }
+    }
 }
 
 

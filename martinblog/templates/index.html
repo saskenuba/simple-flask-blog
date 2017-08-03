@@ -1,26 +1,21 @@
-{% extends "layout.html" %} {% block title %} Martin Mariano - Web Developer Blog {% endblock %}
-{% block content %}
-<section>
-    {% for entry in blogEntries %}
-    <!-- Separate each as an article -->
-    <article class="blog-post">
-        <h2 class="ui header">{{entry.title}} <div class="sub header">{{entry.timestamp[2]}} - {{entry.timestamp[0]}}</div></h2>
-        <img class="ui fluid image" src="{{entry.imagelink}}"/>
-        <p>{{entry.content | safe | truncate(800) }}</p>
+{% extends "layout.html" %} {% block title %} Martin Mariano - Web Developer Blog {% endblock %} {% block content %} {% for entry in blogEntries %}
+<!-- Separate each as an article -->
+<article class="ui basic attached padded segment blog-post">
+    <h2 class="ui header">{{entry.title}}
+        <div class="sub header">Postado na {{entry.timestamp[3]}}, {{entry.timestamp[0]}} de {{entry.timestamp[1]}}, {{entry.timestamp[2]}}</div>
+    </h2>
+    <img class="ui fluid image" src="{{entry.imagelink}}" />
+    <p>{{entry.content | safe | truncate(800) }}</p>
 
-        <!-- Keep reading button-->
-        <a href="/post/view/{{entry.id}}">
-            <div class="ui animated button" tabindex="0">
-                <div class="visible content">Continuar Lendo</div>
-                <div class="hidden content">
-                    <i class="right arrow icon"></i>
-                </div>
+    <!-- Keep reading button-->
+    <a href="/post/view/{{entry.id}}">
+        <div class="ui animated button" tabindex="0">
+            <div class="visible content">Continuar Lendo</div>
+            <div class="hidden content">
+                <i class="right arrow icon"></i>
             </div>
-        </a>
-        <!-- End of button-->
-
-        <div class="ui divider"></div>
-    </article>
-    {% endfor %}
-</section>
-{% endblock %}
+        </div>
+    </a>
+    <!-- End of button-->
+</article>
+{% endfor %} {% endblock %}

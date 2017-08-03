@@ -2,100 +2,94 @@
 {% block title %} Martin Mariano - About me {% endblock %}
 
 {% block content %}
-    <article class="top-spacer container">
-        <div class="ui grid">
-            <div class="four wide column">
-                <content>
-                    <div class="ui card">
-                        <div class="image">
-                            <img src="{{url_for('static', filename='images/minhafoto.jpg')}}">
-                        </div>
-                        <div class="content">
-                            <a class="header">Martin</a>
-                            <div class="meta">
-                                23 anos, São Paulo
-                            </div>
-                            <div class="description">
-                                Estudante de Ciências da Computação.
-                            </div>
-                        </div>
-                        <div class="extra content">
-                            <a>
-                                <i class="user icon"></i>
-                            </a>
-                        </div>
+<article class="top-spacer container">
+    <div class="ui stackable grid">
+        <div class="five wide column">
+            <div class="ui card">
+                <div class="image">
+                    <img src="{{url_for('static', filename='images/minhafoto.jpg')}}">
+                </div>
+                <div class="content">
+                    <a class="header">Martin</a>
+                    <div class="meta">
+                        23 anos, São Paulo
                     </div>
-
-                    <div class="ui stackable three column grid">
-                        <div class="row">
-                            <div class="column">
-                                <a href="https://www.facebook.com/itsnotmartin" class="hb-sm-margin">
-                                    <span class="hb hb-sm hb-facebook">
-                                        <i class="fa fa-facebook"></i>
-                                    </span>
-                                </a>
-                            </div>
-                            <div class="column">
-                                <a href="https://github.com/saskenuba/" class="hb-sm-margin">
-                                    <span class="hb hb-sm hb-github">
-                                        <i class="fa fa-github"></i>
-                                    </span>
-                                </a>
-                            </div>
-                            <div class="column">
-                                <a href="https://www.linkedin.com/in/martinmariano/" class="hb-sm-margin">
-                                    <span class="hb hb-sm hb-linkedin">
-                                        <i class="fa fa-linkedin"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
+                    <div class="description">
+                        Estudante de Ciências da Computação.
                     </div>
-
-                </content>
+                </div>
+                <div class="extra content">
+                    <a>
+                        <i class="user icon"></i>
+                    </a>
+                </div>
             </div>
-            <div class="one wide column"></div>
-            <div class="eleven wide column">
-                <content>
-                    <h2 class="ui header">Quem sou?</h2>
-                    <p> Meu nome é Martin e atualmente procuro estágio em desenvolvimento de software. Tenho interesse em diversas áreas incluindo machine learning, inteligência artificial, e desenvolvimento web. </p>
-                    <p>Todo o blog foi desenvolvido utilizando JS, Python + Flask, HTML, CSS e muito carinho como projeto final para obter a certificação CS50. </p>
-                    <h2 class="ui header">Porque devo te contratar?</h2>
-                    <p>Tenho experiência com administração de sistemas linux, administração de redes, e tenho muito interesse em aprender coisas novas</p>
-                    <p>Dê uma olhada no meu currículo.</p>
 
-                    <button class="ui button" id="huehue">Visualizar CV</button>
-                    <p></br>Ainda tem dúvida?</p>
-
-                    <p class="real-gud"> Me contrate, sou muito bom. </p>
-
-                    <div class="ui large modal">
-                        <i class="close icon"></i>
-                        <div class="header">
-                            Currículo
-                        </div>
-                        <div class="content">
-                            <div class="ui embed" data-url="{{url_for('static', filename='files/CV.pdf')}}" data-icon="right circle arrow"> </div>
-                        </div>
+            <div class="ui three column grid">
+                <div class="row">
+                    <div class="column">
+                        <a href="https://www.facebook.com/itsnotmartin" class="hb-sm-margin">
+                            <span class="hb hb-sm hb-facebook">
+                                <i class="fa fa-facebook"></i>
+                            </span>
+                        </a>
                     </div>
-                </content>
+                    <div class="column">
+                        <a href="https://github.com/saskenuba/" class="hb-sm-margin">
+                            <span class="hb hb-sm hb-github">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="column">
+                        <a href="https://www.linkedin.com/in/martinmariano/" class="hb-sm-margin">
+                            <span class="hb hb-sm hb-linkedin">
+                                <i class="fa fa-linkedin"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
             </div>
+
         </div>
-    </article>
+        <div class="eleven wide column">
+            <content>
+                <h2 class="ui header">Quem sou?</h2>
+                <p> Meu nome é Martin e atualmente procuro estágio em desenvolvimento de software. Tenho interesse em diversas áreas incluindo machine learning, inteligência artificial, e desenvolvimento web. </p>
+                <p>Todo o blog foi desenvolvido utilizando JS, Python + Flask, HTML, CSS e muito carinho como projeto final para obter a certificação CS50. </p>
+                <h2 class="ui header">Porque devo te contratar?</h2>
+                <p>Sempre procuro realizar minhas tarefas to melhor jeito possível, e tenho uma grande vontade de aprender novas tecnologias.</p>
+                <p>Abaixo está meu currículo, para visualizá-lo basta clicar no botão.</p>
+
+                <button class="ui button" id="huehue">Visualizar CV</button>
+
+                <div class="ui large modal">
+                    <i class="close icon"></i>
+                    <div class="header">
+                        Currículo
+                    </div>
+                    <div class="content">
+                        <div class="ui embed" data-url="{{url_for('static', filename='files/CV.pdf')}}" data-icon="right circle arrow"> </div>
+                    </div>
+                </div>
+            </content>
+        </div>
+    </div>
+</article>
 {% endblock %}
 
 {% block scripts %}
-    <script>
-     $(document).ready(function(){
-         $("#huehue").click(function(){
-             $(".ui.modal").modal("show").modal("refresh").modal("refresh").modal("refresh");
-         });
-
-         $('.ui.embed').embed();
+<script>
+ $(document).ready(function(){
+     $("#huehue").click(function(){
+         $(".ui.modal").modal("show").modal("refresh").modal("refresh").modal("refresh");
      });
 
-    </script>
+     $('.ui.embed').embed();
+ });
 
-    <link href="{{url_for('static', filename='hexagons.min.css')}}" rel="stylesheet"/>
-    <script src="{{url_for('static', filename='hexagons.min.js')}}"></script>
+</script>
+
+<link href="{{url_for('static', filename='hexagons.min.css')}}" rel="stylesheet"/>
+<script src="{{url_for('static', filename='hexagons.min.js')}}"></script>
 {% endblock %}

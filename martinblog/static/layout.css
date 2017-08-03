@@ -53,12 +53,15 @@ body {
   box-sizing: inherit;
 }
 
-.top-spacer {
-  padding-top: 5vh;
-}
-
 #main {
   background-color: whitesmoke;
+  padding: 2em 2em 0 2em;
+}
+
+@media (max-width: 768px) {
+  #main {
+    margin-top: 36px;
+  }
 }
 
 .off {
