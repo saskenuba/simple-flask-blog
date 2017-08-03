@@ -4,6 +4,9 @@
     margin-bottom: 10vh;
     font-size: 2em;
     a {
+        &:hover {
+            text-decoration: none;
+        }
         p {
             font-size: 16px;
             text-align: right;

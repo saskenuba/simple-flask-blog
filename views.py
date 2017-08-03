@@ -1,4 +1,4 @@
-from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for
+from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash, Markup
 from flask_sqlalchemy import SQLAlchemy
 from martinblog import app, db, login_manager
 from martinblog.database import Entry, Users
@@ -10,7 +10,7 @@ import re
 
 # TODO: criar pagina 404
 
-# TODO: arrumar os metodos put, delete etc nos requests
+# TODO: verificar a possibilidade de centralizar os requests no route /post/
 
 
 # main page has all blog entries
@@ -35,7 +35,7 @@ def about():
 
 ###############################################################################
 #                                     API                                     #
-########difiicl#######################################################################
+###############################################################################
 
 
 # returns json of post content
@@ -85,13 +85,13 @@ def viewPost(number):
 
 
 # page just to see post
-@app.route('/post/add', methods=['GET', 'POST'])
+@app.route('/post/add', methods=['POST'])
 def addPost():
     if request.method == 'POST':
         addRequest = request.get_json()
 
-        # if contains no header or wrong one
-        if addRequest is None or addRequest['header'] != 'add':
+        # check if valid request
+        if addRequest is None:
             return jsonify({
                 "response": "something went wrong with your request"
             }), 404
@@ -114,15 +114,13 @@ def addPost():
 
 
 # page to edit post
-@app.route('/post/edit', methods=['GET', 'POST'])
+@app.route('/post/edit', methods=['PUT'])
 def editPost():
-    if request.method == 'POST':
+    if request.method == 'PUT':
         editRequest = request.get_json()
 
-        print(editRequest)
-
-        # if contains no header or wrong one
-        if editRequest is None or editRequest['header'] != 'edit':
+        # validate json
+        if editRequest is None:
             return jsonify({
                 "response": "something went wrong with your request"
             }), 404
@@ -154,13 +152,13 @@ def editPost():
 
 
 # page to delete a post
-@app.route('/post/delete', methods=['POST'])
+@app.route('/post/delete', methods=['DELETE'])
 def deletePost():
-    if request.method == 'POST':
+    if request.method == 'DELETE':
         delRequest = request.get_json()
 
         # if contains no header or wrong one
-        if delRequest is None or delRequest['header'] != 'del':
+        if delRequest is None:
             return jsonify({
                 "response": "something went wrong with your request"
             }), 404
@@ -203,6 +201,7 @@ def load_user(user_id):
     return Users.query.get(user_id)
 
 
+# TODO: decide to use ajax or not
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
@@ -223,15 +222,14 @@ def login():
         # validate
         if userQuery and userQuery.password == formPassword:
             login_user(userQuery)
-            print(current_user)
-            return "parabens"
+            return redirect(url_for('dashboard'))
 
         else:
-            logout_user()
-            return "aff"
+            message = ('Seu usuário ou senha estão incorretos.')
+            flash(message)
+            return redirect(url_for('login'))
 
     elif request.method == "GET":
-        print(current_user)
         return render_template("login.html")
 
 

@@ -35,6 +35,10 @@ body {
     display: block !important;
 }
 
+popup {
+    margin-top: 1rem;
+}
+
 // animating messages
 #add-success {
     margin-top: 2rem;
@@ -101,11 +105,15 @@ body {
     height: 100vh;
 
     .image {
-        margin-top: -100px;
+        width: 1em !important;
     }
-
     .column {
         width: 35% !important;
+        @media (max-width: 768px) {
+            & {
+                width: 80% !important;
+            }
+        }
     }
 }
 

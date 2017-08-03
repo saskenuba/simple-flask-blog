@@ -3,13 +3,26 @@
 
 {% block content %}
     <section class="login">
+
+
+
         <div class="ui centered middle aligned grid">
             <div class="column">
+
+                <!-- Show flashed messages if any -->
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="ui error message">
+                            {% for message in messages %}
+                                <p class="text-center">{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
                 <h2 class="ui center aligned teal header">
-                    <img src="https://semantic-ui.com/examples/assets/images/logo.png" class="image">
-                    <div class="content">
-                        Dashboard Login
-                    </div>
+                    <i class="image fa fa-cog fa-spin fa-3x fa-fw"></i>
+                    <div class="content"> Dashboard Login </div>
                 </h2>
                 <form method="POST" action="{{url_for('login')}}" class="ui large form">
                     <div class="ui segment">
@@ -27,9 +40,6 @@
                         </div>
                         <button  value="submit" class="ui fluid large teal submit button">Login</button>
                     </div>
-
-                    <div class="ui error message"></div>
-
                 </form>
             </div>
         </div>

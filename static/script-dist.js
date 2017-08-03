@@ -62,9 +62,9 @@ function postGetJson(postId) {
     });
 }
 
-// send through POST method json
+// send json
 // and returns answer as a promise and logs
-function postSendJson(flasklocation, settingsObj) {
+function sendJson(flasklocation, settingsObj) {
 
     return fetch(Flask.url_for(flasklocation), settingsObj).then(function (response) {
         return response;

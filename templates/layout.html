@@ -32,11 +32,10 @@
         <!-- Begin of Navigation Bar -->
         <nav id="sidebar" class="ui inverted visible left vertical sidebar menu">
             <div class="item sidebar-first">
-                <a class=""> Martin Mariano <p>dev blog</p></a>
+                <a href="/"> Martin Mariano <p>dev blog</p></a>
                 <p class="description">Full Stack developer, using languages like python, js. <br/>
                     Also interested in machine learning.</p>
             </div>
-
 
             <!-- Search Bar -->
             <div class="item search-bar">
@@ -55,7 +54,7 @@
             <a class="item" href="{{url_for('login')}}"><i class="desktop icon"></i> Dashboard </a>
             <a class="item"><i class="mail outline icon"></i> Contato </a>
             {% if current_user.is_authenticated %}
-            <a class="item" href="{{url_for('logout')}}"><i class="remove icon"></i> Logout</a>
+                <a class="item" href="{{url_for('logout')}}"><i class="remove icon"></i> Logout</a>
             {% endif %}
         </nav>
         <!-- End of Navigation Bar -->
@@ -68,15 +67,19 @@
         </div>
         <!-- End of main content -->
 
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script
+            src="https://code.jquery.com/jquery-3.2.1.js"
+            integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+            crossorigin="anonymous"></script>
+
+        <script src="{{ url_for('static', filename='semantic.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='script-dist.js') }}"></script>
+
         <!-- Start of additional scripts -->
         {% block scripts %}{% endblock %}
         <!-- End of additional scripts -->
 
-        <!-- Placed at the end of the document so the pages load faster -->
-        <!--  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
-        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-        <script src="{{ url_for('static', filename='semantic.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='script-dist.js') }}"></script>
     </body>
 
 </html>

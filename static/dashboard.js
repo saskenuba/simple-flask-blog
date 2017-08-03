@@ -1,16 +1,14 @@
 class Form {
-    constructor(id, title, imagelink, content, tags, apiheader) {
+    constructor(id, title, imagelink, content, tags) {
         self.id = id;
         self.title = title;
         self.imagelink = imagelink;
         self.content = content;
         self.tags = tags;
-        self.apiheader = apiheader;
     }
 
     get json() {
         return JSON.stringify({
-            header: self.apiheader,
             id: self.id,
             title: self.title,
             imagelink: self.imagelink,
@@ -61,6 +59,62 @@ window.addEventListener('load', function() {
 });
 
 ///////////////////////////////////////////////////////////////////////////////
+//                                  Add Form                                 //
+///////////////////////////////////////////////////////////////////////////////
+
+let titleAddPost = document.getElementById('post-title-add');
+let contentAddPost = document.getElementById('post-content-add');
+let imageAddPost = document.getElementById('post-image-add');
+let tagsAddPost = document.getElementById('post-tags-add');
+let addForm = document.getElementById('form-add');
+
+addForm.addEventListener('submit', function(event) {
+
+    // prevent submit
+    event.preventDefault();
+
+    // gathering form data to be submited
+    const formReady = new Form(null, titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value).json;
+
+    const settings = {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: formReady
+    };
+
+    // message link
+    let successLink = document.getElementById('form-add-message-success');
+
+    let serverResponse = sendJson('addPost', settings);
+    serverResponse.then(function(response) {
+        if (response.status == 201) {
+            return response.json();
+        }
+        else {
+            return 'perdeu playba';
+        }
+    })
+
+        .then(function(response) {
+
+        // insert links to message
+        successLink.href = response['link'];
+        successLink.textContent = 'Link para o post: ' + response['link'];
+
+        // disable button
+        let submitButton = document.getElementById('post-submitbutton-add');
+        submitButton.classList.add('disabled');
+
+        let popup = document.getElementById('add-success');
+        toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
+    });
+
+}, false);
+
+///////////////////////////////////////////////////////////////////////////////
 //                                 Edit Form                                 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -92,10 +146,10 @@ editForm.addEventListener('submit', function(event) {
     // prevent submit
     event.preventDefault();
 
-    let formReady = new Form(idEditPost.value, titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value,'edit').json;
+    let formReady = new Form(idEditPost.value, titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value).json;
 
     const settings = {
-        method: "POST",
+        method: "PUT",
         headers: {
             'Content-Type': 'application/json'
         },
@@ -105,7 +159,7 @@ editForm.addEventListener('submit', function(event) {
     // message link
     let successLink = document.getElementById('form-edit-message-success');
 
-    let serverResponse = postSendJson('editPost', settings);
+    let serverResponse = sendJson('editPost', settings);
     serverResponse.then(function(response) {
         if (response.status == 202) {
             return response.json();
@@ -125,62 +179,6 @@ editForm.addEventListener('submit', function(event) {
         submitButton.classList.add('disabled');
 
         let popup = document.getElementById('edit-success');
-        toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
-    });
-
-}, false);
-
-///////////////////////////////////////////////////////////////////////////////
-//                                  Add Form                                 //
-///////////////////////////////////////////////////////////////////////////////
-
-let titleAddPost = document.getElementById('post-title-add');
-let contentAddPost = document.getElementById('post-content-add');
-let imageAddPost = document.getElementById('post-image-add');
-let tagsAddPost = document.getElementById('post-tags-add');
-let addForm = document.getElementById('form-add');
-
-addForm.addEventListener('submit', function(event) {
-
-    // prevent submit
-    event.preventDefault();
-
-    // gathering form data to be submited
-    const formReady = new Form(null, titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value, 'add').json;
-
-    const settings = {
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: formReady
-    };
-
-    // message link
-    let successLink = document.getElementById('form-add-message-success');
-
-    let serverResponse = postSendJson('addPost', settings);
-    serverResponse.then(function(response) {
-        if (response.status == 201) {
-            return response.json();
-        }
-        else {
-            return 'perdeu playba';
-        }
-    })
-
-        .then(function(response) {
-
-        // insert links to message
-        successLink.href = response['link'];
-        successLink.textContent = 'Link para o post: ' + response['link'];
-
-        // disable button
-        let submitButton = document.getElementById('post-submitbutton-add');
-        submitButton.classList.add('disabled');
-
-        let popup = document.getElementById('add-success');
         toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
     });
 
@@ -210,10 +208,10 @@ delForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
     // gathering form data to be submited
-    const formReady = JSON.stringify({"id": idDelPost.value, "header": "del"});
+    const formReady = JSON.stringify({"id": idDelPost.value});
 
     const settings = {
-        method: "POST",
+        method: "DELETE",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -224,7 +222,7 @@ delForm.addEventListener('submit', function(event) {
     // message link
     let successLink = document.getElementById('form-del-message-success');
 
-    let serverResponse = postSendJson('deletePost', settings);
+    let serverResponse = sendJson('deletePost', settings);
     serverResponse.then(function(response) {
         if (response.status == 200) {
             return response.json();
