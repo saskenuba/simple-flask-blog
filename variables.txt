@@ -1,0 +1,2 @@
+FLASK_APP=martinblog
+FLASK_DEBUG=1

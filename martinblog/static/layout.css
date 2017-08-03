@@ -1,0 +1,155 @@
+.sidebar-first {
+  margin-top: 15vh;
+  margin-bottom: 10vh;
+  font-size: 2em;
+}
+
+.sidebar-first a:hover {
+  text-decoration: none;
+}
+
+.sidebar-first a p {
+  font-size: 16px;
+  text-align: right;
+}
+
+.sidebar-first .description {
+  padding-top: 1em;
+  font-size: 14px;
+  text-align: center;
+}
+
+.sidebar-first:before {
+  content: none !important;
+}
+
+.search-bar {
+  margin-bottom: 5vh;
+}
+
+.search-bar:before {
+  content: none !important;
+}
+
+.real-gud {
+  font-weight: 700;
+}
+
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+.top-spacer {
+  padding-top: 5vh;
+}
+
+#main {
+  background-color: whitesmoke;
+}
+
+.off {
+  display: none;
+}
+
+.on {
+  display: block !important;
+}
+
+popup {
+  margin-top: 1rem;
+}
+
+#add-success {
+  margin-top: 2rem;
+  -webkit-animation-duration: 3s;
+  -moz-animation-duration: 3s;
+  -o-animation-duration: 3s;
+  animation-duration: 3s;
+}
+
+.blog-post img {
+  margin-top: -10px;
+  border: 1px solid #ccc;
+  max-width: 720px;
+}
+
+.blog-post img + p {
+  margin-top: 1rem;
+}
+
+.blog-post h2 {
+  font-size: 1.5em;
+}
+
+.blog-post p {
+  line-height: 1.35em;
+}
+
+.format-post {
+  overflow: hidden;
+}
+
+.format-post header + content p:first-child {
+  text-indent: 2em;
+}
+
+.format-post header {
+  margin-bottom: 1.5rem !important;
+}
+
+.format-post header h1 {
+  font-size: 1.8em !important;
+}
+
+.format-post h2 {
+  font-size: 1.5em;
+  margin-bottom: 1rem;
+}
+
+.format-post h2 + p {
+  text-indent: 2em;
+}
+
+.format-post p {
+  font-size: 16px;
+  line-height: 1.35em;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  margin-bottom: 1.5rem;
+}
+
+.login {
+  height: 100vh;
+}
+
+.login .image {
+  width: 1em !important;
+}
+
+.login .column {
+  width: 35% !important;
+}
+
+@media (max-width: 768px) {
+  .login .column {
+    width: 80% !important;
+  }
+}
+
+.middle {
+  height: 100%;
+}
