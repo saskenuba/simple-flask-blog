@@ -5,7 +5,7 @@ from martinblog.database import Entry, Users
 from flask_login import login_required, current_user, login_user, logout_user
 import re
 
-# TODO: criar login
+# TODO: encriptar senha login
 # TODO: depois do login arrumar secret key
 
 # TODO: criar pagina 404
@@ -31,6 +31,11 @@ def index():
 @app.route('/about')
 def about():
     return render_template("about.html")
+
+
+@app.route('/contact')
+def contact():
+    return render_template("contact.html")
 
 
 ###############################################################################
@@ -79,6 +84,10 @@ def viewPost(number):
     client = current_app.test_client()
     postRequested = client.get(
         '{}post/json/{}'.format(request.url_root, number))
+
+    if postRequested.status == '404 NOT FOUND':
+        return 'post not found'
+
     postRequestedJson = json.loads(postRequested.data)
 
     return render_template('viewpost.html', blogEntry=postRequestedJson)
@@ -187,7 +196,6 @@ def deletePost():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-
     return render_template("dashboard.html", username=current_user.username)
 
 
@@ -201,7 +209,6 @@ def load_user(user_id):
     return Users.query.get(user_id)
 
 
-# TODO: decide to use ajax or not
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
@@ -225,7 +232,7 @@ def login():
             return redirect(url_for('dashboard'))
 
         else:
-            message = ('Seu usuário ou senha estão incorretos.')
+            message = ('Seu usuário ou senha estão incorretos.', 'error')
             flash(message)
             return redirect(url_for('login'))
 
@@ -237,3 +244,10 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+# if user try to access URI directly
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash('Você precisa realizar o login primeiro.', 'error')
+    return redirect(url_for('login'))

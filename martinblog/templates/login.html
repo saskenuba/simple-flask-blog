@@ -1,47 +1,47 @@
 {% extends "layout.html" %}
-{% block title %} Martin Mariano - Web Developer Blog {% endblock %}
+{% block title %} Martin Mariano - Dashboard Login {% endblock %}
 
 {% block content %}
-    <section class="login">
+<section class="login">
 
 
 
-        <div class="ui centered middle aligned grid">
-            <div class="column">
+    <div class="ui centered middle aligned grid">
+        <div class="column">
 
-                <!-- Show flashed messages if any -->
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <div class="ui error message">
-                            {% for message in messages %}
-                                <p class="text-center">{{ message }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                {% endwith %}
-
-                <h2 class="ui center aligned teal header">
-                    <i class="image fa fa-cog fa-spin fa-3x fa-fw"></i>
-                    <div class="content"> Dashboard Login </div>
-                </h2>
-                <form method="POST" action="{{url_for('login')}}" class="ui large form">
-                    <div class="ui segment">
-                        <div class="field">
-                            <div class="ui left icon input">
-                                <i class="user icon"></i>
-                                <input type="text" tabindex="1" autocomplete="off" name="username" placeholder="Usuário">
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="ui left icon input">
-                                <i class="lock icon"></i>
-                                <input type="password" tabindex="2" name="password" placeholder="Senha">
-                            </div>
-                        </div>
-                        <button  value="submit" class="ui fluid large teal submit button">Login</button>
-                    </div>
-                </form>
+            <!-- Show flashed messages if any -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="ui error message">
+                {% for category, message in messages %}
+                <p class="text-center">{{ message }}</p>
+                {% endfor %}
             </div>
+            {% endif %}
+            {% endwith %}
+
+            <h2 class="ui center aligned teal header">
+                <i class="image fa fa-cog fa-spin fa-3x fa-fw"></i>
+                <div class="content"> Dashboard Login </div>
+            </h2>
+            <form method="POST" action="{{url_for('login')}}" class="ui large form">
+                <div class="ui segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" tabindex="1" autocomplete="off" name="username" placeholder="Usuário">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" tabindex="2" name="password" placeholder="Senha">
+                        </div>
+                    </div>
+                    <button  value="submit" class="ui fluid large teal submit button">Login</button>
+                </div>
+            </form>
         </div>
-    </section>
+    </div>
+</section>
 {% endblock %}

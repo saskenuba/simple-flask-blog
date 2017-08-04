@@ -5,7 +5,7 @@
         <div class="sub header">Postado na {{entry.timestamp[3]}}, {{entry.timestamp[0]}} de {{entry.timestamp[1]}}, {{entry.timestamp[2]}}</div>
     </h2>
     <img class="ui fluid image" src="{{entry.imagelink}}" />
-    <p>{{entry.content | safe | truncate(800) }}</p>
+    <p>{{entry.content | safe | truncate(600) }}</p>
 
     <!-- Keep reading button-->
     <a href="/post/view/{{entry.id}}">

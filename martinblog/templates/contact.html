@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block title %} Martin Mariano - Contato {% endblock %}
+
+{% block content %}
+    <article>
+        <div class="contact">
+            <div class="ui center aligned two column grid">
+                <div class="row">
+                    <div class="column">
+                        <form name="contato" class="ui form" method="POST" action="">
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Nome</label>
+                                    <input type="text" placeholder="Nome">
+                                </div>
+                                <div class="field">
+                                    <label>Email</label>
+                                    <input type="text" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Telefone (Opcional)</label>
+                                <input id="formTelefone" placeholder="(DDD) Número" type="text"></input>
+                            </div>
+                            <div class="field">
+                                <label>Mensagem</label>
+                                <textarea type="text"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="column">
+                        <div class="container-centered">
+                            <button class="ui teal huge button">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui horizontal divider">
+                    ou
+                </div>
+                <div class="row">
+                    <p> Entre em contato diretamente: martin@hotmail.com.br </br>
+                    (11) 97691 - 4920 </p>
+                </div>
+            </div>
+        </div>
+    </article>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='contact-dist.js') }}"></script>
+{% endblock %}

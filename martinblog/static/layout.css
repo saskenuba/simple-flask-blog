@@ -55,12 +55,13 @@ body {
 
 #main {
   background-color: whitesmoke;
-  padding: 2em 2em 0 2em;
+  padding: 2em;
 }
 
 @media (max-width: 768px) {
   #main {
     margin-top: 36px;
+    padding-bottom: 7em;
   }
 }
 
@@ -116,6 +117,13 @@ popup {
 
 .format-post header h1 {
   font-size: 1.8em !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.format-post small {
+  position: absolute;
+  text-align: right;
+  right: 1em;
 }
 
 .format-post h2 {
@@ -135,6 +143,10 @@ popup {
   margin-bottom: 1.5rem;
 }
 
+.format-post img {
+  max-width: 100%;
+}
+
 .login {
   height: 100vh;
 }
@@ -151,6 +163,25 @@ popup {
   .login .column {
     width: 80% !important;
   }
+}
+
+.contact {
+  width: 50%;
+  margin: auto;
+  display: block;
+}
+
+.contact .container-centered {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+}
+
+.contact .container-centered button {
+  margin: auto;
 }
 
 .middle {
