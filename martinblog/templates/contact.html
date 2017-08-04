@@ -2,50 +2,73 @@
 {% block title %} Martin Mariano - Contato {% endblock %}
 
 {% block content %}
-    <article>
-        <div class="contact">
-            <div class="ui center aligned two column grid">
-                <div class="row">
-                    <div class="column">
-                        <form name="contato" class="ui form" method="POST" action="">
-                            <div class="two fields">
-                                <div class="field">
-                                    <label>Nome</label>
-                                    <input type="text" placeholder="Nome">
-                                </div>
-                                <div class="field">
-                                    <label>Email</label>
-                                    <input type="text" placeholder="Email">
-                                </div>
+<article>
+    <div class="contact">
+        <div class="ui center aligned two column grid">
+            <div class="row">
+                <div class="column">
+                    <form name="contato" class="ui form" method="POST" action="">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Nome</label>
+                                <input id="formNome" tabindex="1" type="text" placeholder="Nome">
                             </div>
                             <div class="field">
-                                <label>Telefone (Opcional)</label>
-                                <input id="formTelefone" placeholder="(DDD) Número" type="text"></input>
+                                <label>Email</label>
+                                <input id="formEmail" tabindex="2" type="text" placeholder="Email">
                             </div>
-                            <div class="field">
-                                <label>Mensagem</label>
-                                <textarea type="text"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="column">
-                        <div class="container-centered">
-                            <button class="ui teal huge button">Enviar</button>
                         </div>
+                        <div class="field">
+                            <label>Telefone (Opcional)</label>
+                            <input id="formTelefone" placeholder="(DDD) Número" tabindex="3" type="text"></input>
+                        </div>
+                        <div class="field">
+                            <label>Mensagem</label>
+                            <textarea id="formMensagem" tabindex="4" type="text"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="column">
+                    <div class="container-centered">
+                        <button tabindex="5" id="formSubmitButton" class="ui teal huge button">Enviar</button>
                     </div>
-                </div>
-                <div class="ui horizontal divider">
-                    ou
-                </div>
-                <div class="row">
-                    <p> Entre em contato diretamente: martin@hotmail.com.br </br>
-                    (11) 97691 - 4920 </p>
                 </div>
             </div>
+
+            <div id="messageEmailLoading" class="ui icon message hidden">
+                <i class="notched circle loading icon"></i>
+                <div class="content">
+                    <div class="header">
+                        Aguarde um momento ...
+                    </div>
+                    <p>Estamos enviando o email.</p>
+                </div>
+            </div>
+
+            <div id="messageEmailSuccess" class="ui icon message success hidden">
+                <i class="checkmark icon"></i>
+                <div class="content">
+                    <div class="header">
+                        Seu email foi enviado com sucesso.
+                    </div>
+                    <p>Em breve estarei respondendo sua mensagem.</p>
+                </div>
+            </div>
+
+            <div class="ui message error off"></div>
+
+            <div class="ui horizontal divider">
+                ou
+            </div>
+            <div class="row">
+                <p> Entre em contato diretamente: martin@hotmail.com.br </br>
+                    (11) 97691 - 4920 </p>
+            </div>
         </div>
-    </article>
+    </div>
+</article>
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='contact-dist.js') }}"></script>
+<script src="{{ url_for('static', filename='contact-dist.js') }}"></script>
 {% endblock %}

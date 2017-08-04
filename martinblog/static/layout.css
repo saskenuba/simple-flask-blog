@@ -66,11 +66,23 @@ body {
 }
 
 .off {
-  display: none;
+  display: none !important;
 }
 
 .on {
   display: block !important;
+}
+
+.on-flex {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -moz-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-animation-duration: 3s;
+  -moz-animation-duration: 3s;
+  -o-animation-duration: 3s;
+  animation-duration: 3s;
 }
 
 popup {
@@ -166,9 +178,15 @@ popup {
 }
 
 .contact {
-  width: 50%;
+  width: 60%;
   margin: auto;
   display: block;
+}
+
+@media (max-width: 768px) {
+  .contact {
+    width: 100%;
+  }
 }
 
 .contact .container-centered {

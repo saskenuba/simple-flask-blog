@@ -10,6 +10,7 @@ Coming soon..
 2. SQLAlchemy ORM
 3. Restful-like Requests
 4. Extensive use of AJAX.
-5. Dashboard for administrator use with login logout
+5. Dashboard for administrator use
+6. Working contact form utilizing Flask-mail
 
 Feel free to use as you wish.

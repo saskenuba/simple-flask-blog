@@ -1,8 +1,9 @@
-Flask-SQLAlchemy
 Flask
 psycopg2
 SQLAlchemy
 Jinja2
+Flask-SQLAlchemy
 Flask-JSGlue
+Flask-Mail
 flask-login
 flask-WTF

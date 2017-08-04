@@ -81,3 +81,10 @@ function toggleClasses(element, classes) {
         element.classList.toggle(arguments[i]);
     }
 }
+
+// returns a promise when time has passed
+function delay(t) {
+    return new Promise(function (resolve) {
+        setTimeout(resolve, t);
+    });
+}

@@ -1,15 +1,15 @@
 from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash, Markup
 from flask_sqlalchemy import SQLAlchemy
-from martinblog import app, db, login_manager
+from martinblog import app, db, login_manager, mail
 from martinblog.database import Entry, Users
 from flask_login import login_required, current_user, login_user, logout_user
+from flask_mail import Message
 import re
 
+# Caso for usar o sistema de email, recolocar dados usuario e senha
 # TODO: encriptar senha login
 # TODO: depois do login arrumar secret key
-
 # TODO: criar pagina 404
-
 # TODO: verificar a possibilidade de centralizar os requests no route /post/
 
 
@@ -33,9 +33,31 @@ def about():
     return render_template("about.html")
 
 
-@app.route('/contact')
+# TODO: validar header e nomes
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template("contact.html")
+    if request.method == 'POST':
+
+        jsonEmail = request.get_json(force=True)
+        print(jsonEmail)
+
+        msg = Message(
+            'Mensagem do Blog',
+            sender=jsonEmail['email'],
+            recipients=['martin@hotmail.com.br'])
+
+        msg.html = '<p>Você acaba de receber uma mensagem de {}.</p><p>Email: {}</p><p>Telefone: {}</p><p>Mensagem: {}</p>'.format(
+            jsonEmail['name'], jsonEmail['email'], jsonEmail['phone'],
+            jsonEmail['message'])
+
+        mailstatus = mail.send(msg)
+        print(mailstatus)
+
+        # noreply message to sender
+        return 'bosonga'
+
+    elif request.method == 'GET':
+        return render_template("contact.html")
 
 
 ###############################################################################

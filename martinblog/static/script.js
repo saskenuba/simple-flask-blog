@@ -16,8 +16,8 @@ window.addEventListener('load', function(event) {
         const mysnippet = "<nav class='ui sidebar inverted bottom visible four item labeled icon menu'>" +
             "<a class='item' href='/'>" + "<i class='home icon'></i>" + "Home" + "</a>" +
             "<a class='item' href='about'>" + "<i class='info icon'></i>" + "Sobre" + "</a>" +
-              "<a class='item' href='dashboard'>" + "<i class='desktop icon'></i>" + "Dashboard" + "</a>" +
-              "<a class='item' href='/'>" + "<i class='mail outline icon'></i>" + "Contato" + "</a>" + "</nav>";
+            "<a class='item' href='dashboard'>" + "<i class='desktop icon'></i>" + "Dashboard" + "</a>" +
+            "<a class='item' href='/'>" + "<i class='mail outline icon'></i>" + "Contato" + "</a>" + "</nav>";
 
         mainElement.insertAdjacentHTML('beforebegin', mysnippet);
 
@@ -85,4 +85,11 @@ function toggleClasses(element, classes) {
     for (let i = 1; i < arguments.length; i++) {
         element.classList.toggle(arguments[i]);
     }
+}
+
+// returns a promise when time has passed
+function delay(t) {
+    return new Promise(function(resolve) {
+        setTimeout(resolve, t);
+    });
 }
