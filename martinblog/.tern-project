@@ -2,18 +2,22 @@
     "libs": [
         "browser",
         "jquery",
-        "lodash",
-        "discord",
-        "helper"
+        "lodash"
     ],
     "loadEagerly": [
-        "./lib/*.js"
+        "./static/script.js"
     ],
     "plugins": {
+        "es_modules": {},
         "requirejs": {
             "baseURL": "./",
             "paths": {}
         },
-        "node": {}
-    }
+        "node": {},
+        "doc_comment": {
+           "fullDocs": true,
+           "strong": true
+        }
+    },
+    "ecmaVersion": 6
 }

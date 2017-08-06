@@ -25,6 +25,10 @@ window.addEventListener('load', function() {
         // json request
         const settings = {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 name: formName,
                 email: formEmail,
@@ -41,9 +45,11 @@ window.addEventListener('load', function() {
 
         // on success, fades info message
         const messageSuccess = document.getElementById('messageEmailSuccess');
+        const messageError = document.getElementById('messageEmailError');
         return delay(2000).then(function() {
 
             serverResponse.then(function(response) {
+                console.log(response);
                 if (response.status == 200) {
                     toggleClasses(messageLoading, 'fadeOut', 'visible', 'fadeIn');
                     return delay(2000).then(function() {
@@ -52,9 +58,16 @@ window.addEventListener('load', function() {
                         toggleClasses(messageLoading, 'hidden');
                         toggleClasses(messageSuccess, 'hidden', 'visible', 'animated', 'fadeIn');
                     });
-                }
-            });
+                } else {
+                    toggleClasses(messageLoading, 'fadeOut', 'visible', 'fadeIn');
+                    return delay(2000).then(function() {
 
+                        // finally hides info, and pops success
+                        toggleClasses(messageLoading, 'hidden');
+                        toggleClasses(messageError, 'hidden', 'visible', 'animated', 'fadeIn');
+                    });
+                };
+            });
         });
     });
 });
@@ -71,6 +84,5 @@ function formatTelephone(arg) {
         found = found.replace(/\b(\d{2})(\d{4})/, '($1) $2-');
     } else if (found.length)
         found = found.replace(/\b(\d{2})/, '($1) ');
-
     return found;
 }

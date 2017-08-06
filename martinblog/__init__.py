@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_jsglue import JSGlue
 from flask_login import LoginManager
 from flask_mail import Mail
+import os
 
 # first initialize flask
 app = Flask(__name__)
@@ -19,14 +20,14 @@ db_conn = 'postgresql+psycopg2://martin@localhost/martinblog'
 # sets db configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = db_conn
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'secret_xxx'
+app.config['SECRET_KEY'] = os.urandom(12)
 
 # mail settings
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'your user here@something.com'
-app.config['MAIL_PASSWORD'] = 'pwd'
+app.config['MAIL_USERNAME'] = ''
+app.config['MAIL_PASSWORD'] = ''
 
 # init mail service
 mail = Mail(app)

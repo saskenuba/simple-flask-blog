@@ -17,7 +17,7 @@ window.addEventListener('load', function(event) {
             "<a class='item' href='/'>" + "<i class='home icon'></i>" + "Home" + "</a>" +
             "<a class='item' href='about'>" + "<i class='info icon'></i>" + "Sobre" + "</a>" +
             "<a class='item' href='dashboard'>" + "<i class='desktop icon'></i>" + "Dashboard" + "</a>" +
-            "<a class='item' href='/'>" + "<i class='mail outline icon'></i>" + "Contato" + "</a>" + "</nav>";
+            "<a class='item' href='/contact'>" + "<i class='mail outline icon'></i>" + "Contato" + "</a>" + "</nav>";
 
         mainElement.insertAdjacentHTML('beforebegin', mysnippet);
 

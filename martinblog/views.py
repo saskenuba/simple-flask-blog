@@ -1,4 +1,4 @@
-from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash, Markup
+from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from martinblog import app, db, login_manager, mail
 from martinblog.database import Entry, Users
@@ -8,7 +8,6 @@ import re
 
 # Caso for usar o sistema de email, recolocar dados usuario e senha
 # TODO: encriptar senha login
-# TODO: depois do login arrumar secret key
 # TODO: criar pagina 404
 # TODO: verificar a possibilidade de centralizar os requests no route /post/
 
@@ -37,9 +36,7 @@ def about():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
-
-        jsonEmail = request.get_json(force=True)
-        print(jsonEmail)
+        jsonEmail = request.get_json()
 
         msg = Message(
             'Mensagem do Blog',
@@ -50,11 +47,12 @@ def contact():
             jsonEmail['name'], jsonEmail['email'], jsonEmail['phone'],
             jsonEmail['message'])
 
-        mailstatus = mail.send(msg)
-        print(mailstatus)
+        try:
+            mail.send(msg)
+        except:
+            return 'error', 408
 
-        # noreply message to sender
-        return 'bosonga'
+        return 'success', 200
 
     elif request.method == 'GET':
         return render_template("contact.html")
@@ -112,7 +110,11 @@ def viewPost(number):
 
     postRequestedJson = json.loads(postRequested.data)
 
-    return render_template('viewpost.html', blogEntry=postRequestedJson)
+    # take care of this when deploying
+    urlRoot = str(request.url_root)
+
+    return render_template(
+        'viewpost.html', blogEntry=postRequestedJson, urlRoot=urlRoot)
 
 
 # page just to see post
