@@ -64,7 +64,7 @@
                     <button class="ui button" id="huehue">Visualizar CV</button>
 
                     <h2 class="ui header">Projetos</h2>
-                    <div class="ui unstackable items">
+                    <div class="ui items">
                         <div class="item">
                             <div class="ui tiny image">
                                 <a href="http://ancoraservice.com.br"><img src="https://semantic-ui.com/images/avatar/large/veronika.jpg"></a>
@@ -116,9 +116,9 @@
      $(document).ready(function(){
          $("#huehue").click(function(){
              $(".ui.modal").modal("show").modal("refresh").modal("refresh").modal("refresh");
+             $('.ui.embed').embed();
          });
 
-         $('.ui.embed').embed();
      });
 
     </script>

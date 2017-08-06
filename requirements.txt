@@ -7,3 +7,5 @@ Flask-JSGlue
 Flask-Mail
 flask-login
 flask-WTF
+bcrypt
+python-slugify

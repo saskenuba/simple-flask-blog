@@ -3,6 +3,10 @@
 var sidebarSize = document.getElementById("sidebar").offsetWidth;
 var mainElement = document.getElementById("main");
 
+var pathAbout = Flask.url_for('about');
+var pathDashboard = Flask.url_for('dashboard');
+var pathContact = Flask.url_for('contact');
+
 // At page load complete load
 window.addEventListener('load', function (event) {
 
@@ -15,7 +19,7 @@ window.addEventListener('load', function (event) {
 
         // fix me
         var bottombar = document.createElement('div');
-        var mysnippet = "<nav class='ui sidebar inverted bottom visible four item labeled icon menu'>" + "<a class='item' href='/'>" + "<i class='home icon'></i>" + "Home" + "</a>" + "<a class='item' href='about'>" + "<i class='info icon'></i>" + "Sobre" + "</a>" + "<a class='item' href='dashboard'>" + "<i class='desktop icon'></i>" + "Dashboard" + "</a>" + "<a class='item' href='/contact'>" + "<i class='mail outline icon'></i>" + "Contato" + "</a>" + "</nav>";
+        var mysnippet = "<nav class='ui sidebar inverted bottom visible four item labeled icon menu'>" + "<a class='item' href='/'>" + "<i class='home icon'></i>" + "Home" + "</a>" + ("<a class='item' href=" + pathAbout + ">") + "<i class='info icon'></i>" + "Sobre" + "</a>" + ("<a class='item' href='" + pathDashboard + "'>") + "<i class='desktop icon'></i>" + "Dashboard" + "</a>" + ("<a class='item' href='" + pathContact + "'>") + "<i class='mail outline icon'></i>" + "Contato" + "</a>" + "</nav>";
 
         mainElement.insertAdjacentHTML('beforebegin', mysnippet);
     }

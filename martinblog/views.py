@@ -1,15 +1,14 @@
-from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash
+from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from martinblog import app, db, login_manager, mail
 from martinblog.database import Entry, Users
 from flask_login import login_required, current_user, login_user, logout_user
 from flask_mail import Message
+from slugify import slugify
 import re
 
 # Caso for usar o sistema de email, recolocar dados usuario e senha
-# TODO: encriptar senha login
 # TODO: criar pagina 404
-# TODO: verificar a possibilidade de centralizar os requests no route /post/
 
 
 # main page has all blog entries
@@ -20,6 +19,7 @@ def index():
     dbEntries = Entry.query.order_by(Entry.timestamp.desc()).all()
     # then serialize
     dbEntriesSerialized = [i.serialize for i in dbEntries]
+    print(dbEntriesSerialized)
 
     # validates json, then loads into object
     jsonQuery = json.loads(json.dumps(dbEntriesSerialized))
@@ -96,9 +96,10 @@ def getJsonPost(postid):
         return "not understanderino"
 
 
-# page just to see post
-@app.route('/post/view/<int:number>')
-def viewPost(number):
+# this page redirects to url with slug
+@app.route('/post/<int:number>')
+@app.route('/post/<int:number>/<title>')
+def viewPost(number, title=None):
 
     # creating test client to fetch json
     client = current_app.test_client()
@@ -109,12 +110,16 @@ def viewPost(number):
         return 'post not found'
 
     postRequestedJson = json.loads(postRequested.data)
+    slug = postRequestedJson['slug']
+
+    # FIXME: temporary solution to slugs
+    # set session to record blog post
+    session['blogEntry'] = postRequestedJson
 
     # take care of this when deploying
     urlRoot = str(request.url_root)
 
-    return render_template(
-        'viewpost.html', blogEntry=postRequestedJson, urlRoot=urlRoot)
+    return render_template('viewpost.html', blogEntry=postRequestedJson)
 
 
 # page just to see post
@@ -140,7 +145,7 @@ def addPost():
             "response":
             "post added",
             "link":
-            '{}post/view/{}'.format(request.url_root, postEntry.id)
+            '{}post/{}'.format(request.url_root, postEntry.id)
         }), 201
 
     return 'you have nothing to see here, human!'
@@ -163,6 +168,7 @@ def editPost():
             Entry.id == editRequest['id']).update(
                 dict(
                     title=editRequest['title'],
+                    slug=slugify(editRequest['title']),
                     content=editRequest['content'],
                     imagelink=editRequest['imagelink'],
                     tags=editRequest['tags']))
@@ -178,7 +184,7 @@ def editPost():
             "response":
             "post edited",
             "link":
-            '{}post/view/{}'.format(request.url_root, editRequest['id'])
+            '{}post/{}'.format(request.url_root, editRequest['id'])
         }), 202
 
     return 'you have nothing to see here, human!'
@@ -251,12 +257,12 @@ def login():
         userQuery = Users.query.filter_by(username=formUsername).first()
 
         # validate
-        if userQuery and userQuery.password == formPassword:
+        if userQuery and userQuery.verify_password(formPassword):
             login_user(userQuery)
             return redirect(url_for('dashboard'))
 
         else:
-            message = ('Seu usuário ou senha estão incorretos.', 'error')
+            message = ('Seu usuário ou senha estão incorretos.')
             flash(message)
             return redirect(url_for('login'))
 

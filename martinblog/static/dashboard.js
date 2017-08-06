@@ -102,7 +102,7 @@ addForm.addEventListener('submit', function(event) {
 
         // insert links to message
         successLink.href = response['link'];
-        successLink.textContent = 'Link para o post: ' + response['link'];
+        successLink.textContent = 'Permalink para o post: ' + response['link'];
 
         // disable button
         let submitButton = document.getElementById('post-submitbutton-add');
@@ -172,7 +172,7 @@ editForm.addEventListener('submit', function(event) {
 
         // insert links to message
         successLink.href = response['link'];
-        successLink.textContent = 'Link para o post: ' + response['link'];
+        successLink.textContent = 'Permalink para o post: ' + response['link'];
 
         // disable button
         let submitButton = document.getElementById('post-submitbutton-edit');

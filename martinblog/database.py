@@ -1,10 +1,10 @@
 from datetime import datetime
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from slugify import slugify
+import bcrypt
 
 # import db from init
-from martinblog import app, db
+from martinblog import db
 
 
 # entry model on sqlalchemy
@@ -12,6 +12,7 @@ from martinblog import app, db
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
+    slug = db.Column(db.String(150))
     imagelink = db.Column(db.String(100))
     content = db.Column(db.Text)
     timestamp = db.Column(db.DateTime)
@@ -26,6 +27,7 @@ class Entry(db.Model):
                  dayofweek=None,
                  timestamp=None):
         self.title = title
+        self.slug = slugify(title)
         self.content = content
 
         if imagelink is None:
@@ -54,6 +56,7 @@ class Entry(db.Model):
         return {
             'id': self.id,
             'title': self.title,
+            'slug': self.slug,
             'content': self.content,
             'imagelink': self.imagelink,
             'timestamp': dump_datetime(self.timestamp, self.dayofweek),
@@ -65,15 +68,23 @@ class Entry(db.Model):
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True)
-    password = db.Column(db.String(16))
+    password = db.Column(db.Text)
 
     def __init__(self, username, password):
         "username information"
         self.username = username
-        self.password = password
+
+        # postgre driver automatically encodes to utf8, so we need to the
+        # decode the hash first
+        self.password = bcrypt.hashpw(
+            password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
     def __repr__(self):
         return '<DB User Object, username: {}>'.format(self.username)
+
+    def verify_password(self, password):
+        return bcrypt.checkpw(
+            password.encode('utf-8'), self.password.encode('utf-8'))
 
 
 def init_db():

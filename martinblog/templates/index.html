@@ -1,14 +1,14 @@
 {% extends "layout.html" %} {% block title %} Martin Mariano - Web Developer Blog {% endblock %} {% block content %} {% for entry in blogEntries %}
 <!-- Separate each as an article -->
 <article class="ui basic attached padded segment blog-post">
-    <h2 class="ui header">{{entry.title}}
+    <h2 class="ui header">{{entry.title | capitalize }}
         <div class="sub header">Postado na {{entry.timestamp[3]}}, {{entry.timestamp[0]}} de {{entry.timestamp[1]}}, {{entry.timestamp[2]}}</div>
     </h2>
     <img class="ui fluid image" src="{{entry.imagelink}}" />
     <p>{{entry.content | safe | truncate(600) }}</p>
 
     <!-- Keep reading button-->
-    <a href="/post/view/{{entry.id}}">
+    <a href="/post/{{entry.id}}/{{entry.slug}}">
         <div class="ui animated button" tabindex="0">
             <div class="visible content">Continuar Lendo</div>
             <div class="hidden content">
