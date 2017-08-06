@@ -1,14 +1,16 @@
-from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash, session
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash
 from martinblog import app, db, login_manager, mail
 from martinblog.database import Entry, Users
+from martinblog.helpers import tablelizePosts
 from flask_login import login_required, current_user, login_user, logout_user
 from flask_mail import Message
 from slugify import slugify
 import re
 
 # Caso for usar o sistema de email, recolocar dados usuario e senha
+# TODO:
 # TODO: criar pagina 404
+# TODO: validar header e nomes no contato
 
 
 # main page has all blog entries
@@ -19,7 +21,6 @@ def index():
     dbEntries = Entry.query.order_by(Entry.timestamp.desc()).all()
     # then serialize
     dbEntriesSerialized = [i.serialize for i in dbEntries]
-    print(dbEntriesSerialized)
 
     # validates json, then loads into object
     jsonQuery = json.loads(json.dumps(dbEntriesSerialized))
@@ -32,7 +33,6 @@ def about():
     return render_template("about.html")
 
 
-# TODO: validar header e nomes
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
@@ -57,6 +57,22 @@ def contact():
     elif request.method == 'GET':
         return render_template("contact.html")
 
+
+@app.route('/posts')
+def blogPosts():
+
+    # query for all db entries
+    dbEntries = Entry.query.all()
+
+    # then serialize
+    dbEntriesSerialized = [i.serialize for i in dbEntries]
+
+    # validates json, then loads into object
+    jsonQuery = json.loads(json.dumps(dbEntriesSerialized))
+
+    print(tablelizePosts(jsonQuery))
+
+    return render_template("blogposts.html")
 
 ###############################################################################
 #                                     API                                     #
@@ -110,14 +126,9 @@ def viewPost(number, title=None):
         return 'post not found'
 
     postRequestedJson = json.loads(postRequested.data)
-    slug = postRequestedJson['slug']
-
-    # FIXME: temporary solution to slugs
-    # set session to record blog post
-    session['blogEntry'] = postRequestedJson
 
     # take care of this when deploying
-    urlRoot = str(request.url_root)
+    # urlRoot = str(request.url_root)
 
     return render_template('viewpost.html', blogEntry=postRequestedJson)
 
