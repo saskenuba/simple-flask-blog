@@ -2,16 +2,15 @@ from collections import defaultdict
 
 
 def tablelizePosts(json):
-    years = defaultdict(list)
+    years = defaultdict(dict)
+    months = defaultdict(dict)
 
     for post in json:
         currentPostYear = post['timestamp'][2]
         currentPostMonth = post['timestamp'][1]
+        currentPostDay = post['timestamp'][0]
 
-        # if not in years
-        if currentPostYear not in years:
-            years[currentPostYear] = {post['timestamp'][1]}
+        years[currentPostYear][currentPostMonth] = months[currentPostMonth]
+        months[currentPostMonth][currentPostDay] = [post['id'], post['title']]
 
-            if currentPostMonth not in years[currentPostYear]:
-                years[currentPostYear][currentPostMonth] = post['id']
     return years

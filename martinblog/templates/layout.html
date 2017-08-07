@@ -50,7 +50,7 @@
             <!-- End of Search Bar -->
             <a class="item" href="{{url_for('index')}}"><i class="home icon"></i> Home </a>
             <a class="item" href="{{url_for('about')}}"><i class="info icon"></i> Sobre </a>
-            <a class="item"><i class="edit icon"></i> Blog Posts </a>
+            <a class="item" href="{{url_for('blogPosts')}}"><i class="edit icon"></i> Blog Posts </a>
             <a class="item" href="{{url_for('login')}}"><i class="desktop icon"></i> Dashboard </a>
             <a class="item" href="{{url_for('contact')}}" ><i class="mail outline icon"></i> Contato </a>
             {% if current_user.is_authenticated %}

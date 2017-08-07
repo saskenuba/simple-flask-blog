@@ -203,6 +203,10 @@ popup {
   margin: auto;
 }
 
+.contact-segment {
+  width: 100%;
+}
+
 .middle {
   height: 100%;
 }

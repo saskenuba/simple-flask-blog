@@ -62,7 +62,7 @@ def contact():
 def blogPosts():
 
     # query for all db entries
-    dbEntries = Entry.query.all()
+    dbEntries = Entry.query.order_by(Entry.timestamp.desc()).all()
 
     # then serialize
     dbEntriesSerialized = [i.serialize for i in dbEntries]
@@ -70,9 +70,10 @@ def blogPosts():
     # validates json, then loads into object
     jsonQuery = json.loads(json.dumps(dbEntriesSerialized))
 
-    print(tablelizePosts(jsonQuery))
+    return render_template(
+        "blogposts.html",
+        postsTable=tablelizePosts(jsonQuery))
 
-    return render_template("blogposts.html")
 
 ###############################################################################
 #                                     API                                     #
