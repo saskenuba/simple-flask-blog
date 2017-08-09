@@ -18,9 +18,13 @@ body {
 //main page
 #main {
     background-color: rgb(245, 245, 245);
+    //yellowish background-color: #fcfcfa;
     padding: 2em;
+    max-width: calc(100% - 260px);
+
     @media (max-width: 768px) {
         & {
+            max-width: 100%;
             margin-top: 36px;
             padding-bottom: 7em;
         }
@@ -54,6 +58,9 @@ popup {
 
 // blogposts on index
 .blog-post {
+    div.label {
+        margin: 0.5em 0 0 !important;
+    }
     img {
         margin-top: -10px;
         border: 1px solid #ccc;
@@ -64,7 +71,9 @@ popup {
         margin-top: 1rem;
     }
     h2 {
+        margin-top: 0.5em !important;
         font-size: 1.5em;
+        line-height: 1.35em;
     }
     p {
         line-height: 1.35em;
@@ -126,10 +135,21 @@ popup {
         width: 1em !important;
     }
     .column {
-        width: 35% !important;
+        width: 25% !important;
+
         @media (max-width: 768px) {
             & {
                 width: 80% !important;
+            }
+        }
+        @media (max-width: 961px) {
+            & {
+                width: 80% !important;
+            }
+        }
+        @media (max-width: 1440px) {
+            & {
+                width: 30% !important;
             }
         }
     }
@@ -146,6 +166,10 @@ popup {
             width: 100%;
         }
     }
+
+    p {
+        margin-bottom: 1em;
+    }
     .container-centered {
         display: flex;
         height: 100%;
@@ -156,10 +180,28 @@ popup {
     }
 }
 
-.contact-segment {
-    width: 100%;
+.label {
+    .detail {
+        @media (max-width: 768px) {
+            margin: 1em auto 0 0 !important;
+        }
+    }
 }
 
 .middle {
     height: 100% ;
+}
+
+// theme
+.darkblue {
+    background-color: #1b2037 !important;
+    color: white !important;
+}
+
+.darkgreen {
+    background-color: #438fac !important;
+    color: white !important;
+}
+.darkgreent {
+    color: #438fac !important;
 }

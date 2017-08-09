@@ -2,128 +2,116 @@
 {% block title %} Martin Mariano - About me {% endblock %}
 
 {% block content %}
-    <article class="top-spacer container">
-        <div class="ui stackable grid">
-            <div class="five wide column">
-                <div class="ui centered card">
-                    <div class="image">
-                        <img src="{{url_for('static', filename='images/minhafoto.jpg')}}">
+<article class="top-spacer container">
+    <div class="ui stackable grid">
+        <div class="five wide column">
+            <div class="ui centered card">
+                <div class="image">
+                    <img src="{{url_for('static', filename='images/minhafoto.jpg')}}">
+                </div>
+                <div class="content">
+                    <a class="header">Martin</a>
+                    <div class="meta">
+                        23 anos, São Paulo
                     </div>
-                    <div class="content">
-                        <a class="header">Martin</a>
-                        <div class="meta">
-                            23 anos, São Paulo
-                        </div>
-                        <div class="description">
-                            Estudante de Ciências da Computação.
-                        </div>
+                    <div class="description">
+                        Estudante de Ciências da Computação.
                     </div>
-                    <div class="extra content">
-                        <a>
-                            <i class="user icon"></i>
+                </div>
+                <div class="extra content">
+                    <div class="center aligned">
+                        <a href="https://www.facebook.com/itsnotmartin" class="hb-xs-margin">
+                            <span class="hb hb-xs hb-facebook">
+                                <i class="fa fa-facebook"></i>
+                            </span>
+                        </a>
+                        <a href="https://github.com/saskenuba/" class="hb-xs-margin">
+                            <span class="hb hb-xs hb-github">
+                                <i class="fa fa-github-alt"></i>
+                            </span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/martinmariano/" class="hb-xs-margin">
+                            <span class="hb hb-xs hb-linkedin">
+                                <i class="fa fa-linkedin"></i>
+                            </span>
                         </a>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="eleven wide column">
+            <content>
+                <h2 class="ui header">Quem sou?</h2>
+                <p> Meu nome é Martin e atualmente procuro estágio em desenvolvimento de software. Tenho interesse em diversas áreas incluindo machine learning, inteligência artificial, e desenvolvimento web, e a propósito, adoro camisas floridas.</p>
+                <p>Todo o blog foi desenvolvido utilizando JS, Python + Flask, HTML, CSS e muito carinho como projeto final para obter a certificação CS50. </p>
+                <h2 class="ui header">Porque devo te contratar?</h2>
+                <p>Sempre procuro realizar minhas tarefas to melhor jeito possível, e tenho uma grande vontade de aprender novas tecnologias.</p>
+                <p>Abaixo está meu currículo, para visualizá-lo basta clicar no botão.</p>
 
-                <div class="ui centered three column grid">
-                    <div class="row">
-                        <div class="column">
-                            <a href="https://www.facebook.com/itsnotmartin" class="hb-sm-margin">
-                                <span class="hb hb-sm hb-facebook">
-                                    <i class="fa fa-facebook"></i>
-                                </span>
+                <button class="ui darkgreen button" id="huehue">Visualizar CV</button>
+
+                <h2 class="ui header">Projetos</h2>
+
+                <div class="ui unstackable items">
+                    <div class="item">
+                        <div class="ui tiny image">
+                            <a href="http://ancoraservice.com.br">
+                                <img src="{{url_for('static', filename='images/ancoraservice.png')}}">
                             </a>
                         </div>
-                        <div class="column">
-                            <a href="https://github.com/saskenuba/" class="hb-sm-margin">
-                                <span class="hb hb-sm hb-github">
-                                    <i class="fa fa-github"></i>
-                                </span>
-                            </a>
-                        </div>
-                        <div class="column">
-                            <a href="https://www.linkedin.com/in/martinmariano/" class="hb-sm-margin">
-                                <span class="hb hb-sm hb-linkedin">
-                                    <i class="fa fa-linkedin"></i>
-                                </span>
-                            </a>
+                        <div class="content">
+                            <a href="http://ancoraservice.com.br" class="header">Âncora Service</a>
+                            <div class="meta">
+                                <span>Website</span>
+                            </div>
+                            <div class="description">
+                                <p>Site desenvolvido especialmente para a empresa Âncora Service que fornece serviços de instalação e vendas de ar condicionados entre outros.</p>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="item">
+                        <div class="ui tiny image">
+                            <img src="{{ url_for('static', filename='images/martinlogo.png') }}">
+                        </div>
+                        <div class="content">
+                            <a href="http://ancoraservice.com.br" class="header">Martin Dev Blog</a>
+                            <div class="meta">
+                                <span>Website</span>
+                            </div>
+                            <div class="description">
+                                <p>O blog foi criado para servir de projeto final para a certificação CS50, e também como site pessoal.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui large modal">
+                        <i class="close icon"></i>
+                        <div class="header">
+                            Currículo
+                        </div>
+                        <div class="content">
+                            <div class="ui embed" data-url="{{url_for('static', filename='files/CV.pdf')}}" data-icon="right circle arrow"> </div>
+                        </div>
+                    </div>
+            </content>
                 </div>
-
-            </div>
-            <div class="eleven wide column">
-                <content>
-                    <h2 class="ui header">Quem sou?</h2>
-                    <p> Meu nome é Martin e atualmente procuro estágio em desenvolvimento de software. Tenho interesse em diversas áreas incluindo machine learning, inteligência artificial, e desenvolvimento web. </p>
-                    <p>Todo o blog foi desenvolvido utilizando JS, Python + Flask, HTML, CSS e muito carinho como projeto final para obter a certificação CS50. </p>
-                    <h2 class="ui header">Porque devo te contratar?</h2>
-                    <p>Sempre procuro realizar minhas tarefas to melhor jeito possível, e tenho uma grande vontade de aprender novas tecnologias.</p>
-                    <p>Abaixo está meu currículo, para visualizá-lo basta clicar no botão.</p>
-
-                    <button class="ui button" id="huehue">Visualizar CV</button>
-
-                    <h2 class="ui header">Projetos</h2>
-
-                    <div class="ui unstackable items">
-                        <div class="item">
-                            <div class="ui tiny image">
-                                <a href="http://ancoraservice.com.br"><img src="https://semantic-ui.com/images/avatar/large/veronika.jpg"></a>
-                            </div>
-                            <div class="content">
-                                <a href="http://ancoraservice.com.br" class="header">Âncora Service</a>
-                                <div class="meta">
-                                    <span>Website</span>
-                                </div>
-                                <div class="description">
-                                    <p>Site desenvolvido especialmente para a empresa Âncora Service que fornece serviços de instalação e vendas de ar condicionados entre outros.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="ui tiny image">
-                                <img src="https://semantic-ui.com/images/avatar/large/stevie.jpg">
-                            </div>
-                            <div class="content">
-                                <a href="http://ancoraservice.com.br" class="header">Martin Dev Blog</a>
-                                <div class="meta">
-                                    <span>Website</span>
-                                </div>
-                                <div class="description">
-                                    <p>O blog foi criado para servir de projeto final para a certificação CS50.</p>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="ui large modal">
-                            <i class="close icon"></i>
-                            <div class="header">
-                                Currículo
-                            </div>
-                            <div class="content">
-                                <div class="ui embed" data-url="{{url_for('static', filename='files/CV.pdf')}}" data-icon="right circle arrow"> </div>
-                            </div>
-                        </div>
-                </content>
-                    </div>
-            </div>
-    </article>
+        </div>
+</article>
 {% endblock %}
 
 {% block scripts %}
-    <script>
-     $(document).ready(function(){
-         $("#huehue").click(function(){
-             $(".ui.modal").modal("show").modal("refresh").modal("refresh").modal("refresh");
-             $('.ui.embed').embed();
-         });
-
+<script>
+ $(document).ready(function(){
+     $("#huehue").click(function(){
+         $(".ui.modal").modal("show").modal("refresh").modal("refresh").modal("refresh");
+         $('.ui.embed').embed();
      });
 
-    </script>
+ });
 
-    <link href="{{url_for('static', filename='hexagons.min.css')}}" rel="stylesheet"/>
-    <script src="{{url_for('static', filename='hexagons.min.js')}}"></script>
+</script>
+
+<link href="{{url_for('static', filename='hexagons.min.css')}}" rel="stylesheet"/>
+<script src="{{url_for('static', filename='hexagons.min.js')}}"></script>
 {% endblock %}

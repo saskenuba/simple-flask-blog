@@ -1,38 +1,52 @@
-.sidebar-first {
-  margin-top: 15vh;
-  margin-bottom: 10vh;
+.sidebar-last {
   font-size: 2em;
+  line-height: 1em !important;
+  text-align: center;
 }
 
-.sidebar-first a:hover {
+.sidebar-last a {
+  font-size: 1.2em;
+}
+
+.sidebar-last a:hover {
   text-decoration: none;
 }
 
-.sidebar-first a p {
+.sidebar-last a p {
   font-size: 16px;
   text-align: right;
 }
 
-.sidebar-first .description {
+.sidebar-last .description {
   padding-top: 1em;
   font-size: 14px;
   text-align: center;
 }
 
-.sidebar-first:before {
+.custom {
+  font-family: 'Saira', sans-serif !important;
+}
+
+.custom .item {
+  text-transform: uppercase;
+}
+
+.custom .item:before {
   content: none !important;
 }
 
-.search-bar {
-  margin-bottom: 5vh;
+.custom .item:first-child {
+  margin-top: 10vh;
 }
 
-.search-bar:before {
-  content: none !important;
+.custom .item:last-child {
+  margin-top: 10vh;
 }
 
-.real-gud {
-  font-weight: 700;
+.custom .ui.divider {
+  margin: auto;
+  margin-top: 5%;
+  width: 60%;
 }
 
 html {
@@ -56,10 +70,14 @@ body {
 #main {
   background-color: whitesmoke;
   padding: 2em;
+  max-width: -webkit-calc(100% - 260px);
+  max-width: -moz-calc(100% - 260px);
+  max-width: calc(100% - 260px);
 }
 
 @media (max-width: 768px) {
   #main {
+    max-width: 100%;
     margin-top: 36px;
     padding-bottom: 7em;
   }
@@ -97,6 +115,10 @@ popup {
   animation-duration: 3s;
 }
 
+.blog-post div.label {
+  margin: 0.5em 0 0 !important;
+}
+
 .blog-post img {
   margin-top: -10px;
   border: 1px solid #ccc;
@@ -108,7 +130,9 @@ popup {
 }
 
 .blog-post h2 {
+  margin-top: 0.5em !important;
   font-size: 1.5em;
+  line-height: 1.35em;
 }
 
 .blog-post p {
@@ -169,12 +193,24 @@ popup {
 }
 
 .login .column {
-  width: 35% !important;
+  width: 25% !important;
 }
 
 @media (max-width: 768px) {
   .login .column {
     width: 80% !important;
+  }
+}
+
+@media (max-width: 961px) {
+  .login .column {
+    width: 80% !important;
+  }
+}
+
+@media (max-width: 1440px) {
+  .login .column {
+    width: 30% !important;
   }
 }
 
@@ -190,6 +226,10 @@ popup {
   }
 }
 
+.contact p {
+  margin-bottom: 1em;
+}
+
 .contact .container-centered {
   display: -webkit-box;
   display: -webkit-flex;
@@ -203,10 +243,26 @@ popup {
   margin: auto;
 }
 
-.contact-segment {
-  width: 100%;
+@media (max-width: 768px) {
+  .label .detail {
+    margin: 1em auto 0 0 !important;
+  }
 }
 
 .middle {
   height: 100%;
+}
+
+.darkblue {
+  background-color: #1b2037 !important;
+  color: white !important;
+}
+
+.darkgreen {
+  background-color: #438fac !important;
+  color: white !important;
+}
+
+.darkgreent {
+  color: #438fac !important;
 }

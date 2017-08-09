@@ -11,6 +11,7 @@ import re
 # TODO:
 # TODO: criar pagina 404
 # TODO: validar header e nomes no contato
+# TODO: infinite scrolling or page navigation
 
 
 # main page has all blog entries

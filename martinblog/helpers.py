@@ -11,6 +11,8 @@ def tablelizePosts(json):
         currentPostDay = post['timestamp'][0]
 
         years[currentPostYear][currentPostMonth] = months[currentPostMonth]
-        months[currentPostMonth][currentPostDay] = [post['id'], post['title']]
+        months[currentPostMonth][currentPostDay] = [
+            post['id'], post['title'], post['tags']
+        ]
 
     return years

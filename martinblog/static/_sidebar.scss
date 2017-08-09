@@ -1,9 +1,10 @@
 // Sidebar stuff
-.sidebar-first {
-    margin-top: 15vh;
-    margin-bottom: 10vh;
+.sidebar-last {
     font-size: 2em;
+    line-height: 1em !important;
+    text-align: center;
     a {
+        font-size: 1.2em;
         &:hover {
             text-decoration: none;
         }
@@ -17,15 +18,29 @@
         font-size: 14px;
         text-align: center;
     }
-
-    &:before {
-        content: none !important;
-    }
 }
 
-.search-bar {
-    &:before {
+.custom {
+
+    font-family: 'Saira', sans-serif !important;
+
+    .item {
+        text-transform: uppercase;
+    }
+    .item:before {
         content: none !important;
     }
-    margin-bottom: 5vh;
+    .item:first-child {
+        margin-top: 10vh;
+    }
+    .item:last-child {
+        margin-top: 10vh;
+    }
+
+    .ui.divider {
+        margin: auto;
+        margin-top: 5%;
+        width: 60%;
+    }
+
 }
