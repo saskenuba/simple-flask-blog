@@ -156,12 +156,6 @@ popup {
   margin-bottom: 0.5rem !important;
 }
 
-.format-post small {
-  position: absolute;
-  text-align: right;
-  right: 1em;
-}
-
 .format-post h2 {
   font-size: 1.5em;
   margin-bottom: 1rem;
@@ -198,19 +192,25 @@ popup {
 
 @media (max-width: 768px) {
   .login .column {
-    width: 80% !important;
+    width: 60% !important;
   }
 }
 
-@media (max-width: 961px) {
+@media (min-width: 769px) {
   .login .column {
-    width: 80% !important;
+    width: 60% !important;
   }
 }
 
-@media (max-width: 1440px) {
+@media (min-width: 1440px) {
   .login .column {
-    width: 30% !important;
+    width: 35% !important;
+  }
+}
+
+@media (min-width: 1920px) {
+  .login .column {
+    width: 25% !important;
   }
 }
 

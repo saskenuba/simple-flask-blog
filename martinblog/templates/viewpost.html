@@ -2,58 +2,57 @@
 {% block title %} Martin Mariano - {{blogEntry.title}} {% endblock %}
 
 {% block content %}
-    <article class="format-post">
+<article class="format-post">
 
-        <div class="ui grid">
-            <div class="two wide column"></div>
-            <div class="twelve wide column">
-                <header>
-                    <h1 class="ui header">{{blogEntry.title | capitalize }}</h1>
-                    <img alt="" src="{{blogEntry.imagelink}}"/>
-                    <small class="text-right">postado na {{blogEntry.timestamp[3] | lower }}, {{blogEntry.timestamp[0]}} de {{blogEntry.timestamp[1]}}, {{blogEntry.timestamp[2]}}</small>
-                </header>
-                <content>
-                    <div class="ui basic segment">
-                        {{ blogEntry.content | safe}}
-                    </div>
-                </content>
+    <div class="ui grid">
+        <div class="two wide column"></div>
+        <div class="twelve wide column">
+            <header>
+                <h1 class="ui header">{{blogEntry.title | capitalize }} <small class="sub header">postado na {{blogEntry.timestamp[3] | lower }}, {{blogEntry.timestamp[0]}} de {{blogEntry.timestamp[1]}}, {{blogEntry.timestamp[2]}}</small></h1>
+                <img alt="" src="{{blogEntry.imagelink}}"/>
+            </header>
+            <content>
+                <div class="ui basic segment">
+                    {{ blogEntry.content | safe}}
+                </div>
+            </content>
 
 
-                <!-- Disqus Implementation -->
-                <div id="disqus_thread"></div>
-                <script>
-                 /**
-                  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-                  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-                 var disqus_config = function () {
-                     this.page.url = 'http://localhost:5000' // Replace PAGE_URL with your page's canonical URL variable
-                     this.page.identifier = '/post/view/' + {{ blogEntry.id }} // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-                 };
-                 (function() { // DON'T EDIT BELOW THIS LINE
-                     var d = document, s = d.createElement('script');
-                     s.src = 'https://martindevblog.disqus.com/embed.js';
-                     s.setAttribute('data-timestamp', +new Date());
-                     (d.head || d.body).appendChild(s);
-                 })();
-                </script>
-                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-                <!-- End of Disqus Implementation -->
-            </div>
+            <!-- Disqus Implementation -->
+            <div id="disqus_thread"></div>
+            <script>
+             /**
+              *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+              *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+             var disqus_config = function () {
+                 this.page.url = 'http://localhost:5000' // Replace PAGE_URL with your page's canonical URL variable
+                 this.page.identifier = '/post/view/' + {{ blogEntry.id }} // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+             };
+             (function() { // DON'T EDIT BELOW THIS LINE
+                 var d = document, s = d.createElement('script');
+                 s.src = 'https://martindevblog.disqus.com/embed.js';
+                 s.setAttribute('data-timestamp', +new Date());
+                 (d.head || d.body).appendChild(s);
+             })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <!-- End of Disqus Implementation -->
         </div>
-    </article>
+    </div>
+</article>
 {% endblock %}
 
 {% block scripts %}
 
-    <link rel="stylesheet" href="{{url_for('static', filename='styles/solarized-dark.css')}}">
-    <script src="{{ url_for('static', filename='highlight.pack.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='styles/solarized-dark.css')}}">
+<script src="{{ url_for('static', filename='highlight.pack.js') }}"></script>
 
-    <script>
+<script>
 
-     $(document).ready(function() {
-         $('pre code').each(function(i, block) {
-             hljs.highlightBlock(block);
-         });
+ $(document).ready(function() {
+     $('pre code').each(function(i, block) {
+         hljs.highlightBlock(block);
      });
-    </script>
+ });
+</script>
 {% endblock %}
