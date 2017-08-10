@@ -1,22 +1,26 @@
 {% extends "layout.html" %} {% block title %} Martin Mariano - Developer Blog {% endblock %} {% block content %} {% for entry in blogEntries %}
-<!-- Separate each as an article -->
-<article class="ui basic attached segment blog-post">
-    <div class="ui red ribbon label">Tags: {{ entry.tags }}</div>
-    <h2 class="ui header">{{ entry.title }}
-        <div class="sub header">Postado {{ entry.timestamp[3] | lower }}, {{entry.timestamp[0]}} de {{entry.timestamp[1]}}, {{entry.timestamp[2]}}</div>
-    </h2>
-    <img class="ui fluid image" src="{{entry.imagelink}}" />
-    <p>{{entry.content | safe | truncate(600) }}</p>
-
-    <!-- Keep reading button-->
-    <a href="/post/{{entry.id}}/{{entry.slug}}">
-        <div class="ui darkgreen animated button" tabindex="0">
-            <div class="visible content">Continuar Lendo</div>
-            <div class="hidden content">
-                <i class="right arrow icon"></i>
-            </div>
+    <!-- Separate each as an article -->
+    <article class="ui basic attached segment blog-post">
+        <div class="ui red ribbon label">Tags:
+            {% for tag in entry.tags %}
+                <a href="{{ url_for('tags', string=tag) }}">{{ tag }}</a>
+            {% endfor %}
         </div>
-    </a>
-    <!-- End of button-->
-</article>
+        <h2 class="ui header">{{ entry.title }}
+            <div class="sub header">Postado {{ entry.timestamp[3] | lower }}, {{entry.timestamp[0]}} de {{entry.timestamp[1]}}, {{entry.timestamp[2]}}</div>
+        </h2>
+        <img class="ui fluid image" src="{{entry.imagelink}}" />
+        <p>{{entry.content | safe | truncate(600) }}</p>
+
+        <!-- Keep reading button-->
+        <a href="/post/{{entry.id}}/{{entry.slug}}">
+            <div class="ui darkgreen animated button" tabindex="0">
+                <div class="visible content">Continuar Lendo</div>
+                <div class="hidden content">
+                    <i class="right arrow icon"></i>
+                </div>
+            </div>
+        </a>
+        <!-- End of button-->
+    </article>
 {% endfor %} {% endblock %}

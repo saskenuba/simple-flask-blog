@@ -26,8 +26,8 @@ app.config['SECRET_KEY'] = os.urandom(12)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'saskenuba@gmail.com'
-app.config['MAIL_PASSWORD'] = 'Asasde1frango!'
+app.config['MAIL_USERNAME'] = ''
+app.config['MAIL_PASSWORD'] = ''
 
 # init mail service
 mail = Mail(app)

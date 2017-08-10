@@ -1,6 +1,6 @@
 from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash
 from martinblog import app, db, login_manager, mail
-from martinblog.database import Entry, Users
+from martinblog.database import Entry, Users, Tags
 from martinblog.helpers import tablelizePosts
 from flask_login import login_required, current_user, login_user, logout_user
 from flask_mail import Message
@@ -12,6 +12,7 @@ import re
 # TODO: criar pagina 404
 # TODO: validar header e nomes no contato
 # TODO: infinite scrolling or page navigation
+# TODO: editar tags nos posts
 
 
 # main page has all blog entries
@@ -20,7 +21,7 @@ def index():
 
     # query for all db entries
     dbEntries = Entry.query.order_by(Entry.timestamp.desc()).all()
-    # then serialize
+
     dbEntriesSerialized = [i.serialize for i in dbEntries]
 
     # validates json, then loads into object
@@ -32,6 +33,21 @@ def index():
 @app.route('/about')
 def about():
     return render_template("about.html")
+
+
+@app.route('/tags/<string>')
+def tags(string):
+
+    # query for posts that matches tag
+    dbEntries = Tags.query.filter(Tags.tag == string).first()
+
+    # then serialize posts
+    dbEntriesSerialized = [i.serialize for i in dbEntries.entries]
+
+    # validates json, then loads into object
+    jsonQuery = json.loads(json.dumps(dbEntriesSerialized))
+
+    return render_template("index.html", blogEntries=jsonQuery)
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -72,8 +88,7 @@ def blogPosts():
     jsonQuery = json.loads(json.dumps(dbEntriesSerialized))
 
     return render_template(
-        "blogposts.html",
-        postsTable=tablelizePosts(jsonQuery))
+        "blogposts.html", postsTable=tablelizePosts(jsonQuery))
 
 
 ###############################################################################
@@ -147,12 +162,20 @@ def addPost():
                 "response": "something went wrong with your request"
             }), 404
 
-        postEntry = Entry(addRequest['title'], addRequest['content'],
-                          addRequest['imagelink'], addRequest['tags'])
+        # Second add entry data
+        # Associate tags to post
 
-        # db actions
+        postEntry = Entry(
+            title=addRequest['title'],
+            content=addRequest['content'],
+            imagelink=addRequest['imagelink'])
+
         db.session.add(postEntry)
         db.session.commit()
+
+        # add all tags to session
+        postTags = addRequest['tags']
+        Tags.commitAll(postTags, postEntry)
 
         return jsonify({
             "response":

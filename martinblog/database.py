@@ -1,14 +1,20 @@
 from datetime import datetime
 from flask_login import UserMixin
+#from sqlalchemy.orm.collections import attribute_mapped_collection
 from slugify import slugify
 import bcrypt
 
 # import db from init
 from martinblog import db
 
+post_has_tags = db.Table('post_has_tags',
+                         db.Column('post_id', db.Integer,
+                                   db.ForeignKey('entry.id')),
+                         db.Column('tags_id', db.Integer,
+                                   db.ForeignKey('tags.id')))
+
 
 # entry model on sqlalchemy
-# insert tags later
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
@@ -17,13 +23,16 @@ class Entry(db.Model):
     content = db.Column(db.Text)
     timestamp = db.Column(db.DateTime)
     dayofweek = db.Column(db.String(20))
-    tags = db.Column(db.String(100))
+    tags = db.relationship(
+        'Tags',
+        secondary=post_has_tags,
+        collection_class=list,
+        backref=db.backref('entries', lazy='joined'))
 
     def __init__(self,
                  title,
                  content,
                  imagelink=None,
-                 tags=None,
                  dayofweek=None,
                  timestamp=None):
         self.title = title
@@ -33,10 +42,6 @@ class Entry(db.Model):
         if imagelink is None:
             self.imagelink = 'Sem imagens'
         self.imagelink = imagelink
-
-        if tags is None:
-            self.tags = 'Sem tags'
-        self.tags = tags
 
         if timestamp is None:
             timestamp = datetime.utcnow()
@@ -60,8 +65,39 @@ class Entry(db.Model):
             'content': self.content,
             'imagelink': self.imagelink,
             'timestamp': dump_datetime(self.timestamp, self.dayofweek),
-            'tags': self.tags
+            'tags': dump_tags(self.tags)
         }
+
+
+class Tags(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(50), unique=True)
+
+    def __init__(self, tag):
+        "Tag information"
+        self.tag = tag
+
+    def __repr__(self):
+        return self.tag
+
+    #def __repr__(self):
+    #    return '<Tag Object, ID: {}, Tag: {}>'.format(self.id, self.tag)
+
+    # associate tags with post
+    # also checks for duplicates
+    def commitAll(tags, post):
+        tagsArray = tags.split(', ')
+
+        for name in tagsArray:
+            tag = Tags.query.filter(Tags.tag == name).first()
+
+            if tag is None:
+                currentTag = Tags(name)
+                db.session.add(currentTag)
+                currentTag.entries.append(post)
+            else:
+                tag.entries.append(post)
+            db.session.commit()
 
 
 # hash password later
@@ -127,3 +163,7 @@ def dump_month(month):
         "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
     ]
     return months[currentMonth - 1]
+
+
+def dump_tags(tags):
+    return [str(x) for x in tags]
