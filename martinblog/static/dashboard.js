@@ -82,6 +82,7 @@ addForm.addEventListener('submit', function(event) {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: formReady
     };
 
@@ -153,6 +154,7 @@ editForm.addEventListener('submit', function(event) {
         headers: {
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: formReady
     };
 
@@ -216,6 +218,7 @@ delForm.addEventListener('submit', function(event) {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: formReady
     };
 

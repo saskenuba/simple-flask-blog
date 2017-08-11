@@ -9,7 +9,8 @@ from martinblog import db
 
 post_has_tags = db.Table('post_has_tags',
                          db.Column('post_id', db.Integer,
-                                   db.ForeignKey('entry.id')),
+                                   db.ForeignKey(
+                                       'entry.id', ondelete='CASCADE')),
                          db.Column('tags_id', db.Integer,
                                    db.ForeignKey('tags.id')))
 
@@ -27,7 +28,8 @@ class Entry(db.Model):
         'Tags',
         secondary=post_has_tags,
         collection_class=list,
-        backref=db.backref('entries', lazy='joined'))
+        backref=db.backref('entries', lazy='joined'),
+        passive_deletes=True)
 
     def __init__(self,
                  title,
@@ -83,14 +85,19 @@ class Tags(db.Model):
     #def __repr__(self):
     #    return '<Tag Object, ID: {}, Tag: {}>'.format(self.id, self.tag)
 
-    # associate tags with post
-    # also checks for duplicates
     def commitAll(tags, post):
-        tagsArray = tags.split(', ')
+        "Create tags for current post, and also checks for duplicates"
+
+        # remove every tag first
+        for each in post.tags:
+            post.tags.remove(each)
+
+        tagsArray = [x.strip() for x in tags.split(',')]
 
         for name in tagsArray:
             tag = Tags.query.filter(Tags.tag == name).first()
 
+            # if tags doesnt exists
             if tag is None:
                 currentTag = Tags(name)
                 db.session.add(currentTag)

@@ -27,7 +27,7 @@
                                                                     Dia {{ day }}</a>
                                                                 </div>
                                                                 <div class="description">
-                                                                    {{ postData[1] | capitalize }}, Tags: {{ postData[2] }}
+                                                                    {{ postData[1] | capitalize }}, Tags: {% for tag in postData[2] %} <a href="{{ url_for('tags', string=tag) }}">{{ tag }}</a> {% endfor %}
                                                                 </div>
                                                             </div>
                                                         </div>

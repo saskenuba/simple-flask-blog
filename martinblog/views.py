@@ -12,7 +12,6 @@ import re
 # TODO: criar pagina 404
 # TODO: validar header e nomes no contato
 # TODO: infinite scrolling or page navigation
-# TODO: editar tags nos posts
 
 
 # main page has all blog entries
@@ -152,6 +151,7 @@ def viewPost(number, title=None):
 
 # page just to see post
 @app.route('/post/add', methods=['POST'])
+@login_required
 def addPost():
     if request.method == 'POST':
         addRequest = request.get_json()
@@ -161,9 +161,6 @@ def addPost():
             return jsonify({
                 "response": "something went wrong with your request"
             }), 404
-
-        # Second add entry data
-        # Associate tags to post
 
         postEntry = Entry(
             title=addRequest['title'],
@@ -189,6 +186,7 @@ def addPost():
 
 # page to edit post
 @app.route('/post/edit', methods=['PUT'])
+@login_required
 def editPost():
     if request.method == 'PUT':
         editRequest = request.get_json()
@@ -200,14 +198,19 @@ def editPost():
             }), 404
 
         # request post and update post
+        Entry.query.filter(Entry.id == editRequest['id']).update(
+            dict(
+                title=editRequest['title'],
+                slug=slugify(editRequest['title']),
+                content=editRequest['content'],
+                imagelink=editRequest['imagelink']))
+
         postToBeEdited = Entry.query.filter(
-            Entry.id == editRequest['id']).update(
-                dict(
-                    title=editRequest['title'],
-                    slug=slugify(editRequest['title']),
-                    content=editRequest['content'],
-                    imagelink=editRequest['imagelink'],
-                    tags=editRequest['tags']))
+            Entry.id == editRequest['id']).first()
+
+        # add all tags to session
+        postTags = editRequest['tags']
+        Tags.commitAll(postTags, postToBeEdited)
 
         # returns error if id not found
         if not postToBeEdited:
@@ -228,6 +231,7 @@ def editPost():
 
 # page to delete a post
 @app.route('/post/delete', methods=['DELETE'])
+@login_required
 def deletePost():
     if request.method == 'DELETE':
         delRequest = request.get_json()
@@ -262,7 +266,10 @@ def deletePost():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template("dashboard.html", username=current_user.username)
+
+    response = make_response(
+        render_template("dashboard.html", username=current_user.username))
+    return response
 
 
 ###############################################################################

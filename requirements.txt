@@ -9,3 +9,4 @@ flask-login
 flask-WTF
 bcrypt
 python-slugify
+itsdangerous
