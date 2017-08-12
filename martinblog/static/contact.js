@@ -30,18 +30,21 @@ window.addEventListener('load', function() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: formName,
-                email: formEmail,
-                phone: formTelefone,
-                message: formMensagem
+                "formNome": formName,
+                "formEmail": formEmail,
+                "formTelefone": formTelefone,
+                "formMensagem": formMensagem
             })
         };
+
+        console.log(settings.body);
 
         const serverResponse = sendJson('contact', settings);
         const messageLoading = document.getElementById('messageEmailLoading');
 
         // pops info up
         toggleClasses(messageLoading, 'hidden', 'visible', 'animated', 'fadeIn');
+        toggleClasses(formButton, 'disabled');
 
         // on success, fades info message
         const messageSuccess = document.getElementById('messageEmailSuccess');
@@ -63,6 +66,7 @@ window.addEventListener('load', function() {
                     return delay(2000).then(function() {
 
                         // finally hides info, and pops success
+                        toggleClasses(formButton, 'disabled');
                         toggleClasses(messageLoading, 'hidden');
                         toggleClasses(messageError, 'hidden', 'visible', 'animated', 'fadeIn');
                     });

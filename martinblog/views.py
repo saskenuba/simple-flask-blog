@@ -2,6 +2,8 @@ from flask import render_template, json, jsonify, request, make_response, curren
 from martinblog import app, db, login_manager, mail
 from martinblog.database import Entry, Users, Tags
 from martinblog.helpers import tablelizePosts
+from martinblog.forms import ContactForm
+from wtforms_json import from_json
 from flask_login import login_required, current_user, login_user, logout_user
 from flask_mail import Message
 from slugify import slugify
@@ -10,7 +12,6 @@ import re
 # Caso for usar o sistema de email, recolocar dados usuario e senha
 # TODO:
 # TODO: criar pagina 404
-# TODO: validar header e nomes no contato
 # TODO: infinite scrolling or page navigation
 
 
@@ -51,27 +52,35 @@ def tags(string):
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
+
     if request.method == 'POST':
         jsonEmail = request.get_json()
+        form = ContactForm.from_json(jsonEmail)
 
-        msg = Message(
-            'Mensagem do Blog',
-            sender=jsonEmail['email'],
-            recipients=['martin@hotmail.com.br'])
+        if form.validate():
 
-        msg.html = '<p>Você acaba de receber uma mensagem de {}.</p><p>Email: {}</p><p>Telefone: {}</p><p>Mensagem: {}</p>'.format(
-            jsonEmail['name'], jsonEmail['email'], jsonEmail['phone'],
-            jsonEmail['message'])
+            msg = Message(
+                'Mensagem do Blog',
+                sender=jsonEmail['formEmail'],
+                recipients=['martin@hotmail.com.br'])
 
-        try:
-            mail.send(msg)
-        except:
-            return 'error', 408
+            msg.html = '<p>Você acaba de receber uma mensagem de {}.</p><p>Email: {}</p><p>Telefone: {}</p><p>Mensagem: {}</p>'.format(
+                jsonEmail['formNome'], jsonEmail['formEmail'],
+                jsonEmail['formTelefone'], jsonEmail['formMensagem'])
 
-        return 'success', 200
+            try:
+                mail.send(msg)
+            except:
+                return 'error', 408
+
+            return 'success', 200
+
+        else:
+            return 'bad form syntax', 400
 
     elif request.method == 'GET':
-        return render_template("contact.html")
+        form = ContactForm()
+        return render_template("contact.html", form=form)
 
 
 @app.route('/posts')

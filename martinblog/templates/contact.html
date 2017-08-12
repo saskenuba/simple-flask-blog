@@ -2,137 +2,137 @@
 {% block title %} Martin Mariano - Contato {% endblock %}
 
 {% block content %}
-<article>
-    <div class="contact">
-        <div class="ui center aligned two column grid">
-            <div class="row">
-                <div class="ui segment contact-segment">
-                    <h4 class="ui header">Entre em contato diretamente:</h4>
-                    <p>Eu não sou um robô, e você não é apenas um número em uma tabela. Escreva para mim e vamos conversar.</p>
-                    <div class="ui grid center aligned two column grid">
-                        <div class="column">
-                            <a class="ui darkgreen image label">
-                                <i class="mail icon"></i>Email
-                                <div class="detail">martin@hotmail.com.br</div>
-                            </a>
-                        </div>
-                        <div class="column">
-                            <a class="ui darkgreen image label">
-                                <i class="phone icon"></i>Celular
-                                <div class="detail">(11) 97691-4920</div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ui horizontal divider">
-                ou use o formulário abaixo:
-            </div>
-
-            <div class="row">
-                <div class="column">
-                    <form name="contato" class="ui form" method="POST" action="">
-                        <div class="two fields">
-                            <div class="field">
-                                <label>Nome</label>
-                                <input id="formNome" name="formName" tabindex="1" type="text" placeholder="Nome">
+    <article>
+        <div class="contact">
+            <div class="ui center aligned two column grid">
+                <div class="row">
+                    <div class="ui segment contact-segment">
+                        <h4 class="ui header">Entre em contato diretamente:</h4>
+                        <p>Eu não sou um robô, e você não é apenas um número em uma tabela. Escreva para mim e vamos conversar.</p>
+                        <div class="ui grid center aligned two column grid">
+                            <div class="column">
+                                <a class="ui darkgreen image label">
+                                    <i class="mail icon"></i>Email
+                                    <div class="detail">martin@hotmail.com.br</div>
+                                </a>
                             </div>
-                            <div class="field">
-                                <label>Email</label>
-                                <input id="formEmail" tabindex="2" type="text" placeholder="seuemail@email.com">
+                            <div class="column">
+                                <a class="ui darkgreen image label">
+                                    <i class="phone icon"></i>Celular
+                                    <div class="detail">(11) 97691-4920</div>
+                                </a>
                             </div>
                         </div>
-                        <div class="field">
-                            <label>Telefone (Opcional)</label>
-                            <input id="formTelefone" placeholder="(DDD) Número" tabindex="3" type="text"></input>
+                    </div>
+                </div>
+
+                <div class="ui horizontal divider">
+                    ou use o formulário abaixo:
+                </div>
+
+                <div class="row">
+                    <div class="column">
+                        <form name="contato" class="ui form" method="POST" action="">
+                            <div class="two fields">
+                                <div class="field">
+                                    {{ form.formNome.label }}
+                                    {{ form.formNome }}
+                                </div>
+                                <div class="field">
+                                    {{ form.formEmail.label }}
+                                    {{ form.formEmail }}
+                                </div>
+                            </div>
+                            <div class="field">
+                                {{ form.formTelefone.label }}
+                                {{ form.formTelefone }}
+                            </div>
+                            <div class="field">
+                                {{ form.formMensagem.label }}
+                                {{ form.formMensagem }}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="column">
+                        <div class="container-centered">
+                            <button tabindex="5" id="formSubmitButton" class="ui darkgreen huge button">Enviar</button>
                         </div>
-                        <div class="field">
-                            <label>Mensagem</label>
-                            <textarea id="formMensagem" tabindex="4" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div id="messageEmailLoading" class="ui icon message hidden">
+                    <i class="notched circle loading icon"></i>
+                    <div class="content">
+                        <div class="header">
+                            Aguarde um momento ...
                         </div>
-                    </form>
-                </div>
-                <div class="column">
-                    <div class="container-centered">
-                        <button tabindex="5" id="formSubmitButton" class="ui darkgreen huge button">Enviar</button>
+                        <p>Estamos enviando o email.</p>
                     </div>
                 </div>
-            </div>
 
-            <div id="messageEmailLoading" class="ui icon message hidden">
-                <i class="notched circle loading icon"></i>
-                <div class="content">
-                    <div class="header">
-                        Aguarde um momento ...
+                <div id="messageEmailSuccess" class="ui icon message success hidden">
+                    <i class="checkmark icon"></i>
+                    <div class="content">
+                        <div class="header">
+                            Seu email foi enviado com sucesso.
+                        </div>
+                        <p>Em breve estarei respondendo sua mensagem.</p>
                     </div>
-                    <p>Estamos enviando o email.</p>
                 </div>
-            </div>
 
-            <div id="messageEmailSuccess" class="ui icon message success hidden">
-                <i class="checkmark icon"></i>
-                <div class="content">
-                    <div class="header">
-                        Seu email foi enviado com sucesso.
+                <div id="messageEmailError" class="ui icon message error hidden">
+                    <i class="remove icon"></i>
+                    <div class="content">
+                        <div class="header">
+                            Seu formulário não foi preenchido corretamente.
+                        </div>
+                        <p>Por favor cheque suas informações novamente, ou tente enviar o email diretamente para martin@hotmail.com.br</p>
                     </div>
-                    <p>Em breve estarei respondendo sua mensagem.</p>
                 </div>
+
+
             </div>
-
-            <div id="messageEmailError" class="ui icon message error hidden">
-                <i class="remove icon"></i>
-                <div class="content">
-                    <div class="header">
-                        Algo inesperado aconteceu.
-                    </div>
-                    <p>Por favor, tente enviar o email diretamente para martin@hotmail.com.br</p>
-                </div>
-            </div>
-
-
         </div>
-    </div>
-</article>
+    </article>
 {% endblock %}
 
 {% block scripts %}
-<script>
- $('.ui.form')
-     .form({
-         on: 'blur',
-         inline: true,
-         fields: {
-             formName: {
-                 identifier: 'formName',
-                 rules: [
-                     {
-                         type: 'empty',
-                         prompt: 'Escreva seu nome.'
-                     }
-                 ]
-             },
-             formEmail: {
-                 identifier: 'formEmail',
-                 rules: [
-                     {
-                         type: 'email',
-                         prompt: 'Digite um email válido.'
-                     }
-                 ]
-             },
-             formMensagem: {
-                 identifier: 'formMensagem',
-                 rules: [
-                     {
-                         type: 'empty',
-                         prompt: 'É necessário escrever alguma coisa.'
-                     }
-                 ]
+    <script>
+     $('.ui.form')
+         .form({
+             on: 'blur',
+             inline: true,
+             fields: {
+                 formNome: {
+                     identifier: 'formNome',
+                     rules: [
+                         {
+                             type: 'empty',
+                             prompt: 'Escreva seu nome.'
+                         }
+                     ]
+                 },
+                 formEmail: {
+                     identifier: 'formEmail',
+                     rules: [
+                         {
+                             type: 'email',
+                             prompt: 'Digite um email válido.'
+                         }
+                     ]
+                 },
+                 formMensagem: {
+                     identifier: 'formMensagem',
+                     rules: [
+                         {
+                             type: 'empty',
+                             prompt: 'É necessário escrever alguma coisa.'
+                         }
+                     ]
+                 }
              }
-         }
-     });
-</script>
+         });
+    </script>
 
-<script src="{{ url_for('static', filename='contact-dist.js') }}"></script>
+    <script src="{{ url_for('static', filename='contact-dist.js') }}"></script>
 {% endblock %}

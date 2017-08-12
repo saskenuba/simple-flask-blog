@@ -6,7 +6,8 @@ Flask-SQLAlchemy
 Flask-JSGlue
 Flask-Mail
 flask-login
-flask-WTF
+WTForms
+WTForms-JSON
 bcrypt
 python-slugify
 itsdangerous
