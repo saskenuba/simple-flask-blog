@@ -9,9 +9,6 @@ from flask_mail import Message
 from slugify import slugify
 import re
 
-# Caso for usar o sistema de email, recolocar dados usuario e senha
-# TODO:
-# TODO: criar pagina 404
 # TODO: infinite scrolling or page navigation
 
 
@@ -40,6 +37,11 @@ def tags(string):
 
     # query for posts that matches tag
     dbEntries = Tags.query.filter(Tags.tag == string).first()
+    print(dbEntries)
+
+    # in case tag doesnt exists
+    if dbEntries is None:
+        return render_template('404.html'), 404
 
     # then serialize posts
     dbEntriesSerialized = [i.serialize for i in dbEntries.entries]
@@ -57,6 +59,7 @@ def contact():
         jsonEmail = request.get_json()
         form = ContactForm.from_json(jsonEmail)
 
+        # on form validation
         if form.validate():
 
             msg = Message(
@@ -97,6 +100,11 @@ def blogPosts():
 
     return render_template(
         "blogposts.html", postsTable=tablelizePosts(jsonQuery))
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 ###############################################################################
@@ -148,7 +156,7 @@ def viewPost(number, title=None):
         '{}post/json/{}'.format(request.url_root, number))
 
     if postRequested.status == '404 NOT FOUND':
-        return 'post not found'
+        return render_template('404.html'), 404
 
     postRequestedJson = json.loads(postRequested.data)
 
@@ -159,7 +167,7 @@ def viewPost(number, title=None):
 
 
 # page just to see post
-@app.route('/post/add', methods=['POST'])
+@app.route('/post', methods=['POST'])
 @login_required
 def addPost():
     if request.method == 'POST':
@@ -194,9 +202,9 @@ def addPost():
 
 
 # page to edit post
-@app.route('/post/edit', methods=['PUT'])
+@app.route('/post/<int:postid>', methods=['PUT'])
 @login_required
-def editPost():
+def editPost(postid):
     if request.method == 'PUT':
         editRequest = request.get_json()
 
@@ -206,54 +214,49 @@ def editPost():
                 "response": "something went wrong with your request"
             }), 404
 
+        postToBeEdited = Entry.query.filter(Entry.id == postid).first()
+
+        # returns error if id not found
+        if not postToBeEdited:
+            return jsonify("post not found"), 404
+
         # request post and update post
-        Entry.query.filter(Entry.id == editRequest['id']).update(
+        Entry.query.filter(Entry.id == postid).update(
             dict(
                 title=editRequest['title'],
                 slug=slugify(editRequest['title']),
                 content=editRequest['content'],
                 imagelink=editRequest['imagelink']))
 
-        postToBeEdited = Entry.query.filter(
-            Entry.id == editRequest['id']).first()
-
         # add all tags to session
         postTags = editRequest['tags']
         Tags.commitAll(postTags, postToBeEdited)
-
-        # returns error if id not found
-        if not postToBeEdited:
-            return jsonify("post not found"), 404
 
         db.session.commit()
 
         # returns link and http code 202
         return jsonify({
-            "response":
-            "post edited",
-            "link":
-            '{}post/{}'.format(request.url_root, editRequest['id'])
+            "response": "post edited",
+            "link": '{}post/{}'.format(request.url_root, postid)
         }), 202
 
     return 'you have nothing to see here, human!'
 
 
 # page to delete a post
-@app.route('/post/delete', methods=['DELETE'])
+@app.route('/post/<int:postid>', methods=['DELETE'])
 @login_required
-def deletePost():
+def deletePost(postid):
     if request.method == 'DELETE':
-        delRequest = request.get_json()
 
         # if contains no header or wrong one
-        if delRequest is None:
+        if postid is None:
             return jsonify({
                 "response": "something went wrong with your request"
             }), 404
 
         # request post and update post
-        postToBeDeleted = Entry.query.filter(
-            Entry.id == delRequest['id']).delete()
+        postToBeDeleted = Entry.query.filter(Entry.id == postid).delete()
 
         # returns error if id not found
         if not postToBeDeleted:
@@ -263,8 +266,7 @@ def deletePost():
 
         # returns link and http code 200
         return jsonify({
-            "response":
-            "post with id: {} deleted".format(delRequest['id'])
+            "response": "post with id: {} deleted".format(postid)
         }), 200
 
     return 'you have nothing to see here, human!'

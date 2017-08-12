@@ -1,6 +1,5 @@
 class Form {
-    constructor(id, title, imagelink, content, tags) {
-        self.id = id;
+    constructor(title, imagelink, content, tags) {
         self.title = title;
         self.imagelink = imagelink;
         self.content = content;
@@ -9,7 +8,6 @@ class Form {
 
     get json() {
         return JSON.stringify({
-            id: self.id,
             title: self.title,
             imagelink: self.imagelink,
             content: self.content,
@@ -74,7 +72,7 @@ addForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
     // gathering form data to be submited
-    const formReady = new Form(null, titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value).json;
+    const formReady = new Form(titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value).json;
 
     const settings = {
         method: "POST",
@@ -91,27 +89,26 @@ addForm.addEventListener('submit', function(event) {
 
     let serverResponse = sendJson('addPost', settings);
     serverResponse.then(function(response) {
-        if (response.status == 201) {
-            return response.json();
-        }
-        else {
-            return 'perdeu playba';
-        }
-    })
+            if (response.status == 201) {
+                return response.json();
+            } else {
+                return 'perdeu playba';
+            }
+        })
 
         .then(function(response) {
 
-        // insert links to message
-        successLink.href = response['link'];
-        successLink.textContent = 'Permalink para o post: ' + response['link'];
+            // insert links to message
+            successLink.href = response['link'];
+            successLink.textContent = 'Permalink para o post: ' + response['link'];
 
-        // disable button
-        let submitButton = document.getElementById('post-submitbutton-add');
-        submitButton.classList.add('disabled');
+            // disable button
+            let submitButton = document.getElementById('post-submitbutton-add');
+            submitButton.classList.add('disabled');
 
-        let popup = document.getElementById('add-success');
-        toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
-    });
+            let popup = document.getElementById('add-success');
+            toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
+        });
 
 }, false);
 
@@ -147,7 +144,7 @@ editForm.addEventListener('submit', function(event) {
     // prevent submit
     event.preventDefault();
 
-    let formReady = new Form(idEditPost.value, titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value).json;
+    let formReady = new Form(titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value).json;
 
     const settings = {
         method: "PUT",
@@ -161,28 +158,29 @@ editForm.addEventListener('submit', function(event) {
     // message link
     let successLink = document.getElementById('form-edit-message-success');
 
-    let serverResponse = sendJson('editPost', settings);
+    let serverResponse = sendJsonWithObj('editPost', {
+        "postid": idEditPost.value
+    }, settings);
     serverResponse.then(function(response) {
-        if (response.status == 202) {
-            return response.json();
-        }
-        else
-            return console.log('perdeu playba');
-    })
+            if (response.status == 202) {
+                return response.json();
+            } else
+                return console.log('perdeu playba');
+        })
 
         .then(function(response) {
 
-        // insert links to message
-        successLink.href = response['link'];
-        successLink.textContent = 'Permalink para o post: ' + response['link'];
+            // insert links to message
+            successLink.href = response['link'];
+            successLink.textContent = 'Permalink para o post: ' + response['link'];
 
-        // disable button
-        let submitButton = document.getElementById('post-submitbutton-edit');
-        submitButton.classList.add('disabled');
+            // disable button
+            let submitButton = document.getElementById('post-submitbutton-edit');
+            submitButton.classList.add('disabled');
 
-        let popup = document.getElementById('edit-success');
-        toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
-    });
+            let popup = document.getElementById('edit-success');
+            toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
+        });
 
 }, false);
 
@@ -203,14 +201,10 @@ idDelPost.addEventListener('input', function(event) {
 });
 
 let delForm = document.getElementById('form-del');
-
 delForm.addEventListener('submit', function(event) {
 
     // prevent submit
     event.preventDefault();
-
-    // gathering form data to be submited
-    const formReady = JSON.stringify({"id": idDelPost.value});
 
     const settings = {
         method: "DELETE",
@@ -218,30 +212,30 @@ delForm.addEventListener('submit', function(event) {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        credentials: 'include',
-        body: formReady
+        credentials: 'include'
     };
 
     // message link
     let successLink = document.getElementById('form-del-message-success');
 
-    let serverResponse = sendJson('deletePost', settings);
+    let serverResponse = sendJsonWithObj('deletePost', {
+        "postid": idDelPost.value
+    }, settings);
     serverResponse.then(function(response) {
-        if (response.status == 200) {
-            return response.json();
-        }
-        else
-            return 'perdeu playba';
-    })
+            if (response.status == 200) {
+                return response.json();
+            } else
+                return 'perdeu playba';
+        })
 
         .then(function(response) {
 
-        // disable button
-        let submitButton = document.getElementById('post-submitbutton-del');
-        submitButton.classList.add('disabled');
+            // disable button
+            let submitButton = document.getElementById('post-submitbutton-del');
+            submitButton.classList.add('disabled');
 
-        let popup = document.getElementById('del-success');
-        toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
-    });
+            let popup = document.getElementById('del-success');
+            toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
+        });
 
 }, false);

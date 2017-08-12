@@ -79,6 +79,16 @@ function sendJson(flasklocation, settingsObj) {
     });
 }
 
+// send json, with optional parameter
+function sendJsonWithObj(flasklocation, flaskparameter, settingsObj) {
+    return fetch(Flask.url_for(flasklocation, flaskparameter), settingsObj).then(function (response) {
+        return response;
+    }).catch(function (err) {
+        // trata se alguma das promises falhar
+        console.error('Failed retrieving information', err);
+    });
+}
+
 // toggle any amount of classes on the element
 function toggleClasses(element, classes) {
     // i = 0 is the element

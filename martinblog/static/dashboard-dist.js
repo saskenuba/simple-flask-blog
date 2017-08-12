@@ -5,10 +5,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Form = function () {
-    function Form(id, title, imagelink, content, tags) {
+    function Form(title, imagelink, content, tags) {
         _classCallCheck(this, Form);
 
-        self.id = id;
         self.title = title;
         self.imagelink = imagelink;
         self.content = content;
@@ -19,7 +18,6 @@ var Form = function () {
         key: 'json',
         get: function get() {
             return JSON.stringify({
-                id: self.id,
                 title: self.title,
                 imagelink: self.imagelink,
                 content: self.content,
@@ -86,7 +84,7 @@ addForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
     // gathering form data to be submited
-    var formReady = new Form(null, titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value).json;
+    var formReady = new Form(titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value).json;
 
     var settings = {
         method: "POST",
@@ -154,7 +152,7 @@ editForm.addEventListener('submit', function (event) {
     // prevent submit
     event.preventDefault();
 
-    var formReady = new Form(idEditPost.value, titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value).json;
+    var formReady = new Form(titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value).json;
 
     var settings = {
         method: "PUT",
@@ -168,7 +166,9 @@ editForm.addEventListener('submit', function (event) {
     // message link
     var successLink = document.getElementById('form-edit-message-success');
 
-    var serverResponse = sendJson('editPost', settings);
+    var serverResponse = sendJsonWithObj('editPost', {
+        "postid": idEditPost.value
+    }, settings);
     serverResponse.then(function (response) {
         if (response.status == 202) {
             return response.json();
@@ -205,14 +205,10 @@ idDelPost.addEventListener('input', function (event) {
 });
 
 var delForm = document.getElementById('form-del');
-
 delForm.addEventListener('submit', function (event) {
 
     // prevent submit
     event.preventDefault();
-
-    // gathering form data to be submited
-    var formReady = JSON.stringify({ "id": idDelPost.value });
 
     var settings = {
         method: "DELETE",
@@ -220,14 +216,15 @@ delForm.addEventListener('submit', function (event) {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        credentials: 'include',
-        body: formReady
+        credentials: 'include'
     };
 
     // message link
     var successLink = document.getElementById('form-del-message-success');
 
-    var serverResponse = sendJson('deletePost', settings);
+    var serverResponse = sendJsonWithObj('deletePost', {
+        "postid": idDelPost.value
+    }, settings);
     serverResponse.then(function (response) {
         if (response.status == 200) {
             return response.json();
