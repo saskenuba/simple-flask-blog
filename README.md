@@ -10,9 +10,11 @@ I recommend you running the blog on a virtual env.
 
 After cloning the repository, execute
 
->> cd simple-flask-blog/
->> pip install -r requirements.txt
->> pip install -e .
+```
+cd simple-flask-blog/
+pip install -r requirements.txt
+pip install -e .
+```
 
 And follow the next steps.
 
@@ -20,18 +22,22 @@ And follow the next steps.
 
 To setup email correctly, first go to __init__.py and change the following information:
 
+```
 app.config['MAIL_SERVER'] = ''
 app.config['MAIL_PORT'] = 'port number'
 app.config['MAIL_USE_SSL'] = ''
 app.config['MAIL_USERNAME'] = ''
 app.config['MAIL_PASSWORD'] = ''
+```
 
 #### Database
 
 Then go to database.db, and change the database+driver if needed, and set up.
 At this moment I am using PostgreSQL.
 
+```
 db_conn = 'postgresql+psycopg2://[username]:[password]@localhost/[database]'
+```
 
 ### Features:
 1. PostgreSQL
