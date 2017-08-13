@@ -143,10 +143,6 @@ popup {
   overflow: hidden;
 }
 
-.format-post header + content p:first-child {
-  text-indent: 2em;
-}
-
 .format-post header {
   margin-bottom: 1.5rem !important;
 }
