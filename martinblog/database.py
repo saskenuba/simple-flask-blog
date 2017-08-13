@@ -87,8 +87,6 @@ class Tags(db.Model):
 
     def commitAll(tags, post):
         "Create tags for current post, and also checks for duplicates"
-        print('Tags a serem incluidas: {}'.format(tags))
-        print('Tags ja existentes no post: {}'.format(post.tags))
 
         # since children is just a list
         # magic remove all tags on post_has_tags

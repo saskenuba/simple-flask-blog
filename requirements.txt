@@ -10,4 +10,4 @@ WTForms
 WTForms-JSON
 bcrypt
 python-slugify
-itsdangerous
+gunicorn

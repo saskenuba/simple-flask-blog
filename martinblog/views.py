@@ -135,7 +135,7 @@ def getJsonPost(postid):
         # if post doesnt exists in db
         if dbEntry is None:
             return jsonify(
-                dict(title='post not found', content='post not found')), 404
+                dict(title='Post not found', content='Post not found')), 404
 
         response = make_response(jsonify(dbEntry.serialize))
         return response
@@ -161,7 +161,7 @@ def viewPost(number, title=None):
     postRequestedJson = json.loads(postRequested.data)
 
     # take care of this when deploying
-    # urlRoot = str(request.url_root)
+    #urlRoot = str(request.url_root)
 
     return render_template('viewpost.html', blogEntry=postRequestedJson)
 
