@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
+
 from datetime import datetime
 from flask_login import UserMixin
-#from sqlalchemy.orm.collections import attribute_mapped_collection
 from slugify import slugify
 import bcrypt
 

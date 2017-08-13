@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash
 from martinblog import app, db, login_manager, mail
 from martinblog.database import Entry, Users, Tags

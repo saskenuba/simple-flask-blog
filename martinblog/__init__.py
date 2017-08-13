@@ -15,7 +15,7 @@ login_manager.init_app(app)
 
 
 # path to db
-db_conn = 'postgresql+psycopg2://martin@localhost/martinblog'
+db_conn = 'postgresql+psycopg2://[username]:[password]@localhost/[database]'
 
 # sets db configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = db_conn
@@ -23,11 +23,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.urandom(12)
 
 # mail settings
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = ''
-app.config['MAIL_PASSWORD'] = ''
+app.config['MAIL_SERVER'] = 'your smtp route'
+app.config['MAIL_PORT'] = 0
+app.config['MAIL_USE_SSL'] = True or False
+app.config['MAIL_USERNAME'] = 'your username'
+app.config['MAIL_PASSWORD'] = 'your password'
 
 # init mail service
 mail = Mail(app)
