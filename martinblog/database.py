@@ -86,6 +86,7 @@ class Tags(db.Model):
     #def __repr__(self):
     #    return '<Tag Object, ID: {}, Tag: {}>'.format(self.id, self.tag)
 
+    @staticmethod
     def commitAll(tags, post):
         "Create tags for current post, and also checks for duplicates"
 

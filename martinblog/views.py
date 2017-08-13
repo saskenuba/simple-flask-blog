@@ -39,10 +39,10 @@ def tags(string):
 
     # query for posts that matches tag
     dbEntries = Tags.query.filter(Tags.tag == string).first()
-    print(dbEntries)
+    print(dbEntries.entries)
 
     # in case tag doesnt exists
-    if dbEntries is None:
+    if len(dbEntries.entries) is 0:
         return render_template('404.html'), 404
 
     # then serialize posts
@@ -67,9 +67,9 @@ def contact():
             msg = Message(
                 'Mensagem do Blog',
                 sender=jsonEmail['formEmail'],
-                recipients=['martin@hotmail.com.br'])
+                recipients=['contato@martinmariano.com'])
 
-            msg.html = '<p>Você acaba de receber uma mensagem de {}.</p><p>Email: {}</p><p>Telefone: {}</p><p>Mensagem: {}</p>'.format(
+            msg.html = u'<p>Você acaba de receber uma mensagem de {}.</p><p>Email: {}</p><p>Telefone: {}</p><p>Mensagem: {}</p>'.format(
                 jsonEmail['formNome'], jsonEmail['formEmail'],
                 jsonEmail['formTelefone'], jsonEmail['formMensagem'])
 
@@ -318,7 +318,7 @@ def login():
             return redirect(url_for('dashboard'))
 
         else:
-            message = ('Seu usuário ou senha estão incorretos.')
+            message = (u'Seu usuário ou senha estão incorretos.')
             flash(message)
             return redirect(url_for('login'))
 
@@ -335,5 +335,5 @@ def logout():
 # if user try to access URI directly
 @login_manager.unauthorized_handler
 def unauthorized():
-    flash('Você precisa realizar o login primeiro.', 'error')
+    flash(u'Você precisa realizar o login primeiro.')
     return redirect(url_for('login'))
