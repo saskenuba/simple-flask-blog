@@ -104,6 +104,36 @@ def blogPosts():
         "blogposts.html", postsTable=tablelizePosts(jsonQuery))
 
 
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)
+
+
+@app.route("/sitemap.xml")
+def site_map():
+    links = []
+    urlRoot = request.url_root
+    for rule in app.url_map.iter_rules():
+        # Filter out rules we can't navigate to in a browser
+        # and rules that require parameters
+        if "GET" in rule.methods and has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            links.append((url, rule.endpoint))
+
+    dbEntries = Entry.query.all()
+    for entry in dbEntries:
+        linkTuple = ('/post/{}'.format(entry.id), str(entry.id))
+        links.append(linkTuple)
+
+    sitemap_xml = render_template(
+        'sitemap.xml', links=links, urlRoot=urlRoot[:-1])
+    response = make_response(sitemap_xml)
+    response.headers["Content-Type"] = "application/xml"
+
+    return response
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
