@@ -169,9 +169,10 @@ popup {
   margin-bottom: 1.5rem;
 }
 
-.format-post img {
+.format-post p img {
+  display: block;
+  margin: 0 auto;
   max-width: 100%;
-  min-width: 100%;
 }
 
 .login {

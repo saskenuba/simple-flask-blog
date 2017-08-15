@@ -35,6 +35,14 @@
         <!-- Jsglue / so js can make ajax calls -->
         {{ JSGlue.include() }}
 
+        <!-- Google Analytics / Change to your own -->
+        <script>
+         window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+         ga('create', 'UA-XXXXXX-Y', 'auto');
+         ga('send', 'pageview');
+        </script>
+        <script async src='https://www.google-analytics.com/analytics.js'></script>
+        <!-- End Google Analytics -->
     </head>
 
     <body class="pushable">
@@ -42,16 +50,16 @@
         <nav id="sidebar" class="ui inverted darkblue visible left vertical sidebar menu custom">
 
             <!-- Search Bar
-            <div class="item search-bar">
-                <div class="ui search">
-                    <div class="ui icon input">
-                        <input class="prompt" placeholder="Pesquisar dentro do blog" type="text">
-                        <i class="search icon"></i>
-                    </div>
-                    <div class="results"></div>
-                </div>
-            </div>
-            End of Search Bar -->
+                 <div class="item search-bar">
+                 <div class="ui search">
+                 <div class="ui icon input">
+                 <input class="prompt" placeholder="Pesquisar dentro do blog" type="text">
+                 <i class="search icon"></i>
+                 </div>
+                 <div class="results"></div>
+                 </div>
+                 </div>
+                 End of Search Bar -->
             <a class="item sidebar-first" href="{{url_for('index')}}"><i class="home icon"></i> Home </a>
             <a class="item" href="{{url_for('about')}}"><i class="info icon"></i> Sobre </a>
             <a class="item" href="{{url_for('blogPosts')}}"><i class="edit icon"></i> Blog Posts </a>

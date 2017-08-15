@@ -109,11 +109,12 @@ popup {
         line-height: 1.35em;
         text-overflow: ellipsis;
         margin-bottom: 1.5rem;
-    }
 
-    img {
-        max-width: 100%;
-        min-width: 100%;
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
     }
 }
 
