@@ -3,7 +3,11 @@
     {% for link in links %}
     <url>
         <loc>{{urlRoot}}{{link[0]|safe}}</loc>
-        <lastmod>{{link[1]}}</lastmod>
+        {% if link[0] == '/' or link[0] == '/posts' %}
+        <changefreq>weekly</changefreq>
+        {% else %}
+        <changefreq>monthly</changefreq>
+        {% endif %}
     </url>
     {% endfor %}
 </urlset>
