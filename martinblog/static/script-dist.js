@@ -7,32 +7,30 @@ var pathAbout = Flask.url_for('about');
 var pathContact = Flask.url_for('contact');
 var pathPosts = Flask.url_for('blogPosts');
 
+// if mobile screen size
+if (isMobile(window.innerWidth)) {
+
+    // remove sidebar
+    var sidebar = document.getElementById('sidebar');
+    sidebar.parentElement.removeChild(sidebar);
+
+    // add bottombar
+    var bottombar = document.createElement('div');
+    var mysnippet = "<nav class='ui sidebar inverted darkblue bottom visible four item labeled icon menu'>" + "<a class='item' href='/'>" + "<i class='home icon'></i>" + "Home" + "</a>" + ("<a class='item' href=" + pathAbout + ">") + "<i class='info icon'></i>" + "Sobre" + "</a>" + ("<a class='item' href=" + pathPosts + ">") + "<i class='edit icon'></i>" + "Arquivo" + "</a>" + ("<a class='item' href='" + pathContact + "'>") + "<i class='mail outline icon'></i>" + "Contato" + "</a>" + "</nav>";
+
+    mainElement.insertAdjacentHTML('beforebegin', mysnippet);
+}
+
 // At page load complete load
 window.addEventListener('load', function (event) {
 
-    // if mobile screen size
-    if (isMobile(window.innerWidth)) {
-
-        // remove sidebar
-        var sidebar = document.getElementById('sidebar');
-        sidebar.parentElement.removeChild(sidebar);
-
-        // fix me
-        var bottombar = document.createElement('div');
-        var mysnippet = "<nav class='ui sidebar inverted darkblue bottom visible four item labeled icon menu'>" + "<a class='item' href='/'>" + "<i class='home icon'></i>" + "Home" + "</a>" + ("<a class='item' href=" + pathAbout + ">") + "<i class='info icon'></i>" + "Sobre" + "</a>" + ("<a class='item' href=" + pathPosts + ">") + "<i class='edit icon'></i>" + "Arquivo" + "</a>" + ("<a class='item' href='" + pathContact + "'>") + "<i class='mail outline icon'></i>" + "Contato" + "</a>" + "</nav>";
-
-        mainElement.insertAdjacentHTML('beforebegin', mysnippet);
-    }
     // resize content to match window size
-    else {
+    resizeMain();
 
-            resizeMain();
-
-            // Resize content
-            window.addEventListener('resize', function (event) {
-                resizeMain();
-            });
-        }
+    // Resize content
+    window.addEventListener('resize', function (event) {
+        resizeMain();
+    });
 });
 
 ///////////////////////////////////////////////////////////////////////////////
