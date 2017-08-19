@@ -4,7 +4,6 @@ SQLAlchemy
 Jinja2
 Flask-SQLAlchemy
 Flask-JSGlue
-Flask-Mail
 flask-login
 WTForms
 WTForms-JSON

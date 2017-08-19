@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash
-from martinblog import app, db, login_manager, mail
+from martinblog import app, db, login_manager
 from martinblog.database import Entry, Users, Tags
-from martinblog.helpers import tablelizePosts
+from martinblog.helpers import tablelizePosts, Mailgun
 from martinblog.forms import ContactForm
 from wtforms_json import from_json
 from flask_login import login_required, current_user, login_user, logout_user
-from flask_mail import Message
 from slugify import slugify
+import requests
 import re
 
 # TODO: infinite scrolling or page navigation
@@ -64,21 +64,18 @@ def contact():
         # on form validation
         if form.validate():
 
-            msg = Message(
-                'Mensagem do Blog',
-                sender=jsonEmail['formEmail'],
-                recipients=['contato@martinmariano.com'])
-
-            msg.html = u'<p>Você acaba de receber uma mensagem de {}.</p><p>Email: {}</p><p>Telefone: {}</p><p>Mensagem: {}</p>'.format(
+            message = u'<p>Você acaba de receber uma mensagem de {}.</p><p>Email: {}</p><p>Telefone: {}</p><p>Mensagem: {}</p>'.format(
                 jsonEmail['formNome'], jsonEmail['formEmail'],
                 jsonEmail['formTelefone'], jsonEmail['formMensagem'])
 
-            try:
-                mail.send(msg)
-            except:
-                return 'error', 408
+            mail = Mailgun('your-apikey', 'mg.martinmariano.com')
+            mail.html = message
+            response = mail.send()
 
-            return 'success', 200
+            if response.status_code == 200:
+                return 'success', 200
+            else:
+                return 'error', 408
 
         else:
             return 'bad form syntax', 400
