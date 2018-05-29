@@ -8,7 +8,6 @@ from martinblog.forms import ContactForm
 from wtforms_json import from_json
 from flask_login import login_required, current_user, login_user, logout_user
 from slugify import slugify
-import requests
 import re
 
 # TODO: infinite scrolling or page navigation
@@ -39,7 +38,6 @@ def tags(string):
 
     # query for posts that matches tag
     dbEntries = Tags.query.filter(Tags.tag == string).first()
-    print(dbEntries.entries)
 
     # in case tag doesnt exists
     if len(dbEntries.entries) is 0:

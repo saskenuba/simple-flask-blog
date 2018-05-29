@@ -18,6 +18,22 @@
         <!-- Canonical URL (if needed) -->
          {% block canonical %} {% endblock %}
 
+        <!-- JSON-LD Structured Data -->
+        <script type="application/ld+json">
+         {
+             "@context": "http://schema.org",
+             "@type": "Blog",
+             "name": "Blog do Desenvolvedor | Martin Mariano",
+             "url": "{{ request.url_root }}",
+             "publisher": {
+                 "@type": "Person",
+                 "name": "Martin Mariano",
+                 "email": "contato@martinmariano.com"
+             }
+             {% block jsonld %}{% endblock %}
+         }
+        </script>
+
         <!-- All semantic content -->
         <link href="{{ url_for('static', filename='semantic.min.css') }}" rel="stylesheet" />
 

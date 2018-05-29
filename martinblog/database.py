@@ -147,7 +147,8 @@ def dump_datetime(value, currentday):
         value.strftime("%d"),
         dump_month(value.strftime("%m")),
         value.strftime("%Y"),
-        dump_weekday(currentday)
+        dump_weekday(currentday),
+        value.strftime("%m")
     ]
 
 
