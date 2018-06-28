@@ -1,0 +1,36 @@
+.format-post {
+    overflow: hidden;
+
+    header {
+        margin-bottom: 1.5rem !important;
+        small {
+
+        }
+        h1 {
+            font-size: 1.8em !important;
+            margin-bottom: 0.5rem !important;
+        }
+    }
+
+    h2 {
+        font-size: 1.5em;
+        margin-bottom: 1rem;
+    }
+
+    h2 + p {
+        text-indent: 2em;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.35em;
+        text-overflow: ellipsis;
+        margin-bottom: 1.5rem;
+
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+    }
+}

@@ -2,18 +2,18 @@
 
 from datetime import datetime
 from flask_login import UserMixin
+from flask import json
 from slugify import slugify
 import bcrypt
 
 # import db from init
 from martinblog import db
 
-post_has_tags = db.Table('post_has_tags',
-                         db.Column('post_id', db.Integer,
-                                   db.ForeignKey(
-                                       'entry.id', ondelete='CASCADE')),
-                         db.Column('tags_id', db.Integer,
-                                   db.ForeignKey('tags.id')))
+post_has_tags = db.Table(
+    'post_has_tags',
+    db.Column('post_id', db.Integer,
+              db.ForeignKey('entry.id', ondelete='CASCADE')),
+    db.Column('tags_id', db.Integer, db.ForeignKey('tags.id')))
 
 
 # entry model on sqlalchemy
@@ -58,9 +58,47 @@ class Entry(db.Model):
         return '<Blog Post Object id: {}, title: {}>'.format(
             self.id, self.title)
 
+    @staticmethod
+    def getFilteredEntries(offset=0, limit=None):
+        """Return entries on descending order
+
+        :param offset: offset for returning entries
+        :param limit: size of list of entries
+        :returns: entry list
+        :rtype:
+
+        """
+        if limit is None:
+            return Entry.query.order_by(
+                Entry.timestamp.desc()).offset(offset).all()
+
+        return Entry.query.order_by(
+            Entry.timestamp.desc()).offset(offset).limit(limit).all()
+
+    @staticmethod
+    def toJson(entryCollection):
+        """Returns the entry collection into json format.
+        It is expected that the collection has a serialize function.
+
+        :param entryCollection: A query result with multiple entries.
+        :returns: The query result in json format.
+        :rtype: json
+
+        """
+        serializedCollection = [
+            item.serialize for item in entryCollection
+        ]
+
+        return json.loads(json.dumps(serializedCollection))
+
     @property
     def serialize(self):
-        # return data in serialized format
+        """Returns data in a serialized format.
+
+        :returns: A entry in a dictionary format.
+        :rtype: dictionary
+
+        """
         return {
             'id': self.id,
             'title': self.title,
@@ -94,7 +132,7 @@ class Tags(db.Model):
         # magic remove all tags on post_has_tags
         del post.tags[:]
 
-        tagsArray = [x.strip() for x in tags.split(',')]
+        tagsArray = [slugify(x.strip()) for x in tags.split(',')]
 
         for name in tagsArray:
             tag = Tags.query.filter(Tags.tag == name).first()

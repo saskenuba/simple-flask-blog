@@ -68,6 +68,24 @@ function postGetJson(postId) {
         });
 }
 
+function postGetJson(postId, offset, limit) {
+/*
+ * Returns an array with entries
+ */
+    let parameters = {
+        postid: postId,
+        offset: offset,
+        limit: limit
+    };
+
+    return fetch(Flask.url_for('getJsonPost', parameters))
+        .then(function(response) {
+            return response.json();
+        }, function(err) {
+            throw new Error('Server response was not ok');
+        });
+}
+
 // send json
 // and returns answer as a promise and logs
 function sendJson(flasklocation, settingsObj) {

@@ -9,8 +9,14 @@ from wtforms_json import from_json
 from flask_login import login_required, current_user, login_user, logout_user
 from slugify import slugify
 import re
+import datetime
 
 # TODO: infinite scrolling or page navigation
+
+# Usuario novo caso precise
+# novoUsuario = Users('testeuser', '12345')
+# db.session.add(novoUsuario)
+# db.session.commit()
 
 
 # main page has all blog entries
@@ -18,19 +24,25 @@ import re
 def index():
 
     # query for all db entries
-    dbEntries = Entry.query.order_by(Entry.timestamp.desc()).all()
+    dbEntries = Entry.getFilteredEntries(0, limit=3)
 
-    dbEntriesSerialized = [i.serialize for i in dbEntries]
-
-    # validates json, then loads into object
-    jsonQuery = json.loads(json.dumps(dbEntriesSerialized))
+    # loads entries into json
+    jsonQuery = Entry.toJson(dbEntries)
 
     return render_template("index.html", blogEntries=jsonQuery)
 
 
 @app.route('/about')
 def about():
-    return render_template("about.html")
+    nascimento = datetime.date(year=1994, month=1, day=11)
+    hoje = datetime.date.today()
+    minhaIdade = (hoje.year - nascimento.year)
+    return render_template("about.html", minhaIdade=minhaIdade)
+
+
+@app.route('/portfolio')
+def portfolio():
+    return render_template('portfolio.html')
 
 
 @app.route('/tags/<string>')
@@ -141,20 +153,36 @@ def page_not_found(e):
 
 # returns json of post content
 @app.route('/post/json/<postid>')
-def getJsonPost(postid):
+@app.route('/post/json/<postid>/<offset>/<limit>')
+def getJsonPost(postid, offset=None, limit=None):
+    """This is the main API that returns posts inside the db.
+
+    :param postid: This should be all to return everypost, or an specific Post ID.
+    :param offset: Offset for loading posts.
+    :param limit:  Limit of query.
+    :returns: Json list with N posts.
+    :rtype:
+
+    """
 
     # convert request to str
-    parameter = str(postid)
+    postID = str(postid)
 
     # checks for correct request
     pattern = re.compile('[0-9]+')
-    match = pattern.match(parameter)
+    match = pattern.match(postID)
 
     # if ask for all, send everypost
-    if postid == 'all':
-        dbEntries = Entry.query.all()
-        dbEntriesSerialized = [i.serialize for i in dbEntries]
-        return jsonify(dbEntriesSerialized)
+    if postid == 'all' and offset is None and limit is None:
+        dbEntries = Entry.getFilteredEntries()
+        serialized = [post.serialize for post in dbEntries]
+        return jsonify(serialized)
+
+    elif postid == 'all' and offset is not None and limit is not None:
+        dbEntries = Entry.getFilteredEntries(int(offset), int(limit))
+        serialized = [post.serialize for post in dbEntries]
+        return jsonify(serialized)
+
     # else, just the one asked
     elif match:
         dbEntry = Entry.query.get(postid)
@@ -179,8 +207,8 @@ def viewPost(number, title=None):
 
     # creating test client to fetch json
     client = current_app.test_client()
-    postRequested = client.get(
-        '{}post/json/{}'.format(request.url_root, number))
+    postRequested = client.get('{}post/json/{}'.format(request.url_root,
+                                                       number))
 
     if postRequested.status == '404 NOT FOUND':
         return render_template('404.html'), 404

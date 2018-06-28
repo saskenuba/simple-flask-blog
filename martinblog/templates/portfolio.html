@@ -1,0 +1,51 @@
+{% extends "layout.html" %} {% block title %} Martin Mariano - Portfolio {% endblock %} {% block jsonld %} {% endblock %} {% block content %}
+<section class="portfolio">
+
+
+    <div class="container">
+        <h1 class="ui header centered">PORTFÓLIO</h1>
+        <div class="ui subheader centered">
+            Projetos de caráter pessoal e profissional. Clique no desejado para maiores detalhes.
+        </div>
+    </div>
+
+    <div class="display ui equal width grid">
+        <div class="column">
+            <div class="ui fluid image bordered rounded">
+                <img src="{{url_for('static', filename='projetosite.jpg')}}">
+            </div>
+            <h3 class="ui header">
+                Website Pessoal & Blog
+            </h3>
+            <p>Desenvolvido para servir de site pessoal, e também como blog para postagens interessantes.</p>
+        </div>
+        <div class="column">
+            <div class="ui fluid image bordered rounded">
+                <img src="{{url_for('static', filename='projeto1.jpg')}}">
+            </div>
+            <h3 class="ui header centered">
+                Exploração de Dados e Análise - WhatsApp
+            </h3>
+            <p>Análise da conversa com minha namorada desde o momento que nos conhecemos até os dois primeiros anos de namoro.</p>
+        </div>
+        <div class="column">
+            <div class="ui fluid image bordered rounded">
+                <img src="{{url_for('static', filename='ancoraservice.png')}}">
+            </div>
+            <h3 class="ui header centered">
+                Âncora Service - Criacao do Website
+            </h3>
+            <p>Desenvolvido para Âncora Service, especializada em Ar Condicionados e automação residencial.</p>
+        </div>
+    </div>
+
+</section>
+{% endblock %} {% block scripts %}
+<script>
+    $(document).ready(function() {
+        $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+    });
+</script>
+{% endblock %}

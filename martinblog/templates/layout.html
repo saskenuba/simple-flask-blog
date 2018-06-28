@@ -45,7 +45,7 @@
         <!-- Boostrap content -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
-        <!-- PlaceHolder -->
+        <!-- Meu CSS -->
         <link href="{{ url_for('static', filename='layout.css') }}" rel="stylesheet" />
 
         <!-- Animate -->
@@ -81,6 +81,7 @@
                  End of Search Bar -->
             <a class="item sidebar-first" href="{{url_for('index')}}"><i class="home icon"></i> Home </a>
             <a class="item" href="{{url_for('about')}}"><i class="info icon"></i> Sobre </a>
+            <a class="item" href="{{url_for('portfolio')}}"><i class="image icon"></i> Portfólio </a>
             <a class="item" href="{{url_for('blogPosts')}}"><i class="edit icon"></i> Blog Posts </a>
             <a class="item" href="{{url_for('login')}}"><i class="desktop icon"></i> Dashboard </a>
             <a class="item" href="{{url_for('contact')}}" ><i class="mail outline icon"></i> Contato </a>
@@ -106,7 +107,7 @@
         <!-- End of main content -->
 
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://ft-polyfill-service.herokuapp.com/v2/polyfill.min.js"></script>
+        <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
 
         <script
             src="https://code.jquery.com/jquery-3.2.1.js"
