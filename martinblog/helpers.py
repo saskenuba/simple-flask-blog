@@ -1,19 +1,23 @@
-from collections import defaultdict
-import requests
 import re
+from collections import defaultdict
+
+import requests
 
 
 def tablelizePosts(json):
     years = defaultdict(dict)
     months = defaultdict(dict)
+    days = defaultdict(dict)
 
     for post in json:
         currentPostYear = post['timestamp'][2]
         currentPostMonth = post['timestamp'][1]
         currentPostDay = post['timestamp'][0]
+        currentPostRank = post['id']
 
         years[currentPostYear][currentPostMonth] = months[currentPostMonth]
-        months[currentPostMonth][currentPostDay] = [
+        months[currentPostMonth][currentPostDay] = days[currentPostDay]
+        days[currentPostDay][currentPostRank] = [
             post['id'], post['title'], post['tags']
         ]
 

@@ -35,7 +35,7 @@
         </script>
 
         <!-- All semantic content -->
-        <link href="{{ url_for('static', filename='semantic.min.css') }}" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='css/semantic.min.css') }}" rel="stylesheet" />
 
         <!-- FontAwesome content -->
         <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet" />
@@ -46,7 +46,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
         <!-- Meu CSS -->
-        <link href="{{ url_for('static', filename='layout.css') }}" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='css/layout.css') }}" rel="stylesheet" />
 
         <!-- Animate -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
@@ -114,8 +114,9 @@
             integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
             crossorigin="anonymous"></script>
 
-        <script src="{{ url_for('static', filename='semantic.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='script-dist.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/dist/helper-dist.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/dist/resize-dist.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/dist/semantic.min.js') }}"></script>
 
         <!-- Start of additional scripts -->
         {% block scripts %}{% endblock %}

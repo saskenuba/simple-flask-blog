@@ -25,6 +25,7 @@ autoflake = "*"
 flake8 = "*"
 ipython = "*"
 jedi = "*"
+isort = "*"
 
 [requires]
 python_version = "3.6"

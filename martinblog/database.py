@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from flask_login import UserMixin
-from flask import json
-from slugify import slugify
+
 import bcrypt
+from flask import json
+from flask_login import UserMixin
+from slugify import slugify
 
 # import db from init
 from martinblog import db
@@ -85,9 +86,7 @@ class Entry(db.Model):
         :rtype: json
 
         """
-        serializedCollection = [
-            item.serialize for item in entryCollection
-        ]
+        serializedCollection = [item.serialize for item in entryCollection]
 
         return json.loads(json.dumps(serializedCollection))
 
@@ -121,9 +120,6 @@ class Tags(db.Model):
     def __repr__(self):
         return self.tag
 
-    #def __repr__(self):
-    #    return '<Tag Object, ID: {}, Tag: {}>'.format(self.id, self.tag)
-
     @staticmethod
     def commitAll(tags, post):
         "Create tags for current post, and also checks for duplicates"
@@ -147,7 +143,29 @@ class Tags(db.Model):
             db.session.commit()
 
 
-# hash password later
+class PortfolioItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100))
+    slug = db.Column(db.String(100))
+    imagelink = db.Column(db.String(100))
+    content = db.Column(db.JSON)
+    timestamp = db.Column(db.DateTime)
+
+    def __init__(self, title, imagelink, content, timestamp=None):
+        self.title = title
+        self.slug = slugify(title)
+        self.imagelink = imagelink
+        self.content = content
+
+        if timestamp is None:
+            timestamp = datetime.utcnow()
+        self.timestamp = timestamp
+
+    def __repr__(self):
+        return '<Portfolio Item Object id: {}, title: {}>'.format(
+            self.id, self.title)
+
+
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True)

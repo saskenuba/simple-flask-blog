@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from flask import render_template, json, jsonify, request, make_response, current_app, redirect, url_for, flash
-from martinblog import app, db, login_manager
-from martinblog.database import Entry, Users, Tags
-from martinblog.helpers import tablelizePosts, Mailgun
-from martinblog.forms import ContactForm
-from wtforms_json import from_json
-from flask_login import login_required, current_user, login_user, logout_user
-from slugify import slugify
-import re
 import datetime
+import re
 
-# TODO: infinite scrolling or page navigation
+from flask import (current_app, flash, json, jsonify, make_response, redirect,
+                   render_template, request, url_for)
+from flask_login import current_user, login_required, login_user, logout_user
+from slugify import slugify
+from wtforms_json import from_json
+
+from martinblog import app, db, login_manager
+from martinblog.database import Entry, Tags, Users
+from martinblog.forms import ContactForm, LoginForm, PortfolioForm
+from martinblog.helpers import Mailgun, tablelizePosts
 
 # Usuario novo caso precise
 # novoUsuario = Users('testeuser', '12345')
@@ -45,23 +46,34 @@ def portfolio():
     return render_template('portfolio.html')
 
 
+@app.route('/portfolio/<itemID>')
+def portfolio_item(itemID):
+    return render_template('portfolio_item.html')
+
+
 @app.route('/tags/<string>')
 def tags(string):
 
-    # query for posts that matches tag
-    dbEntries = Tags.query.filter(Tags.tag == string).first()
+    chosenTag = string
+
+    # query for post that matches tag chosen by user
+    dbEntries = Tags.query.filter(Tags.tag == chosenTag).first()
+
+    # sort by descending order
+    sortedDbEntries = sorted(
+        dbEntries.entries, key=lambda x: x.id, reverse=True)
 
     # in case tag doesnt exists
     if len(dbEntries.entries) is 0:
         return render_template('404.html'), 404
 
     # then serialize posts
-    dbEntriesSerialized = [i.serialize for i in dbEntries.entries]
+    dbEntriesSerialized = [i.serialize for i in sortedDbEntries]
 
     # validates json, then loads into object
     jsonQuery = json.loads(json.dumps(dbEntriesSerialized))
 
-    return render_template("index.html", blogEntries=jsonQuery)
+    return render_template("tags.html", TAG=chosenTag, blogEntries=jsonQuery)
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -147,7 +159,7 @@ def page_not_found(e):
 
 
 ###############################################################################
-#                                     API                                     #
+#                               Posts API                                     #
 ###############################################################################
 
 
@@ -216,12 +228,12 @@ def viewPost(number, title=None):
     postRequestedJson = json.loads(postRequested.data)
 
     # take care of this when deploying
-    #urlRoot = str(request.url_root)
+    # urlRoot = str(request.url_root)
 
     return render_template('viewpost.html', blogEntry=postRequestedJson)
 
 
-# page just to see post
+# page to add post
 @app.route('/post', methods=['POST'])
 @login_required
 def addPost():
@@ -333,8 +345,13 @@ def deletePost(postid):
 @login_required
 def dashboard():
 
+    portfolioAddForm = PortfolioForm()
+
     response = make_response(
-        render_template("dashboard.html", username=current_user.username))
+        render_template(
+            "dashboard.html",
+            username=current_user.username,
+            portfolioAddForm=portfolioAddForm))
     return response
 
 
@@ -355,12 +372,14 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard', username=current_user.username))
 
-    # if user is not logged in yet
-    if request.method == "POST":
+    # instantiate form
+    form = LoginForm(request.form)
 
-        # gather form content
-        formUsername = request.form['username']
-        formPassword = request.form['password']
+    # if user is not logged in yet
+    if request.method == "POST" and form.validate():
+
+        formUsername = form.username.data
+        formPassword = form.password.data
 
         # get user
         userQuery = Users.query.filter_by(username=formUsername).first()
@@ -376,7 +395,7 @@ def login():
             return redirect(url_for('login'))
 
     elif request.method == "GET":
-        return render_template("login.html")
+        return render_template("login.html", form=form)
 
 
 @app.route('/logout')

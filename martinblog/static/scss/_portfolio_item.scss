@@ -1,0 +1,24 @@
+.scrolling-wrapper-flexbox {
+    background-color: inherit;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    //height: calc(100vh - 4em);
+    height: calc(100vh - 4em - 60px);
+    justify-content: space-between;
+
+    .portfolio-page {
+        background-color: inherit;
+        flex: 0 0 auto;
+        display: block;
+        height: 100%;
+
+        // size of page
+        width: calc(100vw - 260px - 56px) ;
+    }
+
+    -webkit-overflow-scrolling: touch;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

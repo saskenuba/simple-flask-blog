@@ -46,6 +46,29 @@ At this moment I am using PostgreSQL.
 db_conn = 'postgresql+psycopg2://[username]:[password]@localhost/[database]'
 ```
 
+### Changelog (0.4.8):
+
+JS is going to be replaced with Typescript because of auto-completion and some other features I find very useful.
+
+#### Added:
+- Cosmetic addition of avatar giving tips on tag selection(still needs work);
+- PortfolioItem on database;
+- Added upper menu on dashboard, to choose between posts, portfolio and users settings;
+
+#### Changed:
+- Reorganized files of the whole project to their correct folders;
+- Login page is now being handled and validated with wtforms;
+
+#### Fixed:
+- Fixed bug where chosen tags where in ascending order, instead of desc;
+- Major refactor of dashboard menus;
+- Reworked BlogPosts page to correctly display multiple posts made on the same day;
+
+#### Todo:
+- Finish implementing portfolio forms and API;
+- Migrate js files to typescript;
+
+
 ### Changelog (0.4.7):
 
 I am very happy to announce (to just me apparently) that we now have an official

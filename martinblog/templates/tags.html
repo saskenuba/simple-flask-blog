@@ -1,4 +1,27 @@
-{% extends "layout.html" %} {% block title %} Martin Mariano - Blog do Desenvolvedor {% endblock %} {% block content %} {% for entry in blogEntries %}
+{% extends "layout.html" %}
+{% block title %}
+    Martin Mariano - Blog do Desenvolvedor
+{% endblock %}
+
+{% block content %}
+    <div class="ui comments piled segment">
+        <div class="comment">
+            <a class="avatar">
+                <img alt="" src="https://semantic-ui.com/images/avatar/small/matt.jpg"/>
+            </a>
+            <div class="content">
+                <a class="author">Martin</a>
+                <div class="metadata">
+                    <div class="date">
+                        Agora há pouco
+                    </div>
+                </div>
+                <div class="text">Olá! Você está vendo os posts com o assunto: <b>{{ TAG | upper }}</b></div>
+
+            </div>
+        </div>
+    </div>
+    {% for entry in blogEntries %}
 <!-- Separate each as an article -->
 <article class="ui basic attached segment blog-post">
     <div class="ui red ribbon label">Tags: {% for tag in entry.tags %}
@@ -21,12 +44,9 @@
     </a>
     <!-- End of button-->
 </article>
-{% endfor %}
-<div id="showMoreContainer" class="ui grid centered">
-    <button id="showMore" class="ui primary basic button darkgReen">Ver mais postagens</button>
-</div>
+    {% endfor %}
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/dist/main-dist.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dist/main-dist.js') }}"></script>
 {% endblock %}

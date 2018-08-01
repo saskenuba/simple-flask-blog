@@ -26,13 +26,13 @@
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" tabindex="1" autocomplete="off" name="username" placeholder="Usuário">
+                            {{ form.username }}
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="lock icon"></i>
-                            <input type="password" tabindex="2" name="password" placeholder="Senha">
+                            {{ form.password }}
                         </div>
                     </div>
                     <button  value="submit" class="ui fluid large darkgreen submit button">Login</button>

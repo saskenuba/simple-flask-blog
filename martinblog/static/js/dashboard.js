@@ -16,45 +16,27 @@ class Form {
     }
 }
 
-
 window.addEventListener('load', function() {
+    document.getElementById('dashboardMainMenu').addEventListener('click', event => {
 
-    // All these selectors refer to the divs, not the tabs
-    let addMenu = document.getElementById('dashadd');
-    let editMenu = document.getElementById('dashedit');
-    let delMenu = document.getElementById('dashdel');
+        workingMainMenu(event);
 
-    // selects parent of 3 tabs
-    let dashboardMenu = document.getElementById('dashboardmenu');
-
-    // select children of tab items
-    let dashboardItems = document.getElementById('dashboarditems');
-
-    // on click
-    dashboardMenu.addEventListener('click', function(event) {
-
-        // remove active class for every chashboard/martinildren
-        Array.from(dashboardMenu.children).forEach(function(el) {
-            el.classList.remove('active');
-        });
-
-        // remove on class for active menu item
-        Array.from(dashboardItems.children).forEach(function(el) {
-            el.classList.remove('on');
-        });
-
-        // and activate only at the clicked one
-        event.target.classList.add('active');
-
-        if (event.target.id == 'add') {
-            document.getElementById('dashadd').classList.add('on');
-        } else if (event.target.id == 'edit') {
-            document.getElementById('dashedit').classList.add('on');
-        } else if (event.target.id == 'del') {
-            document.getElementById('dashdel').classList.add('on');
-        }
     });
+
+    let dashboardPostMenu = document.getElementById('dashboardPostMenu');
+    let dashboardPortfolioMenu = document.getElementById('dashboardPortfolioMenu');
+    let dashboardUserMenu = document.getElementById('dashboardUserMenu');
+
+    dashboardPostMenu.addEventListener('click', function(event) {
+        workingSubMenu('a', 'div', 'posts', event.target.dataset.posts);
+    });
+
+    dashboardPortfolioMenu.addEventListener('click', function(event) {
+        workingSubMenu('a', 'div', 'portfolio', event.target.dataset.portfolio);
+    });
+
 });
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                  Add Form                                 //
@@ -239,3 +221,24 @@ delForm.addEventListener('submit', function(event) {
         });
 
 }, false);
+
+function workingSubMenu(parentTag, childrenTag, dataAttribute, dataAttributeValue) {
+
+    let childrenSiblings = getElementbyTagNameWithDataAttributeAll(childrenTag, dataAttribute, dataAttributeValue);
+    let parentSiblings = getElementbyTagNameWithDataAttributeAll(parentTag, dataAttribute, dataAttributeValue);
+    parentSiblings.matches.forEach((element) => element.classList.add('active'));
+    parentSiblings.unmatched.forEach((element) => element.classList.remove('active'));
+    childrenSiblings.matches.forEach((element) => element.classList.add('on'));
+    childrenSiblings.unmatched.forEach((element) => element.classList.remove('on'));
+
+}
+
+function workingMainMenu(event) {
+
+    let relatedSections = getElementbyTagNameWithDataAttributeAll('div', 'dashboardsection', event.target.dataset.dashboardsection);
+    let parentSiblings = getElementbyTagNameWithDataAttributeAll('a', 'dashboardsection', event.target.dataset.dashboardsection);
+    parentSiblings.matches.forEach((element) => element.classList.add('active'));
+    parentSiblings.unmatched.forEach((element) => element.classList.remove('active'));
+    relatedSections.matches.forEach((element) => element.classList.remove('off'));
+    relatedSections.unmatched.forEach((element) => element.classList.add('off'));
+}

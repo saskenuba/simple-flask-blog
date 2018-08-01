@@ -33,4 +33,9 @@
             max-width: 100%;
         }
     }
+
+    :not(pre) > code {
+        display: inline !important;
+}
+
 }

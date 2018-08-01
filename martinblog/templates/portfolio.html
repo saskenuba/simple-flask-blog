@@ -1,4 +1,8 @@
-{% extends "layout.html" %} {% block title %} Martin Mariano - Portfolio {% endblock %} {% block jsonld %} {% endblock %} {% block content %}
+{% extends "layout.html" %}
+{% block title %} Martin Mariano - Portfolio {% endblock %}
+{% block jsonld %} {% endblock %}
+
+{% block content %}
 <section class="portfolio">
 
 
@@ -40,12 +44,6 @@
     </div>
 
 </section>
-{% endblock %} {% block scripts %}
-<script>
-    $(document).ready(function() {
-        $('pre code').each(function(i, block) {
-            hljs.highlightBlock(block);
-        });
-    });
-</script>
+{% endblock %}
+{% block scripts %}
 {% endblock %}

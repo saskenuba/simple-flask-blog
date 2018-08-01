@@ -22,7 +22,9 @@ window.addEventListener('load', function() {
             articleParent.appendChild(buttonShowMoreContainer);
 
             delay(200).then(function() {
-                window.scroll(0, findPos(document.getElementById(firstAppendedID)));
+                document.getElementById(firstAppendedID).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
 
             delay(1000).then(function() {
@@ -35,15 +37,16 @@ window.addEventListener('load', function() {
     });
 });
 
+/**
+ *  This functions accepts an array with entries, and then appends after its siblings.
+ * @param {Type of entriesArray} entriesArray - JSON Array of entries
+ * @param {Type of elementToAppend} elementToAppend - Parent element which entriesArray should be appended to.
+ * @returns {Return Type} Array of strings
+ */
 function appendPosts(entriesArray, elementToAppend) {
-    /*
-     *  This functions accepts an array with entries, and then appends after its siblings.
-     *  Returns all appended entries ID for whatsoever pourpose. :D
-     */
 
     let idSaver = [];
 
-    // each post in array
     entriesArray.forEach(function(elem) {
         idSaver.push('post' + elem.id);
 
@@ -76,9 +79,13 @@ function appendPosts(entriesArray, elementToAppend) {
     return idSaver;
 }
 
+/**
+ * Returns y position of html object
+ * @param {Type of obj} obj - Object to have his y position returned.
+ * @returns {Return Type} int
+ */
 function findPos(obj) {
     /*
-     * Returns y position of html object
      */
     var curtop = 0;
     if (obj.offsetParent) {
