@@ -1,24 +1,53 @@
+/// <reference path="./helper.ts" />
+
+ //import * as _ from 'lodash';
+
+
 class Form {
-    constructor(title, imagelink, content, tags) {
-        self.title = title;
-        self.imagelink = imagelink;
-        self.content = content;
-        self.tags = tags;
+    title: string;
+    imagelink: string;
+    content: string;
+    tags: string;
+    settings: object = {
+        method: null,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: Form
+    };
+
+    constructor(title: string, imagelink: string, content: string, tags: string) {
+        this.title = title
+        this.imagelink = imagelink;
+        this.content = content;
+        this.tags = tags;
     }
 
     get json() {
         return JSON.stringify({
-            title: self.title,
-            imagelink: self.imagelink,
-            content: self.content,
-            tags: self.tags
+            title: this.title,
+            imagelink: this.imagelink,
+            content: this.content,
+            tags: this.tags
         });
+    }
+
+    set httpMethod(method: string) {
+        this.settings['method'] = method;
+    }
+
+    send() {
+        // TODO:
     }
 }
 
 window.addEventListener('load', function() {
+
     document.getElementById('dashboardMainMenu').addEventListener('click', event => {
 
+        console.log(event);
         workingMainMenu(event);
 
     });
