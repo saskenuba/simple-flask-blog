@@ -106,6 +106,20 @@ def contact():
         return render_template("contact.html", form=form)
 
 
+@app.route('/dashboard')
+@login_required
+def dashboard():
+
+    portfolioAddForm = PortfolioForm()
+
+    response = make_response(
+        render_template(
+            "dashboard.html",
+            username=current_user.username,
+            portfolioAddForm=portfolioAddForm))
+    return response
+
+
 @app.route('/posts')
 def blogPosts():
 
@@ -162,10 +176,31 @@ def page_not_found(e):
 ###############################################################################
 
 
+# this page redirects to url with slug
+@app.route('/post/<int:number>')
+@app.route('/post/<int:number>/<title>')
+def viewPost(number, title=None):
+
+    # creating test client to fetch json
+    client = current_app.test_client()
+    postRequested = client.get('{}v1/post/{}'.format(request.url_root, number))
+
+    if postRequested.status == '404 NOT FOUND':
+        return render_template('404.html'), 404
+
+    postRequestedJson = json.loads(postRequested.data)
+
+    # take care of this when deploying
+    # urlRoot = str(request.url_root)
+
+    return render_template('viewpost.html', blogEntry=postRequestedJson)
+
+
 # returns json of post content
-@app.route('/post/json/<postid>')
-@app.route('/post/json/<postid>/<offset>/<limit>')
-def getJsonPost(postid, offset=None, limit=None):
+@app.route('/v1/post')
+@app.route('/v1/post/<offset>/<limit>')
+@app.route('/v1/post/<postid>')
+def getJsonPost(postid=None, offset=0, limit=None):
     """This is the main API that returns posts inside the db.
 
     :param postid: This should be all to return everypost, or an specific Post ID.
@@ -183,19 +218,9 @@ def getJsonPost(postid, offset=None, limit=None):
     pattern = re.compile('[0-9]+')
     match = pattern.match(postID)
 
-    # if ask for all, send everypost
-    if postid == 'all' and offset is None and limit is None:
-        dbEntries = Entry.getFilteredEntries()
-        serialized = [post.serialize for post in dbEntries]
-        return jsonify(serialized)
-
-    elif postid == 'all' and offset is not None and limit is not None:
-        dbEntries = Entry.getFilteredEntries(int(offset), int(limit))
-        serialized = [post.serialize for post in dbEntries]
-        return jsonify(serialized)
-
-    # else, just the one asked
-    elif match:
+    # match postid right away
+    if match:
+        print('here')
         dbEntry = Entry.query.get(postid)
 
         # if post doesnt exists in db
@@ -206,34 +231,20 @@ def getJsonPost(postid, offset=None, limit=None):
         response = make_response(jsonify(dbEntry.serialize))
         return response
 
-    # anything else, ignore
+    elif postid is None:
+
+        # remember getFilteredEntries is descending order
+        dbEntries = Entry.getFilteredEntries(offset, limit)
+        serialized = [post.serialize for post in dbEntries]
+        return jsonify(serialized)
+
+        # anything else, ignore
     else:
         return "not understanderino"
 
 
-# this page redirects to url with slug
-@app.route('/post/<int:number>')
-@app.route('/post/<int:number>/<title>')
-def viewPost(number, title=None):
-
-    # creating test client to fetch json
-    client = current_app.test_client()
-    postRequested = client.get('{}post/json/{}'.format(request.url_root,
-                                                       number))
-
-    if postRequested.status == '404 NOT FOUND':
-        return render_template('404.html'), 404
-
-    postRequestedJson = json.loads(postRequested.data)
-
-    # take care of this when deploying
-    # urlRoot = str(request.url_root)
-
-    return render_template('viewpost.html', blogEntry=postRequestedJson)
-
-
 # page to add post
-@app.route('/post', methods=['POST'])
+@app.route('/v1/post', methods=['POST'])
 @login_required
 def addPost():
     if request.method == 'POST':
@@ -268,7 +279,7 @@ def addPost():
 
 
 # page to edit post
-@app.route('/post/<int:postid>', methods=['PUT'])
+@app.route('/v1/post/<int:postid>', methods=['PUT'])
 @login_required
 def editPost(postid):
     if request.method == 'PUT':
@@ -310,7 +321,7 @@ def editPost(postid):
 
 
 # page to delete a post
-@app.route('/post/<int:postid>', methods=['DELETE'])
+@app.route('/v1/post/<int:postid>', methods=['DELETE'])
 @login_required
 def deletePost(postid):
     if request.method == 'DELETE':
@@ -340,18 +351,12 @@ def deletePost(postid):
 
 # dashboard for logged in user
 # must be logged
-@app.route('/dashboard')
+@app.route('/v1/portfolio/', methods=['GET', 'POST'])
+@app.route('/v1/portfolio/<int:itemID>', methods=['PUT', 'DELETE', 'GET'])
 @login_required
-def dashboard():
+def API_portfolio(itemID=None):
 
-    portfolioAddForm = PortfolioForm()
-
-    response = make_response(
-        render_template(
-            "dashboard.html",
-            username=current_user.username,
-            portfolioAddForm=portfolioAddForm))
-    return response
+    return 'heh'
 
 
 ###############################################################################

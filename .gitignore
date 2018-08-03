@@ -200,4 +200,7 @@ venv.bak/
 ## prepros
 *.config
 
+## backup from postgre
+DBbackup/
+
 # End of https://www.gitignore.io/api/node,linux,python
