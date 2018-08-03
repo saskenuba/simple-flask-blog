@@ -7,10 +7,9 @@ from flask import (current_app, flash, json, jsonify, make_response, redirect,
                    render_template, request, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
 from slugify import slugify
-from wtforms_json import from_json
 
 from martinblog import app, db, login_manager
-from martinblog.database import Entry, Tags, Users
+from martinblog.database_models import Entry, Tags, Users, PortfolioItems
 from martinblog.forms import ContactForm, LoginForm, PortfolioForm
 from martinblog.helpers import Mailgun, tablelizePosts
 
