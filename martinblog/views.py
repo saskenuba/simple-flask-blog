@@ -10,7 +10,7 @@ from slugify import slugify
 
 from martinblog import app, db, login_manager
 from martinblog.database_models import Entry, Tags, Users, PortfolioItems
-from martinblog.forms import ContactForm, LoginForm, PortfolioForm
+from martinblog.forms import ContactForm, LoginForm, PortfolioForm, PortfolioFormSelector
 from martinblog.helpers import Mailgun, tablelizePosts
 
 # Usuario novo caso precise
@@ -113,12 +113,20 @@ def contact():
 def dashboard():
 
     portfolioAddForm = PortfolioForm()
+    portfolioEditForm = PortfolioFormSelector()
+
+    # fix this
+    portfolioEditForm.itemSelector.choices = [
+        (x.id, x.title) for x in PortfolioItems.query.all()
+    ]
 
     response = make_response(
         render_template(
             "dashboard.html",
             username=current_user.username,
-            portfolioAddForm=portfolioAddForm))
+            portfolioAddForm=portfolioAddForm,
+            portfolioEditForm=portfolioEditForm)
+    )
     return response
 
 

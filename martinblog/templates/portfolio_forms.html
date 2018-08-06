@@ -1,0 +1,63 @@
+{% macro form(type, form) %}
+
+<div data-portfolio="{{ type }}" class="off">
+            <!-- Form -->
+            <form id="portfolio-{{ type }}" class="ui form" action="">
+
+                {% if form.itemSelector %}
+                    <div class="required inline field">
+                        {{ form.itemSelector.label }}
+                        {{ form.itemSelector }}
+                        <div class="ui left pointing label">Escolha o item a ser editado.</div>
+                    </div>
+                    <div class="ui divider"></div>
+                {% endif %}
+
+                <div class="required inline field">
+                    {{ form.title.label }}
+                    {{ form.title }}
+                    <div class="ui left pointing label">Este será o titulo do item de portfolio.</div>
+                </div>
+                <div class="ui divider"></div>
+                <div class="required field">
+                    {{ form.description.label }}
+                    {{ form.description }}
+                </div>
+                <div class="ui divider"></div>
+                <div class="required inline field">
+                    {{ form.imageUrl.label }}
+                    {{ form.imageUrl }}
+                    <div class="ui left pointing label">Placeholder</div>
+                </div>
+                <div class="ui divider"></div>
+                <div class="inline field">
+                    {{ form.content.label }}
+                    {{ form.content }}
+
+                    <label>Página</label>
+                    <div id="portfolio-{{ type }}-buttons" class="ui buttons">
+                        {% for number in range(1, 11) %}
+                            <button data-button="{{ number }}" type="button" class="ui button">{{ number }}</button>
+                        {% endfor %}
+                    </div>
+                    <div class="ui left pointing label">Selecione a pagina que deseja editar.</div>
+                </div>
+                <button id="portfolio-{{ type }}-submit" type="submit" form="portfolio-{{ type }}" class="ui primary button">Enviar</button>
+
+
+
+            </form>
+            <!-- End of Form -->
+</div>
+{% endmacro %}
+
+{% macro message(type) %}
+    <popup id="portfolio-{{ type }}-message-success" class="off">
+        <div class="ui positive message">
+            <i class="close icon"></i>
+            <div class="header">Tudo certo.</div>
+            O item criado com sucesso.
+            <a id="" href=""></a>
+        </div>
+    </popup>
+{% endmacro %}

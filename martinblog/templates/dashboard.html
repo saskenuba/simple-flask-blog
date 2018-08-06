@@ -1,273 +1,174 @@
-{% extends "layout.html" %} {% block title %} Martin Mariano - Dashboard {% endblock %} {% block content %}
-<main>
-    <header class="ui text container">
-        <h2 class="ui header text-center">Bem vindo {{ username | capitalize }}</h2>
-    </header>
+{% extends "layout.html" %}
+{% block title %} Martin Mariano - Dashboard {% endblock %}
+{% block content %}
+    <main>
+        <header class="ui text container">
+            <h2 class="ui header text-center">Bem vindo {{ username | capitalize }}</h2>
+        </header>
 
-    <div id="dashboardMainMenu" class="ui three pointing item menu">
-        <a data-dashboardSection="posts" class="item">Postagens</a>
-        <a data-dashboardSection="portfolio" class="item">Portfolio</a>
-        <a data-dashboardSection="users" class="item">Usuarios</a>
-    </div>
-
-    <div data-dashboardSection="posts" id="dashboardPostMenu" class="ui top attached tabular menu off">
-        <a data-posts="add" class="item">Adicionar Post</a>
-        <a data-posts="edit" class="item">Editar Post</a>
-        <a data-posts="del" class="item">Deletar Post</a>
-    </div>
-    <div data-dashboardSection="posts" id="dashboardPostItems" class="ui bottom attached segment off">
-
-        <!-- Add post -->
-        <div class="off" id="dashadd" data-posts="add">
-            <!-- Form -->
-            <form id="form-add" class="ui form" action="">
-                <div class="ui divider"></div>
-                <div class="required inline field">
-                    <label>Título</label>
-                    <input tabindex="1" autocomplete="off" placeholder="Título" id="post-title-add" name="post-title-add" type="text">
-                    <div class="ui left pointing label"> No máximo 110 caracteres. </div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="inline field">
-                    <label>Imagem</label>
-                    <input tabindex="2" autocomplete="off" placeholder="Link" id="post-image-add" name="post-image-add" type="text">
-                    <div class="ui left pointing label">Ratio 9:1</div>
-                    <label>Tags</label>
-                    <input tabindex="3" placeholder="Link" id="post-tags-add" name="post-tags-add" type="text">
-                    <div class="ui left pointing label">Tags do post, separadas por vírgula.</div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="required field">
-                    <label>Conteúdo</label>
-                    <textarea tabindex="4" id="post-content-add" name="post-content-add" type="text"></textarea>
-                </div>
-                <button id="post-submitbutton-add" type="submit" form="form-add" class="ui primary button">Enviar Post</button>
-            </form>
-            <!-- End of Form -->
-
-            <popup id="add-success" class="off">
-                <div class="ui positive message">
-                    <i class="close icon"></i>
-                    <div class="header">Tudo certo.</div>
-                    O post criado com sucesso.
-                    <a id="form-add-message-success" href=""></a>
-                </div>
-            </popup>
+        <div id="dashboardMainMenu" class="ui three pointing item menu">
+            <a data-dashboardSection="posts" class="item">Postagens</a>
+            <a data-dashboardSection="portfolio" class="item">Portfolio</a>
+            <a data-dashboardSection="users" class="item">Usuarios</a>
         </div>
 
-        <!-- Edit post -->
-        <div class="off" id="dashedit" data-posts="edit">
-            <!-- Form -->
-            <form id="form-edit" class="ui form" action="">
-                <div class="ui divider"></div>
-                <div class="required inline field">
-                    <label>Post ID</label>
-                    <input tabindex="1" placeholder="ID do post" id="post-id-edit" name="post-id" type="text">
-                    <div class="ui left pointing label"> Insira a ID do post a ser editado. Ocorrerá preenchimento automático dos campos. </div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="required inline field">
-                    <label>Título</label>
-                    <input tabindex="2" placeholder="Título" id="post-title-edit" name="post-title" type="text">
-                    <div class="ui left pointing label"> No máximo 110 caracteres. </div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="inline field">
-                    <label>Imagem</label>
-                    <input tabindex="3" placeholder="Link" id="post-image-edit" name="post-image-edit" type="text">
-                    <div class="ui left pointing label">Ratio 9:1</div>
-                    <label>Tags</label>
-                    <input tabindex="4" placeholder="Link" id="post-tags-edit" name="post-tags-edit" type="text">
-                    <div class="ui left pointing label">Tags do post, separadas por vírgula.</div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="required field">
-                    <label>Conteúdo</label>
-                    <textarea tabindex="5" id="post-content-edit" name="post-content-edit" type="text"></textarea>
-                </div>
-                <button id="post-submitbutton-edit" type="submit" form="form-edit" class="ui primary button">Enviar Post</button>
-            </form>
-            <!-- End of Form -->
-
-            <popup id="edit-success" class="off">
-                <div class="ui positive message">
-                    <i class="close icon"></i>
-                    <div class="header">Tudo certo.</div>
-                    Post editado com sucesso.
-                    <a id="form-edit-message-success" href=""></a>
-                </div>
-            </popup>
-
+        <div data-dashboardSection="posts" id="dashboardPostMenu" class="ui top attached tabular menu off">
+            <a data-posts="add" class="item">Adicionar Post</a>
+            <a data-posts="edit" class="item">Editar Post</a>
+            <a data-posts="del" class="item">Deletar Post</a>
         </div>
+        <div data-dashboardSection="posts" id="dashboardPostItems" class="ui bottom attached segment off">
 
-        <!-- Delete post -->
-        <div class="off" id="dashdel" data-posts="del">
-            <!-- Form -->
-            <form id="form-del" class="ui form" action="">
-                <div class="ui divider"></div>
-                <div class="required inline field">
-                    <label>Post ID</label>
-                    <input placeholder="ID do post" id="post-id-del" name="post-id" type="text">
-                    <div class="ui left pointing label"> Insira a ID do post a ser excluído.</div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="inline field disabled">
-                    <label>Título</label>
-                    <input placeholder="Título" id="post-title-del" name="post-title" type="text">
-                </div>
-                <button id="post-submitbutton-del" type="submit" form="form-del" class="ui primary button">Enviar Post</button>
-            </form>
-            <!-- End of Form -->
-
-            <popup id="del-success" class="off">
-                <div class="ui positive message">
-                    <i class="close icon"></i>
-                    <div class="header">Tudo certo.</div>
-                    Post deletado com sucesso.
-                    <a id="form-del-message-success" href=""></a>
-                </div>
-            </popup>
-        </div>
-
-    </div>
-
-    <div data-dashboardSection="portfolio" id="dashboardPortfolioMenu" class="ui top attached tabular menu off">
-        <a data-portfolio="add" class="item">Novo Trabalho</a>
-        <a data-portfolio="edit" class="item">Editar Trabalho</a>
-        <a data-portfolio="del" class="item">Deletar Trabalho</a>
-    </div>
-    <div data-dashboardSection="portfolio" id="dashboardPortfolioItems" class="ui bottom attached segment off">
-
-        <!-- Add post -->
-        <div data-portfolio="add" class="off">
-            <!-- Form -->
-            <form id="portfolio-add" class="ui form" action="">
-                <div class="ui divider"></div>
-                <div class="required inline field">
-                    {{ portfolioAddForm.title.label }}
-                    {{ portfolioAddForm.title }}
-                    <div class="ui left pointing label">Este será o titulo do item de portfolio.</div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="required field">
-                    {{ portfolioAddForm.description.label }}
-                    {{ portfolioAddForm.description }}
-                </div>
-                <div class="ui divider"></div>
-                <div class="required inline field">
-                    {{ portfolioAddForm.imageUrl.label }}
-                    {{ portfolioAddForm.imageUrl }}
-                    <div class="ui left pointing label">Placeholder</div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="inline field">
-                    {{ portfolioAddForm.content.label }}
-                    {{ portfolioAddForm.content }}
-
-                    <label>Página</label>
-                    <div id="portfolio-add-buttons" class="ui buttons">
-                        {% for number in range(1, 11) %}
-                            <button data-button="{{ number }}" type="button" class="ui button">{{ number }}</button>
-                        {% endfor %}
+            <!-- Add post -->
+            <div class="off" id="dashadd" data-posts="add">
+                <!-- Form -->
+                <form id="form-add" class="ui form" action="">
+                    <div class="ui divider"></div>
+                    <div class="required inline field">
+                        <label>Título</label>
+                        <input tabindex="1" autocomplete="off" placeholder="Título" id="post-title-add" name="post-title-add" type="text">
+                        <div class="ui left pointing label"> No máximo 110 caracteres. </div>
                     </div>
-                    <div class="ui left pointing label">Selecione a pagina que deseja editar.</div>
-                </div>
-                <button id="portfolio-add-submit" type="submit" form="portfolio-add" class="ui primary button">Enviar</button>
-            </form>
-            <!-- End of Form -->
+                    <div class="ui divider"></div>
+                    <div class="inline field">
+                        <label>Imagem</label>
+                        <input tabindex="2" autocomplete="off" placeholder="Link" id="post-image-add" name="post-image-add" type="text">
+                        <div class="ui left pointing label">Ratio 9:1</div>
+                        <label>Tags</label>
+                        <input tabindex="3" placeholder="Link" id="post-tags-add" name="post-tags-add" type="text">
+                        <div class="ui left pointing label">Tags do post, separadas por vírgula.</div>
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="required field">
+                        <label>Conteúdo</label>
+                        <textarea tabindex="4" id="post-content-add" name="post-content-add" type="text"></textarea>
+                    </div>
+                    <button id="post-submitbutton-add" type="submit" form="form-add" class="ui primary button">Enviar Post</button>
+                </form>
+                <!-- End of Form -->
 
-            <popup id="add-success" class="off">
-                <div class="ui positive message">
-                    <i class="close icon"></i>
-                    <div class="header">Tudo certo.</div>
-                    O post criado com sucesso.
-                    <a id="form-add-message-success" href=""></a>
-                </div>
-            </popup>
+                <popup id="add-success" class="off">
+                    <div class="ui positive message">
+                        <i class="close icon"></i>
+                        <div class="header">Tudo certo.</div>
+                        O post criado com sucesso.
+                        <a id="form-add-message-success" href=""></a>
+                    </div>
+                </popup>
+            </div>
+
+            <!-- Edit post -->
+            <div class="off" id="dashedit" data-posts="edit">
+                <!-- Form -->
+                <form id="form-edit" class="ui form" action="">
+                    <div class="ui divider"></div>
+                    <div class="required inline field">
+                        <label>Post ID</label>
+                        <input tabindex="1" placeholder="ID do post" id="post-id-edit" name="post-id" type="text">
+                        <div class="ui left pointing label"> Insira a ID do post a ser editado. Ocorrerá preenchimento automático dos campos. </div>
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="required inline field">
+                        <label>Título</label>
+                        <input tabindex="2" placeholder="Título" id="post-title-edit" name="post-title" type="text">
+                        <div class="ui left pointing label"> No máximo 110 caracteres. </div>
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="inline field">
+                        <label>Imagem</label>
+                        <input tabindex="3" placeholder="Link" id="post-image-edit" name="post-image-edit" type="text">
+                        <div class="ui left pointing label">Ratio 9:1</div>
+                        <label>Tags</label>
+                        <input tabindex="4" placeholder="Link" id="post-tags-edit" name="post-tags-edit" type="text">
+                        <div class="ui left pointing label">Tags do post, separadas por vírgula.</div>
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="required field">
+                        <label>Conteúdo</label>
+                        <textarea tabindex="5" id="post-content-edit" name="post-content-edit" type="text"></textarea>
+                    </div>
+                    <button id="post-submitbutton-edit" type="submit" form="form-edit" class="ui primary button">Enviar Post</button>
+                </form>
+                <!-- End of Form -->
+
+                <popup id="edit-success" class="off">
+                    <div class="ui positive message">
+                        <i class="close icon"></i>
+                        <div class="header">Tudo certo.</div>
+                        Post editado com sucesso.
+                        <a id="form-edit-message-success" href=""></a>
+                    </div>
+                </popup>
+
+            </div>
+
+            <!-- Delete post -->
+            <div class="off" id="dashdel" data-posts="del">
+                <!-- Form -->
+                <form id="form-del" class="ui form" action="">
+                    <div class="ui divider"></div>
+                    <div class="required inline field">
+                        <label>Post ID</label>
+                        <input placeholder="ID do post" id="post-id-del" name="post-id" type="text">
+                        <div class="ui left pointing label"> Insira a ID do post a ser excluído.</div>
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="inline field disabled">
+                        <label>Título</label>
+                        <input placeholder="Título" id="post-title-del" name="post-title" type="text">
+                    </div>
+                    <button id="post-submitbutton-del" type="submit" form="form-del" class="ui primary button">Enviar Post</button>
+                </form>
+                <!-- End of Form -->
+
+                <popup id="del-success" class="off">
+                    <div class="ui positive message">
+                        <i class="close icon"></i>
+                        <div class="header">Tudo certo.</div>
+                        Post deletado com sucesso.
+                        <a id="form-del-message-success" href=""></a>
+                    </div>
+                </popup>
+            </div>
+
         </div>
 
-        <!-- Edit post -->
-        <div data-portfolio="edit" class="off">
-            <!-- Form -->
-            <form id="form-edit" class="ui form" action="">
-                <div class="ui divider"></div>
-                <div class="required inline field">
-                    <label>Post ID</label>
-                    <input tabindex="1" placeholder="ID do post" id="post-id-edit" name="post-id" type="text">
-                    <div class="ui left pointing label"> Insira a ID do post a ser editado. Ocorrerá preenchimento automático dos campos. </div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="required inline field">
-                    <label>Título</label>
-                    <input tabindex="2" placeholder="Título" id="post-title-edit" name="post-title" type="text">
-                    <div class="ui left pointing label"> No máximo 110 caracteres. </div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="inline field">
-                    <label>Imagem</label>
-                    <input tabindex="3" placeholder="Link" id="post-image-edit" name="post-image-edit" type="text">
-                    <div class="ui left pointing label">Ratio 9:1</div>
-                    <label>Tags</label>
-                    <input tabindex="4" placeholder="Link" id="post-tags-edit" name="post-tags-edit" type="text">
-                    <div class="ui left pointing label">Tags do post, separadas por vírgula.</div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="required field">
-                    <label>Conteúdo</label>
-                    <textarea tabindex="5" id="post-content-edit" name="post-content-edit" type="text"></textarea>
-                </div>
-                <button id="post-submitbutton-edit" type="submit" form="form-edit" class="ui primary button">Enviar Post</button>
-            </form>
-            <!-- End of Form -->
-
-            <popup id="edit-success" class="off">
-                <div class="ui positive message">
-                    <i class="close icon"></i>
-                    <div class="header">Tudo certo.</div>
-                    Post editado com sucesso.
-                    <a id="form-edit-message-success" href=""></a>
-                </div>
-            </popup>
-
+        <div data-dashboardSection="portfolio" id="dashboardPortfolioMenu" class="ui top attached tabular menu off">
+            <a data-portfolio="add" class="item">Novo Trabalho</a>
+            <a data-portfolio="edit" class="item">Editar Trabalho</a>
+            <a data-portfolio="del" class="item">Deletar Trabalho</a>
         </div>
 
-        <!-- Delete post -->
-        <div data-portfolio="del" class="off">
-            <!-- Form -->
-            <form id="form-del" class="ui form" action="">
-                <div class="ui divider"></div>
-                <div class="required inline field">
-                    <label>Post ID</label>
-                    <input placeholder="ID do post" id="post-id-del" name="post-id" type="text">
-                    <div class="ui left pointing label"> Insira a ID do post a ser excluído.</div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="inline field disabled">
-                    <label>Título</label>
-                    <input placeholder="Título" id="post-title-del" name="post-title" type="text">
-                </div>
-                <button id="post-submitbutton-del" type="submit" form="form-del" class="ui primary button">Enviar Post</button>
-            </form>
-            <!-- End of Form -->
+        <div data-dashboardSection="portfolio" id="dashboardPortfolioItems" class="ui bottom attached segment off">
 
-            <popup id="del-success" class="off">
-                <div class="ui positive message">
-                    <i class="close icon"></i>
-                    <div class="header">Tudo certo.</div>
-                    Post deletado com sucesso.
-                    <a id="form-del-message-success" href=""></a>
-                </div>
-            </popup>
+            <!-- Add post -->
+            {% import 'portfolio_forms.html' as forms with context %}
+            {{ forms.form('add', portfolioAddForm) }}
+            {{ forms.message('add') }}
+
+            <!-- Edit post -->
+            {{ forms.form('edit', portfolioEditForm) }}
+            {{ forms.message('edit') }}
+
+            <!-- Delete post -->
+            {{ forms.form('del', portfolioEditForm) }}
+            {{ forms.message('del') }}
+
         </div>
-    </div>
-</main>
+    </main>
 
 {% endblock %} {% block scripts %}
-<script src="{{ url_for('static', filename='js/dist/dashboard-dist.js') }}"></script>
-<script src="//cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
-<script>
-    var editor_add = CKEDITOR.replace('post-content-add');
-    var editor_edit = CKEDITOR.replace('post-content-edit');
-    var editor_portfolio_add = CKEDITOR.replace('content');
-</script>
+    <script src="{{ url_for('static', filename='js/dist/dashboard-dist.js') }}"></script>
+    <script src="//cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
+    <script>
+     var editor_add = CKEDITOR.replace('post-content-add');
+     var editor_edit = CKEDITOR.replace('post-content-edit');
+     var editor_portfolio_add = CKEDITOR.replace('content');
+    </script>
+
+    <script>
+     $('#itemSelector')
+         .dropdown();
+    </script>
+
 {% endblock %}
