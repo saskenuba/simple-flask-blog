@@ -24,6 +24,11 @@ class Entry(db.Model):
     imagelink = db.Column("Imagelink", db.String(100))
     content = db.Column("Content", db.Text)
     timestamp = db.Column("Timestamp", db.DateTime)
+    lastUpdate = db.Column(
+        "Last_Updated_On",
+        db.DateTime,
+        nullable=True,
+        onupdate=datetime.now)
     dayofweek = db.Column("DayOfWeek", db.String(20))
     tags = db.relationship(
         'Tags',
@@ -138,12 +143,14 @@ class PortfolioItems(db.Model):
     id = db.Column("ItemID", db.Integer, primary_key=True)
     title = db.Column("Title", db.String(100))
     slug = db.Column("Slug", db.String(100))
+    description = db.Column("Description", db.Text)
     imagelink = db.Column("Imagelink", db.String(100))
     content = db.Column("Content", db.JSON)
     timestamp = db.Column("Timestamp", db.DateTime)
 
-    def __init__(self, title, imagelink, content, timestamp=None):
+    def __init__(self, title, description, imagelink, content, timestamp=None):
         self.title = title
+        self.description = description
         self.slug = slugify(title)
         self.imagelink = imagelink
         self.content = content
@@ -155,6 +162,37 @@ class PortfolioItems(db.Model):
     def __repr__(self):
         return '<Portfolio Item Object id: {}, title: {}>'.format(
             self.id, self.title)
+
+    @staticmethod
+    def toJson(entryCollection):
+        """Returns the entry collection into json format.
+        It is expected that the collection has a serialize function.
+
+        :param entryCollection: A query result with multiple entries.
+        :returns: The query result in json format.
+        :rtype: json
+
+        """
+        serializedCollection = [item.serialize for item in entryCollection]
+
+        return json.loads(json.dumps(serializedCollection))
+
+    @property
+    def serialize(self):
+        """Returns data in a serialized format.
+
+        :returns: A portfolio item in a dictionary format.
+        :rtype: dictionary
+
+        """
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'slug': self.slug,
+            'content': self.content,
+            'imagelink': self.imagelink
+        }
 
 
 class Tags(db.Model):

@@ -6,6 +6,8 @@ def init_db(db):
     # they will be registered properly on the metadata.  Otherwise
     # you will have to import them first before calling init_db()
     from martinblog.database_models import Entry, Users, Tags, PortfolioItems, post_has_tags
+    # db.drop_all()
+    # db.create_all()
     db.reflect()
 
 
