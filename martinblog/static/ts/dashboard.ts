@@ -1,55 +1,13 @@
 /// <reference path="./helper.ts" />
+/// <reference path="./definitions.ts" />
 
- //import * as _ from 'lodash';
-
-
-class Form {
-    title: string;
-    imagelink: string;
-    content: string;
-    tags: string;
-    settings: object = {
-        method: null,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: Form
-    };
-
-    constructor(title: string, imagelink: string, content: string, tags: string) {
-        this.title = title
-        this.imagelink = imagelink;
-        this.content = content;
-        this.tags = tags;
-    }
-
-    get json() {
-        return JSON.stringify({
-            title: this.title,
-            imagelink: this.imagelink,
-            content: this.content,
-            tags: this.tags
-        });
-    }
-
-    set httpMethod(method: string) {
-        this.settings['method'] = method;
-    }
-
-    send() {
-        // TODO:
-    }
-}
+//import * as _ from 'lodash';
 
 window.addEventListener('load', function() {
 
+
     document.getElementById('dashboardMainMenu').addEventListener('click', event => {
-
-        console.log(event);
         workingMainMenu(event);
-
     });
 
     let dashboardPostMenu = document.getElementById('dashboardPostMenu');
@@ -57,18 +15,26 @@ window.addEventListener('load', function() {
     let dashboardUserMenu = document.getElementById('dashboardUserMenu');
 
     dashboardPostMenu.addEventListener('click', function(event) {
-        workingSubMenu('a', 'div', 'posts', event.target.dataset.posts);
+        workingSubMenu('a', 'div', 'posts', event.target['dataset'].posts);
     });
 
     dashboardPortfolioMenu.addEventListener('click', function(event) {
-        workingSubMenu('a', 'div', 'portfolio', event.target.dataset.portfolio);
+        workingSubMenu('a', 'div', 'portfolio', event.target['dataset'].portfolio);
+    });
+
+    // comment
+    const portfolioItem = new PortfolioItem(document.getElementById('portfolio-add'));
+    portfolioItem.httpMethod = "POST";
+    document.getElementById('portfolio-add-buttons').addEventListener('click', portfolioItem.pageHandler);
+    document.getElementById('portfolio-add-submit').addEventListener('click', (event) => {
+        portfolioItem.submitHandler(event)
     });
 
 });
 
 
 ///////////////////////////////////////////////////////////////////////////////
-//                                  Add Form                                 //
+//                                  Add Post                                 //
 ///////////////////////////////////////////////////////////////////////////////
 
 let titleAddPost = document.getElementById('post-title-add');
@@ -83,66 +49,52 @@ addForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
     // gathering form data to be submited
-    const formReady = new Form(titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value).json;
-
-    const settings = {
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: formReady
-    };
+    const formReady = new Post(titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value);
+    formReady.httpMethod = "POST";
+    formReady.settings['body'] = formReady.json;
 
     // message link
     let successLink = document.getElementById('form-add-message-success');
 
-    let serverResponse = sendJson('addPost', settings);
+    let serverResponse: Promise<Response> = formReady.send('addPost');
     serverResponse.then(function(response) {
-            if (response.status == 201) {
-                return response.json();
-            } else {
-                return 'perdeu playba';
-            }
-        })
+        if (response.status == 201) {
+            return response.json();
+        } else {
+            return 'perdeu playba';
+        }
+    })
 
         .then(function(response) {
 
-            // insert links to message
-            successLink.href = response['link'];
-            successLink.textContent = 'Permalink para o post: ' + response['link'];
-
-            // disable button
+            // disable submit button, then append message at end of page
             let submitButton = document.getElementById('post-submitbutton-add');
-            submitButton.classList.add('disabled');
-
-            let popup = document.getElementById('add-success');
-            toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
+            let messageElement = document.getElementById('add-success');
+            appendMessage(successLink, messageElement, response['link'], submitButton)
         });
 
 }, false);
 
 ///////////////////////////////////////////////////////////////////////////////
-//                                 Edit Form                                 //
+//                                 Edit Post                                 //
 ///////////////////////////////////////////////////////////////////////////////
 
-let idEditPost = document.getElementById('post-id-edit');
-let titleEditPost = document.getElementById('post-title-edit');
-let contentEditPost = document.getElementById('post-content-edit');
-let imageEditPost = document.getElementById('post-image-edit');
-let tagsEditPost = document.getElementById('post-tags-edit');
+let idEditPost = <HTMLInputElement> document.getElementById('post-id-edit');
+let titleEditPost = <HTMLInputElement> document.getElementById('post-title-edit');
+let contentEditPost = <HTMLInputElement> document.getElementById('post-content-edit');
+let imageEditPost = <HTMLInputElement> document.getElementById('post-image-edit');
+let tagsEditPost = <HTMLInputElement> document.getElementById('post-tags-edit');
 let editForm = document.getElementById('form-edit');
 
 
 // listen for changes on inputs
 idEditPost.addEventListener('input', function(event) {
 
-    let postJson = postGetJson(event.target.value);
+    let postJson: Promise<Response> = postGetJson(event.target.value);
     postJson.then(function(response) {
-        titleEditPost.value = response.title;
-        imageEditPost.value = response.imagelink;
-        tagsEditPost.value = response.tags;
+        titleEditPost.value = response['title'];
+        imageEditPost.value = response['imagelink'];
+        tagsEditPost.value = response['tags'];
 
         // variable is set at dashboard script tag
         // this sets content of editor based on the response content
@@ -155,48 +107,35 @@ editForm.addEventListener('submit', function(event) {
     // prevent submit
     event.preventDefault();
 
-    let formReady = new Form(titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value).json;
-
-    const settings = {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: formReady
-    };
+    let formReady = new Post(titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value);
+    formReady.httpMethod = "PUT";
+    formReady.settings['body'] = formReady.json;
 
     // message link
     let successLink = document.getElementById('form-edit-message-success');
 
     let serverResponse = sendJsonWithObj('editPost', {
         "postid": idEditPost.value
-    }, settings);
+    }, formReady.settings);
     serverResponse.then(function(response) {
-            if (response.status == 202) {
-                return response.json();
-            } else
-                return console.log('perdeu playba');
-        })
+        if (response.status == 202) {
+            return response.json();
+        } else
+            return console.log('perdeu playba');
+    })
 
         .then(function(response) {
 
-            // insert links to message
-            successLink.href = response['link'];
-            successLink.textContent = 'Permalink para o post: ' + response['link'];
-
-            // disable button
+            // disable button and append message
             let submitButton = document.getElementById('post-submitbutton-edit');
-            submitButton.classList.add('disabled');
-
-            let popup = document.getElementById('edit-success');
-            toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
+            let messageElement = document.getElementById('edit-success');
+            appendMessage(successLink, messageElement, response['link'], submitButton)
         });
 
 }, false);
 
 ///////////////////////////////////////////////////////////////////////////////
-//                                Delete Form                                //
+//                                Delete Post                                //
 ///////////////////////////////////////////////////////////////////////////////
 
 const idDelPost = document.getElementById('post-id-del');
@@ -233,11 +172,11 @@ delForm.addEventListener('submit', function(event) {
         "postid": idDelPost.value
     }, settings);
     serverResponse.then(function(response) {
-            if (response.status == 200) {
-                return response.json();
-            } else
-                return 'perdeu playba';
-        })
+        if (response.status == 200) {
+            return response.json();
+        } else
+            return 'perdeu playba';
+    })
 
         .then(function(response) {
 
@@ -255,10 +194,10 @@ function workingSubMenu(parentTag, childrenTag, dataAttribute, dataAttributeValu
 
     let childrenSiblings = getElementbyTagNameWithDataAttributeAll(childrenTag, dataAttribute, dataAttributeValue);
     let parentSiblings = getElementbyTagNameWithDataAttributeAll(parentTag, dataAttribute, dataAttributeValue);
-    parentSiblings.matches.forEach((element) => element.classList.add('active'));
-    parentSiblings.unmatched.forEach((element) => element.classList.remove('active'));
-    childrenSiblings.matches.forEach((element) => element.classList.add('on'));
-    childrenSiblings.unmatched.forEach((element) => element.classList.remove('on'));
+    parentSiblings.matches.forEach((element: HTMLElement) => element.classList.add('active'));
+    parentSiblings.unmatched.forEach((element: HTMLElement) => element.classList.remove('active'));
+    childrenSiblings.matches.forEach((element: HTMLElement) => element.classList.add('on'));
+    childrenSiblings.unmatched.forEach((element: HTMLElement) => element.classList.remove('on'));
 
 }
 
@@ -266,8 +205,17 @@ function workingMainMenu(event) {
 
     let relatedSections = getElementbyTagNameWithDataAttributeAll('div', 'dashboardsection', event.target.dataset.dashboardsection);
     let parentSiblings = getElementbyTagNameWithDataAttributeAll('a', 'dashboardsection', event.target.dataset.dashboardsection);
-    parentSiblings.matches.forEach((element) => element.classList.add('active'));
-    parentSiblings.unmatched.forEach((element) => element.classList.remove('active'));
-    relatedSections.matches.forEach((element) => element.classList.remove('off'));
-    relatedSections.unmatched.forEach((element) => element.classList.add('off'));
+    parentSiblings.matches.forEach((element: HTMLElement) => element.classList.add('active'));
+    parentSiblings.unmatched.forEach((element: HTMLElement) => element.classList.remove('active'));
+    relatedSections.matches.forEach((element: HTMLElement) => element.classList.remove('off'));
+    relatedSections.unmatched.forEach((element: HTMLElement) => element.classList.add('off'));
+}
+
+function appendMessage(anchorElement: HTMLElement, messageElement: HTMLElement, responseSuccessLink: Response, submitButtom: HTMLElement) {
+
+    anchorElement['href'] = responseSuccessLink;
+    anchorElement.textContent = 'Permalink para o post: ' + responseSuccessLink;
+    submitButtom.classList.add('disabled');
+    toggleClasses(messageElement, 'on', 'off', 'animated', 'fadeIn');
+
 }

@@ -141,12 +141,17 @@
         <!-- Add post -->
         <div data-portfolio="add" class="off">
             <!-- Form -->
-            <form id="form-add" class="ui form" action="">
+            <form id="portfolio-add" class="ui form" action="">
                 <div class="ui divider"></div>
                 <div class="required inline field">
                     {{ portfolioAddForm.title.label }}
                     {{ portfolioAddForm.title }}
                     <div class="ui left pointing label">Este será o titulo do item de portfolio.</div>
+                </div>
+                <div class="ui divider"></div>
+                <div class="required field">
+                    {{ portfolioAddForm.description.label }}
+                    {{ portfolioAddForm.description }}
                 </div>
                 <div class="ui divider"></div>
                 <div class="required inline field">
@@ -160,13 +165,14 @@
                     {{ portfolioAddForm.content }}
 
                     <label>Página</label>
-                    <div class="ui buttons">
+                    <div id="portfolio-add-buttons" class="ui buttons">
                         {% for number in range(1, 11) %}
-                        <button type="button" class="ui button">{{ number }}</button> {% endfor %}
+                            <button data-button="{{ number }}" type="button" class="ui button">{{ number }}</button>
+                        {% endfor %}
                     </div>
                     <div class="ui left pointing label">Selecione a pagina que deseja editar.</div>
                 </div>
-                <button id="post-submitbutton-add" type="submit" form="form-add" class="ui primary button">Enviar</button>
+                <button id="portfolio-add-submit" type="submit" form="portfolio-add" class="ui primary button">Enviar</button>
             </form>
             <!-- End of Form -->
 

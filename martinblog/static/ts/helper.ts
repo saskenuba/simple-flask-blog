@@ -11,7 +11,7 @@ function isMobile(windowInnerWidth) {
     return 0;
 }
 
-function postGetJson(postId: number, offset?: number, limit?: number): Promise<Response> {
+async function postGetJson(postId: number, offset?: number, limit?: number): Promise<Response> {
     /*
      * Returns an array with entries
      */
@@ -21,24 +21,23 @@ function postGetJson(postId: number, offset?: number, limit?: number): Promise<R
         limit: limit
     };
 
-    return fetch(Flask.url_for('getJsonPost', parameters))
-        .then(function(response) {
-            return response.json();
-        }, function(err) {
-            throw new Error('Server response was not ok');
-        });
+    try {
+
+        let response = await fetch(Flask.url_for('getJsonPost', parameters));
+        return response.json();
+
+    } catch (err) {
+        console.log(err);
+    }
+
 }
 
-// send json
-// and returns answer as a promise and logs
-function sendJson(flaskLocation, settingsObj) {
-
-    return fetch(Flask.url_for(flaskLocation), settingsObj)
-        .then(response => response)
-        .catch(err => {
-            // trata se alguma das promises falhar
-            console.error('Failed retrieving information', err);
-        });
+async function sendJson(flaskLocation: string, settingsObj: object): Promise<any> {
+    try {
+        return await fetch(Flask.url_for(flaskLocation), settingsObj)
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 /**
@@ -86,6 +85,7 @@ function getElementbyTagNameWithDataAttribute(tagName: string, dataAttribute: st
  * @param tagName - String with tag name
  * @param dataAttribute: String with data attribute name
  * @param dataAttributeValue String with data attribute value
+ * @returns {object} Array<node> matches with all nodes that match the dataAttributeValue, Array<node> unmatched with all nodes with same dataAttribute that doesn't match dataAttributeValue.
  */
 function getElementbyTagNameWithDataAttributeAll(tagName: string, dataAttribute: string, dataAttributeValue) {
 
@@ -99,7 +99,8 @@ function getElementbyTagNameWithDataAttributeAll(tagName: string, dataAttribute:
 
         if (element['dataset'][dataAttribute] == dataAttributeValue) {
             matches.push(element)
-        } else {
+        }
+        else {
             unmatched.push(element)
         }
     }

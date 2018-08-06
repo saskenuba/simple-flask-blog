@@ -28,6 +28,11 @@ class PortfolioForm(Form):
         u'Nome do Trabalho:',
         validators=[DataRequired()],
         render_kw={'placeholder': 'Data Analysis'})
+    description = StringField(
+        u'Descrição:',
+        validators=[DataRequired()],
+        render_kw={'placeholder': 'Este projeto trata-se de...'})
+
     imageUrl = StringField(
         u'URL de Imagem de Capa:',
         validators=[DataRequired(), URL()],

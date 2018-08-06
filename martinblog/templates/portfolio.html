@@ -9,41 +9,28 @@
     <div class="container">
         <h1 class="ui header centered">PORTFÓLIO</h1>
         <div class="ui subheader centered">
-            Projetos de caráter pessoal e profissional. Clique no desejado para maiores detalhes.
+            Projetos de caráter pessoal e profissional. Clique no item desejado para maiores detalhes.
         </div>
     </div>
 
     <div class="display ui equal width grid">
+        {% for item in serializedItems %}
+
         <div class="column">
             <div class="ui fluid image bordered rounded">
-                <img src="{{url_for('static', filename='projetosite.jpg')}}">
+                <a href="{{ url_for('viewPortfolioItem', itemID=item.id) }}"><img src="{{ item.imagelink }}"></a>
             </div>
             <h3 class="ui header">
-                Website Pessoal & Blog
+                {{ item.title }}
             </h3>
-            <p>Desenvolvido para servir de site pessoal, e também como blog para postagens interessantes.</p>
+            <p>{{ item.description }}</p>
         </div>
-        <div class="column">
-            <div class="ui fluid image bordered rounded">
-                <img src="{{url_for('static', filename='projeto1.jpg')}}">
-            </div>
-            <h3 class="ui header centered">
-                Exploração de Dados e Análise - WhatsApp
-            </h3>
-            <p>Análise da conversa com minha namorada desde o momento que nos conhecemos até os dois primeiros anos de namoro.</p>
-        </div>
-        <div class="column">
-            <div class="ui fluid image bordered rounded">
-                <img src="{{url_for('static', filename='ancoraservice.png')}}">
-            </div>
-            <h3 class="ui header centered">
-                Âncora Service - Criacao do Website
-            </h3>
-            <p>Desenvolvido para Âncora Service, especializada em Ar Condicionados e automação residencial.</p>
-        </div>
+        {% endfor %}
     </div>
 
 </section>
 {% endblock %}
+
 {% block scripts %}
+
 {% endblock %}

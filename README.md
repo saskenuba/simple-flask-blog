@@ -46,6 +46,35 @@ At this moment I am using PostgreSQL.
 db_conn = 'postgresql+psycopg2://[username]:[password]@localhost/[database]'
 ```
 
+### Changelog (0.4.9):
+
+Tons of stuff migrated to typescript, API heavily modified to have some standards, and huge reestructure of project folders along with a lot of code refactor marks this update as one of biggest!
+
+But still a lot to do. When the portfolio section is completed, version 0.5.0  will be launched, along with UNINOVE Lembretes applet. Big stuff coming!
+
+#### Added:
+- Portfolio add item is fully functional!
+
+#### Fixed:
+
+##### Dashboard
+- Posts now have "last updated on" database.
+
+##### Database
+- Major refactor on database table names and organization;
+
+#### Changed:
+
+##### API
+- Now we have a real API! With the following routes: v1/post and v1/portfolio
+
+#### TODO:
+- Disable submit button etc on portfolio dash, and show success/error messages.
+- Create jinja custom filter for semantic ui, to write numbers in full(for css classes)
+- Full text search based on postgresql raw queries
+- API Documentation
+- Fix portfolio API permissions
+
 ### Changelog (0.4.8):
 
 JS is going to be replaced with Typescript because of auto-completion and some other features I find very useful.

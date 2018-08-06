@@ -1,64 +1,29 @@
-'use strict';
-
 /// <reference path="./helper.ts" />
+/// <reference path="./definitions.ts" />
 //import * as _ from 'lodash';
-var Form = /** @class */function () {
-    function Form(title, imagelink, content, tags) {
-        this.settings = {
-            method: null,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: Form
-        };
-        this.title = title;
-        this.imagelink = imagelink;
-        this.content = content;
-        this.tags = tags;
-    }
-    Object.defineProperty(Form.prototype, "json", {
-        get: function get() {
-            return JSON.stringify({
-                title: this.title,
-                imagelink: this.imagelink,
-                content: this.content,
-                tags: this.tags
-            });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Form.prototype, "httpMethod", {
-        set: function set(method) {
-            this.settings['method'] = method;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Form.prototype.send = function () {
-        // TODO:
-    };
-    return Form;
-}();
 window.addEventListener('load', function () {
     document.getElementById('dashboardMainMenu').addEventListener('click', function (event) {
-        console.log(event);
         workingMainMenu(event);
     });
     var dashboardPostMenu = document.getElementById('dashboardPostMenu');
     var dashboardPortfolioMenu = document.getElementById('dashboardPortfolioMenu');
     var dashboardUserMenu = document.getElementById('dashboardUserMenu');
     dashboardPostMenu.addEventListener('click', function (event) {
-        workingSubMenu('a', 'div', 'posts', event.target.dataset.posts);
+        workingSubMenu('a', 'div', 'posts', event.target['dataset'].posts);
     });
     dashboardPortfolioMenu.addEventListener('click', function (event) {
-        workingSubMenu('a', 'div', 'portfolio', event.target.dataset.portfolio);
+        workingSubMenu('a', 'div', 'portfolio', event.target['dataset'].portfolio);
+    });
+    // comment
+    var portfolioItem = new PortfolioItem(document.getElementById('portfolio-add'));
+    portfolioItem.httpMethod = "POST";
+    document.getElementById('portfolio-add-buttons').addEventListener('click', portfolioItem.pageHandler);
+    document.getElementById('portfolio-add-submit').addEventListener('click', function (event) {
+        portfolioItem.submitHandler(event);
     });
 });
 ///////////////////////////////////////////////////////////////////////////////
-//                                  Add Form                                 //
+//                                  Add Post                                 //
 ///////////////////////////////////////////////////////////////////////////////
 var titleAddPost = document.getElementById('post-title-add');
 var contentAddPost = document.getElementById('post-content-add');
@@ -69,38 +34,29 @@ addForm.addEventListener('submit', function (event) {
     // prevent submit
     event.preventDefault();
     // gathering form data to be submited
-    var formReady = new Form(titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value).json;
-    var settings = {
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: formReady
-    };
+    var formReady = new Post(titleAddPost.value, imageAddPost.value, editor_add.getData(), tagsAddPost.value);
+    formReady.httpMethod = "POST";
+    formReady.settings['body'] = formReady.json;
     // message link
     var successLink = document.getElementById('form-add-message-success');
-    var serverResponse = sendJson('addPost', settings);
+    var serverResponse = formReady.send('addPost');
     serverResponse.then(function (response) {
         if (response.status == 201) {
             return response.json();
-        } else {
+        }
+        else {
             return 'perdeu playba';
         }
-    }).then(function (response) {
-        // insert links to message
-        successLink.href = response['link'];
-        successLink.textContent = 'Permalink para o post: ' + response['link'];
-        // disable button
+    })
+        .then(function (response) {
+        // disable submit button, then append message at end of page
         var submitButton = document.getElementById('post-submitbutton-add');
-        submitButton.classList.add('disabled');
-        var popup = document.getElementById('add-success');
-        toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
+        var messageElement = document.getElementById('add-success');
+        appendMessage(successLink, messageElement, response['link'], submitButton);
     });
 }, false);
 ///////////////////////////////////////////////////////////////////////////////
-//                                 Edit Form                                 //
+//                                 Edit Post                                 //
 ///////////////////////////////////////////////////////////////////////////////
 var idEditPost = document.getElementById('post-id-edit');
 var titleEditPost = document.getElementById('post-title-edit');
@@ -112,9 +68,9 @@ var editForm = document.getElementById('form-edit');
 idEditPost.addEventListener('input', function (event) {
     var postJson = postGetJson(event.target.value);
     postJson.then(function (response) {
-        titleEditPost.value = response.title;
-        imageEditPost.value = response.imagelink;
-        tagsEditPost.value = response.tags;
+        titleEditPost.value = response['title'];
+        imageEditPost.value = response['imagelink'];
+        tagsEditPost.value = response['tags'];
         // variable is set at dashboard script tag
         // this sets content of editor based on the response content
         editor_edit.setData(response.content);
@@ -123,37 +79,30 @@ idEditPost.addEventListener('input', function (event) {
 editForm.addEventListener('submit', function (event) {
     // prevent submit
     event.preventDefault();
-    var formReady = new Form(titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value).json;
-    var settings = {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: formReady
-    };
+    var formReady = new Post(titleEditPost.value, imageEditPost.value, editor_edit.getData(), tagsEditPost.value);
+    formReady.httpMethod = "PUT";
+    formReady.settings['body'] = formReady.json;
     // message link
     var successLink = document.getElementById('form-edit-message-success');
     var serverResponse = sendJsonWithObj('editPost', {
         "postid": idEditPost.value
-    }, settings);
+    }, formReady.settings);
     serverResponse.then(function (response) {
         if (response.status == 202) {
             return response.json();
-        } else return console.log('perdeu playba');
-    }).then(function (response) {
-        // insert links to message
-        successLink.href = response['link'];
-        successLink.textContent = 'Permalink para o post: ' + response['link'];
-        // disable button
+        }
+        else
+            return console.log('perdeu playba');
+    })
+        .then(function (response) {
+        // disable button and append message
         var submitButton = document.getElementById('post-submitbutton-edit');
-        submitButton.classList.add('disabled');
-        var popup = document.getElementById('edit-success');
-        toggleClasses(popup, 'on', 'off', 'animated', 'fadeIn');
+        var messageElement = document.getElementById('edit-success');
+        appendMessage(successLink, messageElement, response['link'], submitButton);
     });
 }, false);
 ///////////////////////////////////////////////////////////////////////////////
-//                                Delete Form                                //
+//                                Delete Post                                //
 ///////////////////////////////////////////////////////////////////////////////
 var idDelPost = document.getElementById('post-id-del');
 var titleDelPost = document.getElementById('post-title-del');
@@ -184,8 +133,11 @@ delForm.addEventListener('submit', function (event) {
     serverResponse.then(function (response) {
         if (response.status == 200) {
             return response.json();
-        } else return 'perdeu playba';
-    }).then(function (response) {
+        }
+        else
+            return 'perdeu playba';
+    })
+        .then(function (response) {
         // disable button
         var submitButton = document.getElementById('post-submitbutton-del');
         submitButton.classList.add('disabled');
@@ -196,33 +148,24 @@ delForm.addEventListener('submit', function (event) {
 function workingSubMenu(parentTag, childrenTag, dataAttribute, dataAttributeValue) {
     var childrenSiblings = getElementbyTagNameWithDataAttributeAll(childrenTag, dataAttribute, dataAttributeValue);
     var parentSiblings = getElementbyTagNameWithDataAttributeAll(parentTag, dataAttribute, dataAttributeValue);
-    parentSiblings.matches.forEach(function (element) {
-        return element.classList.add('active');
-    });
-    parentSiblings.unmatched.forEach(function (element) {
-        return element.classList.remove('active');
-    });
-    childrenSiblings.matches.forEach(function (element) {
-        return element.classList.add('on');
-    });
-    childrenSiblings.unmatched.forEach(function (element) {
-        return element.classList.remove('on');
-    });
+    parentSiblings.matches.forEach(function (element) { return element.classList.add('active'); });
+    parentSiblings.unmatched.forEach(function (element) { return element.classList.remove('active'); });
+    childrenSiblings.matches.forEach(function (element) { return element.classList.add('on'); });
+    childrenSiblings.unmatched.forEach(function (element) { return element.classList.remove('on'); });
 }
 function workingMainMenu(event) {
     var relatedSections = getElementbyTagNameWithDataAttributeAll('div', 'dashboardsection', event.target.dataset.dashboardsection);
     var parentSiblings = getElementbyTagNameWithDataAttributeAll('a', 'dashboardsection', event.target.dataset.dashboardsection);
-    parentSiblings.matches.forEach(function (element) {
-        return element.classList.add('active');
-    });
-    parentSiblings.unmatched.forEach(function (element) {
-        return element.classList.remove('active');
-    });
-    relatedSections.matches.forEach(function (element) {
-        return element.classList.remove('off');
-    });
-    relatedSections.unmatched.forEach(function (element) {
-        return element.classList.add('off');
-    });
+    parentSiblings.matches.forEach(function (element) { return element.classList.add('active'); });
+    parentSiblings.unmatched.forEach(function (element) { return element.classList.remove('active'); });
+    relatedSections.matches.forEach(function (element) { return element.classList.remove('off'); });
+    relatedSections.unmatched.forEach(function (element) { return element.classList.add('off'); });
+}
+function appendMessage(anchorElement, messageElement, responseSuccessLink, submitButtom) {
+    anchorElement['href'] = responseSuccessLink;
+    anchorElement.textContent = 'Permalink para o post: ' + responseSuccessLink;
+    submitButtom.classList.add('disabled');
+    toggleClasses(messageElement, 'on', 'off', 'animated', 'fadeIn');
 }
 //# sourceMappingURL=dashboard.js.map
+//# sourceMappingURL=dashboard-dist.js.map

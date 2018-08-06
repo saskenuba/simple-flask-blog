@@ -42,12 +42,14 @@ def about():
 
 @app.route('/portfolio')
 def portfolio():
-    return render_template('portfolio.html')
 
+    # query for all db entries
+    allPortfolioItems = PortfolioItems.query.all()
 
-@app.route('/portfolio/<itemID>')
-def portfolio_item(itemID):
-    return render_template('portfolio_item.html')
+    # loads entries into json
+    serializedItems = PortfolioItems.toJson(allPortfolioItems)
+
+    return render_template('portfolio.html', serializedItems=serializedItems)
 
 
 @app.route('/tags/<string>')
@@ -349,12 +351,54 @@ def deletePost(postid):
     return 'you have nothing to see here, human!'
 
 
-# dashboard for logged in user
-# must be logged
+###############################################################################
+#                                Portfolio API                                #
+###############################################################################
+
+
+# this page redirects to url with slug
+@app.route('/portfolio/<int:itemID>')
+@app.route('/portfolio/<int:itemID>/<title>')
+def viewPortfolioItem(itemID, title=None):
+
+    # creating test client to fetch json
+    client = current_app.test_client()
+    requestedItem = client.get('{}v1/portfolio/{}'.format(
+        request.url_root, itemID))
+
+    if requestedItem.status == '404 NOT FOUND':
+        return render_template('404.html'), 404
+
+    postRequestedJson = json.loads(requestedItem.data)
+    print(postRequestedJson)
+
+    return render_template('portfolio_item.html', item=postRequestedJson)
+
+
+# check login conditions
 @app.route('/v1/portfolio/', methods=['GET', 'POST'])
 @app.route('/v1/portfolio/<int:itemID>', methods=['PUT', 'DELETE', 'GET'])
-@login_required
+#@login_required
 def API_portfolio(itemID=None):
+    newRequest = request.get_json()
+
+    if request.method == 'POST':
+
+        title = newRequest['title']
+        description = newRequest['description']
+        imagelink = newRequest['imagelink']
+        content = newRequest['pages']
+
+        newPortfolioItem = PortfolioItems(title, description, imagelink,
+                                          content)
+
+        db.session.add(newPortfolioItem)
+        db.session.commit()
+        return 'wot', 202
+
+    if request.method == 'GET' and itemID is not None:
+        item = PortfolioItems.query.filter_by(id=itemID).first()
+        return jsonify(item.serialize)
 
     return 'heh'
 
