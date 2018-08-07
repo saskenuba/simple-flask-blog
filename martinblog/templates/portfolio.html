@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="display ui equal width grid">
+    <div class="display ui equal width stackable grid">
         {% for item in serializedItems %}
 
         <div class="column">
@@ -24,8 +24,18 @@
                 {{ item.title }}
             </h3>
             <p>{{ item.description }}</p>
+            <!-- <div class="ui grid equal width">
+                 <div class="column">
+                 Ver mais informações
+                 </div>
+                 <div class="column">
+                 Acessar aplicativo
+                 </div>
+                 </div> -->
+
         </div>
         {% endfor %}
+
     </div>
 
 </section>

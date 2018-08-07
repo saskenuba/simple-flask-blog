@@ -113,20 +113,21 @@ def contact():
 def dashboard():
 
     portfolioAddForm = PortfolioForm()
-    portfolioEditForm = PortfolioFormSelector()
 
-    # fix this
-    portfolioEditForm.itemSelector.choices = [
-        (x.id, x.title) for x in PortfolioItems.query.all()
-    ]
+    portfolioEditForm = PortfolioFormSelector()
+    portfolioEditForm.fill(PortfolioItems)
+
+    portfolioDelForm = PortfolioFormSelector()
+    portfolioDelForm.fill(PortfolioItems)
 
     response = make_response(
         render_template(
             "dashboard.html",
             username=current_user.username,
             portfolioAddForm=portfolioAddForm,
-            portfolioEditForm=portfolioEditForm)
-    )
+            portfolioEditForm=portfolioEditForm,
+            portfolioDelForm=portfolioDelForm
+        ))
     return response
 
 
@@ -388,25 +389,48 @@ def viewPortfolioItem(itemID, title=None):
 @app.route('/v1/portfolio/<int:itemID>', methods=['PUT', 'DELETE', 'GET'])
 #@login_required
 def API_portfolio(itemID=None):
+
+    if itemID is not None:
+        item = PortfolioItems.query.filter(PortfolioItems.id == itemID).first()
+        if item is None:
+            return jsonify("get d fock out"), 404
+
+    # get only selected port
+    if request.method == 'GET':
+        item = PortfolioItems.query.filter_by(id=itemID).first()
+        return jsonify(item.serialize)
+
+    if request.method == 'DELETE':
+        PortfolioItems.query.filter(PortfolioItems.id == itemID).delete()
+        db.session.commit()
+        return jsonify("success"), 204
+
     newRequest = request.get_json()
+    title = newRequest['title']
+    description = newRequest['description']
+    imagelink = newRequest['imagelink']
+    content = newRequest['pages']
 
     if request.method == 'POST':
-
-        title = newRequest['title']
-        description = newRequest['description']
-        imagelink = newRequest['imagelink']
-        content = newRequest['pages']
-
         newPortfolioItem = PortfolioItems(title, description, imagelink,
                                           content)
 
         db.session.add(newPortfolioItem)
         db.session.commit()
-        return 'wot', 202
+        return 'wot', 201
 
-    if request.method == 'GET' and itemID is not None:
-        item = PortfolioItems.query.filter_by(id=itemID).first()
-        return jsonify(item.serialize)
+    if request.method == 'PUT':
+        PortfolioItems.query.filter(PortfolioItems.id == itemID).update(
+            dict(
+                title=title,
+                slug=slugify(title),
+                description=description,
+                content=content,
+                imagelink=imagelink))
+        db.session.commit()
+        return jsonify({"response": "success"}), 204
+
+
 
     return 'heh'
 

@@ -32,7 +32,7 @@ class ContactForm(Form):
 
 class PortfolioForm(Form):
     title = StringField(
-        u'Nome do Trabalho:',
+        u'Título do trabalho:',
         validators=[DataRequired()],
         render_kw={'placeholder': 'Data Analysis'})
     description = StringField(
@@ -48,4 +48,9 @@ class PortfolioForm(Form):
 
 
 class PortfolioFormSelector(PortfolioForm):
-    itemSelector = SelectField(u'Nome do Projeto:')
+    itemSelector = SelectField(u'Selecione o projeto:')
+
+    # comment
+    def fill(self, DBModel):
+        self.itemSelector.choices = [(x.id, x.title)
+                                     for x in DBModel.query.all()]

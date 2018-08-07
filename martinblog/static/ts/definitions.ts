@@ -1,14 +1,19 @@
 // DRY!
 class Form {
     settings: object = {
-        method: null,
+        method: undefined,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: null
+        body: undefined
     };
+
+
+    get httpMethod() {
+        return this.settings['method'];
+    }
 
     set httpMethod(method: string) {
         this.settings['method'] = method;
@@ -16,6 +21,7 @@ class Form {
 }
 
 class PortfolioItem extends Form {
+    id: string = undefined;
     title: string = null;
     description: string = null;
     imagelink: string = null;
@@ -24,9 +30,12 @@ class PortfolioItem extends Form {
     currentPage: number = 1;
     parentElement: HTMLElement = null;
 
-    constructor(parentElement: HTMLElement) {
+    editor: CKEDITOR.editor = undefined;
+
+    constructor(parentElement: HTMLElement, editor?: CKEDITOR.editor) {
         super()
         this.parentElement = parentElement;
+        this.editor = editor;
     }
 
     // should bind to event listener, and respond to clicks on appropriate pages
@@ -34,29 +43,39 @@ class PortfolioItem extends Form {
         let pageNumber: DOMStringMap = event.target['dataset']['button']
         let currentPageButton = <HTMLElement>event.target;
 
-        this.saveContent(editor_portfolio_add.getData());
+        this.saveContent(this.editor.getData());
         this.page = pageNumber;
-        editor_portfolio_add.setData(this.pageContent);
+        this.editor.setData(this.pageContent);
 
     }
 
     public submitHandler = (event: MouseEvent) => {
         event.preventDefault()
 
-        this.saveAllAttributes();
-        this.toJson()
+        if (this.httpMethod != "DELETE") {
+            this.saveAllAttributes();
+            this.toJson()
+        }
+
         this.send();
 
     }
 
     // parent element should follow an specific order every time
     private saveAllAttributes() {
-        this.title = this.parentElement[0].value
-        this.description = this.parentElement[1].value
-        this.imagelink = this.parentElement[2].value
+        this.title = this.parentElement.querySelector('input[name="title"]')['value'];
+        this.description = this.parentElement.querySelector('input[name="description"]')['value'];
+        this.imagelink = this.parentElement.querySelector('input[name="imageUrl"]')['value'];
 
         // save current page without the need to click another one again
-        this.saveContent(editor_portfolio_add.getData());
+        this.saveContent(this.editor.getData());
+    }
+
+    // parent element should follow an specific order every time
+    private saveToParent() {
+        this.parentElement.querySelector('input[name="title"]')['value'] = this.title;
+        this.parentElement.querySelector('input[name="description"]')['value'] = this.description;
+        this.parentElement.querySelector('input[name="imageUrl"]')['value'] = this.imagelink;
     }
 
     private toJson = () => {
@@ -68,13 +87,29 @@ class PortfolioItem extends Form {
         })
     }
 
-    public send() {
-        return sendJson('API_portfolio', this.settings);
+    public retrieve = (itemID: number): void => {
+        let currentItem = itemID;
 
+        getPortfolioItem(currentItem)
+            .then(response => {
+                this.id = response['id'];
+                this.title = response['title'];
+                this.description = response['description'];
+                this.imagelink = response['imagelink'];
+                this.saveToParent();
+            })
+    }
+
+    public send() {
+
+        if (this.httpMethod == "PUT" || this.httpMethod == "DELETE") {
+            return sendJsonWithObj('API_portfolio', { "itemID": this.id }, this.settings);
+        }
+        return sendJson('API_portfolio', this.settings);
     }
 
     get pageContent() {
-        return this.pages[this.currentPage]
+        return this.pages[this.currentPage];
     }
 
     set page(pageNumber) {
@@ -84,7 +119,7 @@ class PortfolioItem extends Form {
     private saveContent(content: string) {
 
         if (content.length > 0) {
-            this.pages[`${this.currentPage}`] = content
+            this.pages[`${this.currentPage}`] = content;
         }
     }
 }

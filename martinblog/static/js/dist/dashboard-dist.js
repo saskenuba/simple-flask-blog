@@ -14,12 +14,34 @@ window.addEventListener('load', function () {
     dashboardPortfolioMenu.addEventListener('click', function (event) {
         workingSubMenu('a', 'div', 'portfolio', event.target['dataset'].portfolio);
     });
-    // comment
-    var portfolioItem = new PortfolioItem(document.getElementById('portfolio-add'));
-    portfolioItem.httpMethod = "POST";
-    document.getElementById('portfolio-add-buttons').addEventListener('click', portfolioItem.pageHandler);
+    var portfolioItemAdd = new PortfolioItem(document.getElementById('portfolio-add'), editor_portfolio_add);
+    portfolioItemAdd.httpMethod = "POST";
+    document.getElementById('portfolio-add-buttons').addEventListener('click', portfolioItemAdd.pageHandler);
     document.getElementById('portfolio-add-submit').addEventListener('click', function (event) {
-        portfolioItem.submitHandler(event);
+        portfolioItemAdd.submitHandler(event);
+    });
+    var portfolioItemEdit = new PortfolioItem(document.getElementById('portfolio-edit'), editor_portfolio_edit);
+    portfolioItemEdit.httpMethod = "PUT";
+    $('#select-edit')
+        .dropdown({
+        onChange: function (value, text, $selectedItem) {
+            portfolioItemEdit.retrieve(value);
+        }
+    });
+    document.getElementById('portfolio-edit-buttons').addEventListener('click', portfolioItemEdit.pageHandler);
+    document.getElementById('portfolio-edit-submit').addEventListener('click', function (event) {
+        portfolioItemEdit.submitHandler(event);
+    });
+    var portfolioItemDel = new PortfolioItem(document.getElementById('portfolio-del'));
+    portfolioItemDel.httpMethod = "DELETE";
+    $('#select-del')
+        .dropdown({
+        onChange: function (value, text, $selectedItem) {
+            portfolioItemDel.retrieve(value);
+        }
+    });
+    document.getElementById('portfolio-del-submit').addEventListener('click', function (event) {
+        portfolioItemDel.submitHandler(event);
     });
 });
 ///////////////////////////////////////////////////////////////////////////////

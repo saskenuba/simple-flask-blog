@@ -7,32 +7,33 @@
                 {% if form.itemSelector %}
                     <div class="required inline field">
                         {{ form.itemSelector.label }}
-                        {{ form.itemSelector }}
-                        <div class="ui left pointing label">Escolha o item a ser editado.</div>
+                        {{ form.itemSelector(id='select-'+type) }}
+                        <div class="ui left pointing label">Escolha o projeto para que ocorra o preenchimento automático dos campos.</div>
                     </div>
-                    <div class="ui divider"></div>
                 {% endif %}
 
-                <div class="required inline field">
-                    {{ form.title.label }}
-                    {{ form.title }}
-                    <div class="ui left pointing label">Este será o titulo do item de portfolio.</div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="required field">
+                    <h4 class="ui dividing header">Informações Básicas</h4>
+                    <div class="fields">
+                        <div class="required eight wide field">
+                            {{ form.title.label }}
+                            {{ form.title }}
+                        </div>
+                        <div class="required eight wide field">
+                            {{ form.imageUrl.label }}
+                            {{ form.imageUrl }}
+                        </div>
+                    </div>
+
+                <div class="required sixteen wide field">
                     {{ form.description.label }}
                     {{ form.description }}
                 </div>
-                <div class="ui divider"></div>
-                <div class="required inline field">
-                    {{ form.imageUrl.label }}
-                    {{ form.imageUrl }}
-                    <div class="ui left pointing label">Placeholder</div>
-                </div>
-                <div class="ui divider"></div>
+
+
+                {% if type != "del" %}
+                <h4 class="ui dividing header">Conteúdo</h4>
                 <div class="inline field">
-                    {{ form.content.label }}
-                    {{ form.content }}
+                    {{ form.content(id=type) }}
 
                     <label>Página</label>
                     <div id="portfolio-{{ type }}-buttons" class="ui buttons">
@@ -42,6 +43,7 @@
                     </div>
                     <div class="ui left pointing label">Selecione a pagina que deseja editar.</div>
                 </div>
+                {% endif %}
                 <button id="portfolio-{{ type }}-submit" type="submit" form="portfolio-{{ type }}" class="ui primary button">Enviar</button>
 
 

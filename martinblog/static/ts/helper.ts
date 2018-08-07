@@ -32,6 +32,23 @@ async function postGetJson(postId: number, offset?: number, limit?: number): Pro
 
 }
 
+async function getPortfolioItem(itemID: number): Promise<Response> {
+    /*
+     * Returns an array with entries
+     */
+    let parameters = {
+        itemID: itemID
+    };
+
+    try {
+        let response = await fetch(Flask.url_for('API_portfolio', parameters));
+        return response.json();
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 async function sendJson(flaskLocation: string, settingsObj: object): Promise<any> {
     try {
         return await fetch(Flask.url_for(flaskLocation), settingsObj)

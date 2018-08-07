@@ -22,12 +22,36 @@ window.addEventListener('load', function() {
         workingSubMenu('a', 'div', 'portfolio', event.target['dataset'].portfolio);
     });
 
-    // comment
-    const portfolioItem = new PortfolioItem(document.getElementById('portfolio-add'));
-    portfolioItem.httpMethod = "POST";
-    document.getElementById('portfolio-add-buttons').addEventListener('click', portfolioItem.pageHandler);
+    const portfolioItemAdd = new PortfolioItem(document.getElementById('portfolio-add'), editor_portfolio_add);
+    portfolioItemAdd.httpMethod = "POST";
+    document.getElementById('portfolio-add-buttons').addEventListener('click', portfolioItemAdd.pageHandler);
     document.getElementById('portfolio-add-submit').addEventListener('click', (event) => {
-        portfolioItem.submitHandler(event)
+        portfolioItemAdd.submitHandler(event)
+    });
+
+    const portfolioItemEdit = new PortfolioItem(document.getElementById('portfolio-edit'), editor_portfolio_edit);
+    portfolioItemEdit.httpMethod = "PUT";
+    $('#select-edit')
+        .dropdown({
+            onChange: function(value, text, $selectedItem) {
+                portfolioItemEdit.retrieve(value);
+            }
+        });
+    document.getElementById('portfolio-edit-buttons').addEventListener('click', portfolioItemEdit.pageHandler);
+    document.getElementById('portfolio-edit-submit').addEventListener('click', (event) => {
+        portfolioItemEdit.submitHandler(event)
+    });
+
+    const portfolioItemDel = new PortfolioItem(document.getElementById('portfolio-del'));
+    portfolioItemDel.httpMethod = "DELETE";
+    $('#select-del')
+        .dropdown({
+            onChange: function(value, text, $selectedItem) {
+                portfolioItemDel.retrieve(value);
+            }
+        });
+    document.getElementById('portfolio-del-submit').addEventListener('click', (event) => {
+        portfolioItemDel.submitHandler(event)
     });
 
 });
@@ -79,11 +103,11 @@ addForm.addEventListener('submit', function(event) {
 //                                 Edit Post                                 //
 ///////////////////////////////////////////////////////////////////////////////
 
-let idEditPost = <HTMLInputElement> document.getElementById('post-id-edit');
-let titleEditPost = <HTMLInputElement> document.getElementById('post-title-edit');
-let contentEditPost = <HTMLInputElement> document.getElementById('post-content-edit');
-let imageEditPost = <HTMLInputElement> document.getElementById('post-image-edit');
-let tagsEditPost = <HTMLInputElement> document.getElementById('post-tags-edit');
+let idEditPost = <HTMLInputElement>document.getElementById('post-id-edit');
+let titleEditPost = <HTMLInputElement>document.getElementById('post-title-edit');
+let contentEditPost = <HTMLInputElement>document.getElementById('post-content-edit');
+let imageEditPost = <HTMLInputElement>document.getElementById('post-image-edit');
+let tagsEditPost = <HTMLInputElement>document.getElementById('post-tags-edit');
 let editForm = document.getElementById('form-edit');
 
 

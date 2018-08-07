@@ -151,7 +151,7 @@
             {{ forms.message('edit') }}
 
             <!-- Delete post -->
-            {{ forms.form('del', portfolioEditForm) }}
+            {{ forms.form('del', portfolioDelForm) }}
             {{ forms.message('del') }}
 
         </div>
@@ -163,12 +163,7 @@
     <script>
      var editor_add = CKEDITOR.replace('post-content-add');
      var editor_edit = CKEDITOR.replace('post-content-edit');
-     var editor_portfolio_add = CKEDITOR.replace('content');
+     var editor_portfolio_add = CKEDITOR.replace('add');
+     var editor_portfolio_edit = CKEDITOR.replace('edit');
     </script>
-
-    <script>
-     $('#itemSelector')
-         .dropdown();
-    </script>
-
 {% endblock %}
