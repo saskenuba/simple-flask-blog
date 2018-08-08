@@ -196,6 +196,8 @@ venv.bak/
 
 ### Python Patch ###
 .venv/
+Pipfile
+Pipfile.lock
 
 ## prepros
 *.config

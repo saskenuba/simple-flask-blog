@@ -24,6 +24,7 @@ window.addEventListener('load', function() {
 
     const portfolioItemAdd = new PortfolioItem(document.getElementById('portfolio-add'), editor_portfolio_add);
     portfolioItemAdd.httpMethod = "POST";
+    portfolioItemAdd.messageElement = document.getElementById('portfolio-add-message-success');
     document.getElementById('portfolio-add-buttons').addEventListener('click', portfolioItemAdd.pageHandler);
     document.getElementById('portfolio-add-submit').addEventListener('click', (event) => {
         portfolioItemAdd.submitHandler(event)
@@ -31,6 +32,7 @@ window.addEventListener('load', function() {
 
     const portfolioItemEdit = new PortfolioItem(document.getElementById('portfolio-edit'), editor_portfolio_edit);
     portfolioItemEdit.httpMethod = "PUT";
+    portfolioItemEdit.messageElement = document.getElementById('portfolio-edit-message-success');
     $('#select-edit')
         .dropdown({
             onChange: function(value, text, $selectedItem) {
@@ -44,6 +46,7 @@ window.addEventListener('load', function() {
 
     const portfolioItemDel = new PortfolioItem(document.getElementById('portfolio-del'));
     portfolioItemDel.httpMethod = "DELETE";
+    portfolioItemDel.messageElement = document.getElementById('portfolio-del-message-success');
     $('#select-del')
         .dropdown({
             onChange: function(value, text, $selectedItem) {

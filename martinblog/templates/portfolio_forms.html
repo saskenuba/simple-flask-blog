@@ -53,12 +53,12 @@
 </div>
 {% endmacro %}
 
-{% macro message(type) %}
+{% macro message(type, text) %}
     <popup id="portfolio-{{ type }}-message-success" class="off">
         <div class="ui positive message">
             <i class="close icon"></i>
             <div class="header">Tudo certo.</div>
-            O item criado com sucesso.
+            {{ text }}
             <a id="" href=""></a>
         </div>
     </popup>

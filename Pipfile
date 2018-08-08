@@ -1,24 +1,3 @@
-[[source]]
-url = "https://pypi.org/simple"
-verify_ssl = true
-name = "pypi"
-
-[packages]
-"psycopg2" = "*"
-bcrypt = "*"
-python-slugify = "*"
-gunicorn = "*"
-Flask = "*"
-SQLAlchemy = "*"
-"Jinja2" = "*"
-Flask-SQLAlchemy = "*"
-Flask-JSGlue = "*"
-Flask-Login = "*"
-WTForms = "*"
-WTForms-JSON = "*"
-"e1839a8" = {path = ".", editable = true}
-requests = "*"
-
 [dev-packages]
 yapf = "*"
 autoflake = "*"
@@ -26,6 +5,3 @@ flake8 = "*"
 ipython = "*"
 jedi = "*"
 isort = "*"
-
-[requires]
-python_version = "3.6"

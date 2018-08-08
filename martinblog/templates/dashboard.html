@@ -144,22 +144,22 @@
             <!-- Add post -->
             {% import 'portfolio_forms.html' as forms with context %}
             {{ forms.form('add', portfolioAddForm) }}
-            {{ forms.message('add') }}
+            {{ forms.message('add', 'O item foi incluído com sucesso.') }}
 
             <!-- Edit post -->
             {{ forms.form('edit', portfolioEditForm) }}
-            {{ forms.message('edit') }}
+            {{ forms.message('edit', 'O item foi editado com sucesso.') }}
 
             <!-- Delete post -->
             {{ forms.form('del', portfolioDelForm) }}
-            {{ forms.message('del') }}
+            {{ forms.message('del', 'O item foi excluído com sucesso.') }}
 
         </div>
     </main>
 
 {% endblock %} {% block scripts %}
     <script src="{{ url_for('static', filename='js/dist/dashboard-dist.js') }}"></script>
-    <script src="//cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.10.0/standard/ckeditor.js"></script>
     <script>
      var editor_add = CKEDITOR.replace('post-content-add');
      var editor_edit = CKEDITOR.replace('post-content-edit');

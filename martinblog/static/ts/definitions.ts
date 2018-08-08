@@ -10,7 +10,6 @@ class Form {
         body: undefined
     };
 
-
     get httpMethod() {
         return this.settings['method'];
     }
@@ -28,7 +27,8 @@ class PortfolioItem extends Form {
     pages: object = {};
 
     currentPage: number = 1;
-    parentElement: HTMLElement = null;
+    parentElement: HTMLElement = undefined;
+    messageElement: HTMLElement = undefined;
 
     editor: CKEDITOR.editor = undefined;
 
@@ -39,7 +39,7 @@ class PortfolioItem extends Form {
     }
 
     // should bind to event listener, and respond to clicks on appropriate pages
-    pageHandler = (event: MouseEvent) => {
+    public pageHandler = (event: MouseEvent) => {
         let pageNumber: DOMStringMap = event.target['dataset']['button']
         let currentPageButton = <HTMLElement>event.target;
 
@@ -51,13 +51,21 @@ class PortfolioItem extends Form {
 
     public submitHandler = (event: MouseEvent) => {
         event.preventDefault()
+        let submitButton = <HTMLElement> event.target
 
         if (this.httpMethod != "DELETE") {
             this.saveAllAttributes();
             this.toJson()
         }
 
-        this.send();
+        this.send()
+            .then(response => {
+                if (response.status == 201 || response.status == 204) {
+                    toggleClasses(submitButton, 'disabled')
+                    console.log(this.messageElement);
+                    toggleClasses(this.messageElement, 'on', 'off', 'animated', 'fadeIn');
+                }
+            })
 
     }
 
@@ -76,6 +84,7 @@ class PortfolioItem extends Form {
         this.parentElement.querySelector('input[name="title"]')['value'] = this.title;
         this.parentElement.querySelector('input[name="description"]')['value'] = this.description;
         this.parentElement.querySelector('input[name="imageUrl"]')['value'] = this.imagelink;
+        this.editor.setData(this.pages[this.currentPage]);
     }
 
     private toJson = () => {
@@ -96,11 +105,14 @@ class PortfolioItem extends Form {
                 this.title = response['title'];
                 this.description = response['description'];
                 this.imagelink = response['imagelink'];
+                this.pages = response['content'];
+
+                console.log(this.pages);
                 this.saveToParent();
             })
     }
 
-    public send() {
+    public send(): Promise<Response> {
 
         if (this.httpMethod == "PUT" || this.httpMethod == "DELETE") {
             return sendJsonWithObj('API_portfolio', { "itemID": this.id }, this.settings);
@@ -123,8 +135,6 @@ class PortfolioItem extends Form {
         }
     }
 }
-
-
 
 class Post extends Form {
     title: string;

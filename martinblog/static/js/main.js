@@ -12,7 +12,7 @@ window.addEventListener('load', function() {
         internalCounter++;
         let queryOffset = 3 * internalCounter;
 
-        let getPosts = postGetJson('all', queryOffset, queryLimit);
+        let getPosts = postGetJson(undefined, queryOffset, queryLimit);
         getPosts.then(response => {
             toggleClasses(buttonShowMore, 'loading');
             let appendedIDs = appendPosts(response, articleParent);
