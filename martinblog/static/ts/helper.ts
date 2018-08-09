@@ -41,7 +41,7 @@ async function getPortfolioItem(itemID: number): Promise<Response> {
     };
 
     try {
-        let response = await fetch(Flask.url_for('API_portfolio', parameters));
+        let response = await fetch(Flask.url_for('API_portfolio_get', parameters));
         return response.json();
     } catch (err) {
         console.log(err);

@@ -393,22 +393,25 @@ def viewPortfolioItem(itemID, title=None):
 
     return render_template('portfolio_item.html', item=postRequestedJson)
 
-
-# check login conditions
-@app.route('/v1/portfolio/', methods=['GET', 'POST'])
-@app.route('/v1/portfolio/<int:itemID>', methods=['PUT', 'DELETE', 'GET'])
-#@login_required
-def API_portfolio(itemID=None):
+@app.route('/v1/portfolio/', methods=['GET'])
+@app.route('/v1/portfolio/<int:itemID>', methods=['GET'])
+def API_portfolio_get(itemID=None):
 
     if itemID is not None:
         item = PortfolioItems.query.filter(PortfolioItems.id == itemID).first()
         if item is None:
             return jsonify("get d fock out"), 404
-
-    # get only selected port
-    if request.method == 'GET':
-        item = PortfolioItems.query.filter_by(id=itemID).first()
         return jsonify(item.serialize)
+
+    allItems = PortfolioItems.query.all()
+    return jsonify([item.serialize for item in allItems])
+
+
+# check login conditions
+@app.route('/v1/portfolio/', methods=['POST'])
+@app.route('/v1/portfolio/<int:itemID>', methods=['PUT', 'DELETE'])
+@login_required
+def API_portfolio(itemID=None):
 
     if request.method == 'DELETE':
         PortfolioItems.query.filter(PortfolioItems.id == itemID).delete()
