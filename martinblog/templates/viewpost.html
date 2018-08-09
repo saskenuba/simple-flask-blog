@@ -70,13 +70,14 @@
 {% endblock %}
 
 {% block scripts %}
-<link rel="stylesheet" href="{{url_for('static', filename='styles/github.css')}}">
 <script src="{{ url_for('static', filename='js/dist/highlight.pack.js') }}"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
 <script>
-
  $(document).ready(function() {
      $('pre code').each(function(i, block) {
+         hljs.highlightBlock(block);
+     });
+     $('p code').each(function(i, block) {
          hljs.highlightBlock(block);
      });
  });

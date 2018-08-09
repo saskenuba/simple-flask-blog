@@ -34,8 +34,12 @@
         }
     }
 
-    :not(pre) > code {
-        display: inline !important;
-}
+    pre code.hljs {
+        display: block;
+    }
+
+    p code.hljs {
+        display: inline;
+    }
 
 }
