@@ -1,7 +1,0 @@
-[dev-packages]
-yapf = "*"
-autoflake = "*"
-flake8 = "*"
-ipython = "*"
-jedi = "*"
-isort = "*"
