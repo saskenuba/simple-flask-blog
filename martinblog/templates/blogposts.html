@@ -33,7 +33,7 @@
                                                                                 <div class="header">
                                                                                     Post 0{{ loop.index }}
                                                                                 </div>
-                                                                                <a href="/post/{{ post[0] }}"> {{ post[1] | capitalize }} </a>, Tags: {% for tag in post[2] %} <a href="{{ url_for('tags', string=tag) }}"><div class="ui label">{{ tag }}</div></a> {% endfor %}
+                                                                                <a href="/post/{{ post[0] }}"> {{ post[1] | capitalize }} </a>{% for tag in post[2] %} <a href="{{ url_for('tags', string=tag) }}"><div class="ui red label"><i class="tag icon"></i>{{ tag }}</div></a> {% endfor %}
                                                                             </div>
                                                                         </div>
                                                                 {% endfor %}

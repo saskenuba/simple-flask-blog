@@ -9,14 +9,25 @@ from flask_login import current_user, login_required, login_user, logout_user
 from slugify import slugify
 
 from martinblog import app, db, login_manager
-from martinblog.database_models import Entry, Tags, Users, PortfolioItems
-from martinblog.forms import ContactForm, LoginForm, PortfolioForm, PortfolioFormSelector
+from martinblog.database_models import Entry, PortfolioItems, Tags, Users
+from martinblog.forms import (ContactForm, LoginForm, PortfolioForm,
+                              PortfolioFormSelector)
 from martinblog.helpers import Mailgun, tablelizePosts
 
 # Usuario novo caso precise
 # novoUsuario = Users('testeuser', '12345')
 # db.session.add(novoUsuario)
 # db.session.commit()
+
+
+@app.template_filter('numberToFull')
+def numberToFull(number):
+    numberList = [
+        'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
+        'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen',
+        'sixteen'
+    ]
+    return numberList[number]
 
 
 # main page has all blog entries
@@ -126,8 +137,7 @@ def dashboard():
             username=current_user.username,
             portfolioAddForm=portfolioAddForm,
             portfolioEditForm=portfolioEditForm,
-            portfolioDelForm=portfolioDelForm
-        ))
+            portfolioDelForm=portfolioDelForm))
     return response
 
 
@@ -429,8 +439,6 @@ def API_portfolio(itemID=None):
                 imagelink=imagelink))
         db.session.commit()
         return jsonify({"response": "success"}), 204
-
-
 
     return 'heh'
 

@@ -2,6 +2,8 @@
 {% block title %} Martin Mariano - Portfolio {% endblock %}
 {% block jsonld %} {% endblock %}
 
+{% set numberOfPages = item.content | length %}
+
     {% block content %}
     <div class="scrolling-wrapper-flexbox">
         {% for index, pagecontent in item.content.items() %}
@@ -23,7 +25,7 @@
         {% endfor %}
 
 </div>
-<div id="navigationBar" class="ui fluid two item menu">
+<div id="navigationBar" class="ui fluid {{ numberOfPages | numberToFull }} item menu">
     {% for index, pagecontent in item.content.items() %}
         <a data-page="{{ index }}" class="item">{{ index }}</a>
     {% endfor %}

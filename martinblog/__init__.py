@@ -2,9 +2,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jsglue import JSGlue
 from flask_login import LoginManager
+from flask_migrate import Migrate
 import os
 
-# first initialize flask
 app = Flask(__name__)
 jsglue = JSGlue(app)
 
@@ -14,7 +14,7 @@ login_manager.init_app(app)
 
 
 # path to db
-db_conn = 'postgresql+psycopg2://postgres@localhost/martinblog'
+db_conn = 'postgresql+psycopg2://martin@localhost/martinblog'
 
 # sets db configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = db_conn
@@ -23,6 +23,7 @@ app.config['SECRET_KEY'] = os.urandom(24)
 
 # init db
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # then we import the routes
 import martinblog.views
@@ -30,4 +31,4 @@ import martinblog.views
 from martinblog.database import init_db
 
 # initiate db
-init_db()
+init_db(db)

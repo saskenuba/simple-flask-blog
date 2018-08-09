@@ -12,7 +12,7 @@ setup(
         'wtforms', 'wtforms-json', 'requests', 'python-slugify', 'bcrypt',
         'flask-migrate', 'flask-restplus'
     ],
-    extra_require={
+    extra_requires={
         'pg': ['psycopg2'],
         'deploy': ['gunicorn']
     })
