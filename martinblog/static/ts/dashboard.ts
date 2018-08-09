@@ -3,6 +3,33 @@
 
 //import * as _ from 'lodash';
 
+let editor_add = CKEDITOR.replace('post-content-add');
+let editor_edit = CKEDITOR.replace('post-content-edit');
+let editor_portfolio_add = CKEDITOR.replace('add');
+let editor_portfolio_edit = CKEDITOR.replace('edit');
+
+// CKEDITOR configuration
+CKEDITOR.config.allowedContent = true;
+CKEDITOR.stylesSet.add('Martinblog', [
+    { name: 'Block', element: 'pre code' },
+    { name: 'Inline', element: 'code' },
+
+    { name: 'Four Columns', element: 'div', attributes: { 'class': 'four wide column' } },
+    { name: 'Five Columns', element: 'div', attributes: { 'class': 'five wide column' } },
+    { name: 'Six Columns', element: 'div', attributes: { 'class': 'six wide column' } },
+    { name: 'Seven Columns', element: 'div', attributes: { 'class': 'seven wide column' } },
+    { name: 'Eight Columns', element: 'div', attributes: { 'class': 'eight wide column' } },
+    { name: 'Nine Columns', element: 'div', attributes: { 'class': 'nine wide column' } },
+    { name: 'Ten Columns', element: 'div', attributes: { 'class': 'ten wide column' } },
+    { name: 'Eleven Columns', element: 'div', attributes: { 'class': 'eleven wide column' } },
+    { name: 'Twelve Columns', element: 'div', attributes: { 'class': 'twelve wide column' } },
+    { name: 'Thirteen Columns', element: 'div', attributes: { 'class': 'thirteen wide column' } },
+    { name: 'Fourteen Columns', element: 'div', attributes: { 'class': 'fourteen wide column' } },
+    { name: 'Fifteen Columns', element: 'div', attributes: { 'class': 'fifteen wide column' } },
+    { name: 'Sixteen Columns', element: 'div', attributes: { 'class': 'sixteen wide column' } }
+]);
+CKEDITOR.config.stylesSet = 'Martinblog';
+
 window.addEventListener('load', function() {
 
 
@@ -21,6 +48,7 @@ window.addEventListener('load', function() {
     dashboardPortfolioMenu.addEventListener('click', function(event) {
         workingSubMenu('a', 'div', 'portfolio', event.target['dataset'].portfolio);
     });
+
 
     const portfolioItemAdd = new PortfolioItem(document.getElementById('portfolio-add'), editor_portfolio_add);
     portfolioItemAdd.httpMethod = "POST";

@@ -158,12 +158,6 @@
     </main>
 
 {% endblock %} {% block scripts %}
-    <script src="{{ url_for('static', filename='js/dist/dashboard-dist.js') }}"></script>
     <script src="https://cdn.ckeditor.com/4.10.0/standard/ckeditor.js"></script>
-    <script>
-     var editor_add = CKEDITOR.replace('post-content-add');
-     var editor_edit = CKEDITOR.replace('post-content-edit');
-     var editor_portfolio_add = CKEDITOR.replace('add');
-     var editor_portfolio_edit = CKEDITOR.replace('edit');
-    </script>
+    <script src="{{ url_for('static', filename='js/dist/dashboard-dist.js') }}"></script>
 {% endblock %}
