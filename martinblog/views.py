@@ -150,11 +150,8 @@ def blogPosts():
     # then serialize
     dbEntriesSerialized = [i.serialize for i in dbEntries]
 
-    # validates json, then loads into object
-    jsonQuery = json.loads(json.dumps(dbEntriesSerialized))
-
     return render_template(
-        "blogposts.html", postsTable=tablelizePosts(jsonQuery))
+        "blogposts.html", postsTable=tablelizePosts(dbEntriesSerialized))
 
 
 def has_no_empty_params(rule):
