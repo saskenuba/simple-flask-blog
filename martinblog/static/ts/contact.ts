@@ -1,3 +1,5 @@
+/// <reference path="./helper.ts" />
+
 const formTelephoneInput = document.getElementById('formTelefone');
 
 window.addEventListener('load', function() {

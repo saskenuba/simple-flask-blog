@@ -241,7 +241,6 @@ def getJsonPost(postid=None, offset=0, limit=None):
 
     # match postid right away
     if match:
-        print('here')
         dbEntry = Entry.query.get(postid)
 
         # if post doesnt exists in db
@@ -389,7 +388,6 @@ def viewPortfolioItem(itemID, title=None):
         return render_template('404.html'), 404
 
     postRequestedJson = json.loads(requestedItem.data)
-    print(postRequestedJson)
 
     return render_template('portfolio_item.html', item=postRequestedJson)
 
